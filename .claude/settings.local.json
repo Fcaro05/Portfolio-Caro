@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rm -rf /c/Users/fcaro/Desktop/Portfolio/fcportfolio)",
+      "Bash(npm install *)"
+    ]
+  }
+}
