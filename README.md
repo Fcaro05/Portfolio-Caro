@@ -24,9 +24,10 @@ npm start        # serve la build
 
 ```
 app/
-  layout.tsx        Font, metadata, provider (i18n, smooth scroll), cursor, nav
-  page.tsx          Assembla le sezioni
-  globals.css       Design tokens, utility brutalist, animazioni
+  layout.tsx            Font, metadata, provider (i18n, smooth scroll), cursor, nav
+  page.tsx              Assembla le sezioni (home)
+  work/[slug]/page.tsx  Pagina dettaglio progetto (case study) + link al sito reale
+  globals.css           Design tokens, utility brutalist, animazioni
 lib/
   i18n.tsx          Lingue IT/EN + microcopy UI  <- testi interfaccia
   content.ts        Progetti, competenze, timeline, stats, contatti  <- CONTENUTI
@@ -50,6 +51,11 @@ Quasi tutto e' in **`lib/content.ts`** e **`lib/i18n.tsx`**.
 4. **Ruoli reali** — `lib/content.ts` -> `projects[].role` e `timeline[].role`.
 5. **Tesi Creativa** — `lib/content.ts` -> progetto `tesi-creativa`: descrizione reale.
 6. **Date progetti** — `projects[].year` se vuoi precisarle.
+
+Ogni progetto ha la sua pagina dettaglio in `/work/[slug]`: i contenuti del case study
+(`overview`, `challenge`, `approach`, `contributions`, `results`, bilingui) sono in
+`lib/content.ts` dentro `projects[]`. Le card rimandano alla pagina dettaglio; il link al
+sito reale e' sulla pagina dettaglio (bottone "Visita il sito").
 
 I numeri della sezione "Stats" sono volutamente onesti (`lib/content.ts` -> `stats`).
 

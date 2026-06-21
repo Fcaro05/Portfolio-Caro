@@ -1,9 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useI18n } from "@/lib/i18n";
 import { projects, L, type Project } from "@/lib/content";
 import MagneticButton from "@/components/ui/MagneticButton";
+
+const MotionLink = motion.create(Link);
 
 const cssVar: Record<Project["accent"], string> = {
   acid: "#d4ff36",
@@ -132,14 +135,12 @@ function FlagshipCard({ project }: { project: Project }) {
 
         <div className="mt-8">
           <MagneticButton
-            as="a"
-            href={project.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            ariaLabel={`${t.work.view} — ${project.name}`}
+            as="link"
+            href={`/work/${project.id}`}
+            ariaLabel={`${t.work.caseStudy} — ${project.name}`}
             className="group inline-flex items-center gap-3 rounded-full border border-line px-6 py-3 font-mono text-sm uppercase tracking-[0.1em] transition-colors hover:bg-fg hover:text-black"
           >
-            {t.work.view}
+            {t.work.caseStudy}
             <Arrow className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
           </MagneticButton>
         </div>
@@ -147,10 +148,8 @@ function FlagshipCard({ project }: { project: Project }) {
 
       {/* Right: tilt visual */}
       <div className="[perspective:1200px]">
-        <motion.a
-          href={project.href}
-          target="_blank"
-          rel="noopener noreferrer"
+        <MotionLink
+          href={`/work/${project.id}`}
           onMouseMove={onMove}
           onMouseLeave={reset}
           style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
@@ -183,7 +182,7 @@ function FlagshipCard({ project }: { project: Project }) {
           >
             <Arrow className="h-5 w-5" />
           </div>
-        </motion.a>
+        </MotionLink>
       </div>
     </motion.div>
   );
@@ -195,10 +194,8 @@ function ProjectRow({ project }: { project: Project }) {
   const { t, locale } = useI18n();
 
   return (
-    <motion.a
-      href={project.href}
-      target="_blank"
-      rel="noopener noreferrer"
+    <MotionLink
+      href={`/work/${project.id}`}
       data-cursor
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
@@ -242,6 +239,6 @@ function ProjectRow({ project }: { project: Project }) {
 
         <Arrow className="h-6 w-6 shrink-0 -rotate-45 text-muted transition-all duration-300 group-hover:rotate-0 group-hover:text-black md:h-8 md:w-8" />
       </div>
-    </motion.a>
+    </MotionLink>
   );
 }

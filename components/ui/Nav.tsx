@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { useI18n } from "@/lib/i18n";
 import { scrollToTarget } from "@/components/providers/SmoothScroll";
@@ -9,6 +10,8 @@ export default function Nav() {
   const { t, locale, setLocale } = useI18n();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -30,6 +33,10 @@ export default function Nav() {
 
   const go = (id: string) => {
     setOpen(false);
+    if (pathname !== "/") {
+      router.push("/" + id);
+      return;
+    }
     setTimeout(() => scrollToTarget(id), open ? 350 : 0);
   };
 
@@ -45,7 +52,7 @@ export default function Nav() {
         <div className="mx-auto flex h-16 max-w-[1600px] items-center justify-between px-5 md:h-20 md:px-10">
           {/* Wordmark */}
           <button
-            onClick={() => scrollToTarget(0)}
+            onClick={() => (pathname === "/" ? scrollToTarget(0) : router.push("/"))}
             className="group flex items-center gap-2"
             aria-label="Francesco Caro — home"
           >

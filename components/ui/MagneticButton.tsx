@@ -1,13 +1,16 @@
 "use client";
 
 import { useRef } from "react";
+import Link from "next/link";
 import { motion, useMotionValue, useSpring } from "framer-motion";
+
+const MotionLink = motion.create(Link);
 
 type Props = {
   children: React.ReactNode;
   className?: string;
   strength?: number;
-  as?: "button" | "a" | "div";
+  as?: "button" | "a" | "div" | "link";
   href?: string;
   onClick?: () => void;
   target?: string;
@@ -45,10 +48,16 @@ export default function MagneticButton({
     y.set(0);
   };
 
-  // Polymorphic motion element; typed loosely to allow href/target on <a>.
+  // Polymorphic; typed loosely to allow href/target across element types.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const MotionTag: any =
-    as === "a" ? motion.a : as === "div" ? motion.div : motion.button;
+    as === "link"
+      ? MotionLink
+      : as === "a"
+        ? motion.a
+        : as === "div"
+          ? motion.div
+          : motion.button;
 
   return (
     <MotionTag
