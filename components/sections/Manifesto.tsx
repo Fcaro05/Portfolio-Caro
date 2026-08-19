@@ -25,9 +25,10 @@ export default function Manifesto() {
           {lines.map((l, i) => (
             <motion.p
               key={i}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial="hidden"
+              whileInView="visible"
               viewport={{ once: true, margin: "-15%" }}
+              variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } }}
               transition={{ duration: 0.7, delay: i * 0.12, ease: [0.16, 1, 0.3, 1] }}
               className="text-muted/60"
             >
@@ -79,9 +80,7 @@ function Strike({
       <motion.span
         aria-hidden
         className={`absolute left-0 top-[55%] h-[0.09em] w-full origin-left -translate-y-1/2 ${color}`}
-        initial={{ scaleX: 0 }}
-        whileInView={{ scaleX: 1 }}
-        viewport={{ once: true, margin: "-20%" }}
+        variants={{ hidden: { scaleX: 0 }, visible: { scaleX: 1 } }}
         transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
       />
     </span>
