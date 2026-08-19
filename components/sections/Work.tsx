@@ -6,6 +6,26 @@ import { useI18n } from "@/lib/i18n";
 import { projects, L, type Project } from "@/lib/content";
 import MagneticButton from "@/components/ui/MagneticButton";
 
+function useTilt() {
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const spring = { stiffness: 150, damping: 18, mass: 0.4 };
+  const rotateX = useSpring(useTransform(my, [-0.5, 0.5], [7, -7]), spring);
+  const rotateY = useSpring(useTransform(mx, [-0.5, 0.5], [-7, 7]), spring);
+
+  const onMove = (e: React.MouseEvent) => {
+    const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    mx.set((e.clientX - r.left) / r.width - 0.5);
+    my.set((e.clientY - r.top) / r.height - 0.5);
+  };
+  const reset = () => {
+    mx.set(0);
+    my.set(0);
+  };
+
+  return { rotateX, rotateY, onMove, reset };
+}
+
 const MotionLink = motion.create(Link);
 
 const cssVar: Record<Project["accent"], string> = {
@@ -14,13 +34,6 @@ const cssVar: Record<Project["accent"], string> = {
   cyan: "#34e7e4",
   violet: "#8b5cff",
 };
-const fillBg: Record<Project["accent"], string> = {
-  acid: "bg-acid",
-  magenta: "bg-magenta",
-  cyan: "bg-cyan",
-  violet: "bg-violet",
-};
-
 const Arrow = ({ className = "" }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
     <path
@@ -55,9 +68,9 @@ export default function Work() {
         <FlagshipCard project={flagship} />
       </div>
 
-      <div className="mx-auto mt-16 max-w-[1600px] border-t border-line md:mt-24">
+      <div className="mx-auto mt-8 grid max-w-[1600px] gap-8 px-5 md:mt-12 md:grid-cols-2 md:gap-10 md:px-10">
         {rest.map((p) => (
-          <ProjectRow key={p.id} project={p} />
+          <ProjectCard key={p.id} project={p} />
         ))}
       </div>
     </section>
@@ -69,23 +82,7 @@ export default function Work() {
 function FlagshipCard({ project }: { project: Project }) {
   const { t, locale } = useI18n();
   const color = cssVar[project.accent];
-
-  // tilt
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const spring = { stiffness: 150, damping: 18, mass: 0.4 };
-  const rotateX = useSpring(useTransform(my, [-0.5, 0.5], [7, -7]), spring);
-  const rotateY = useSpring(useTransform(mx, [-0.5, 0.5], [-7, 7]), spring);
-
-  const onMove = (e: React.MouseEvent) => {
-    const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
-    mx.set((e.clientX - r.left) / r.width - 0.5);
-    my.set((e.clientY - r.top) / r.height - 0.5);
-  };
-  const reset = () => {
-    mx.set(0);
-    my.set(0);
-  };
+  const { rotateX, rotateY, onMove, reset } = useTilt();
 
   return (
     <motion.div
@@ -188,57 +185,84 @@ function FlagshipCard({ project }: { project: Project }) {
   );
 }
 
-/* ----------------------------- Rows ----------------------------- */
+/* ----------------------------- Cards ----------------------------- */
 
-function ProjectRow({ project }: { project: Project }) {
+function ProjectCard({ project }: { project: Project }) {
   const { t, locale } = useI18n();
+  const color = cssVar[project.accent];
+  const { rotateX, rotateY, onMove, reset } = useTilt();
 
   return (
-    <MotionLink
-      href={`/work/${project.id}`}
-      data-cursor
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
-      className="group relative block overflow-hidden border-b border-line px-5 md:px-10"
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-10%" }}
+      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      className="flex flex-col overflow-hidden rounded-3xl border border-line bg-bg-soft p-5 md:p-7"
     >
-      {/* accent fill */}
-      <span
-        className={`absolute inset-0 origin-bottom scale-y-0 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-y-100 ${fillBg[project.accent]}`}
-      />
-
-      <div className="relative z-10 flex items-center gap-4 py-7 transition-colors duration-300 group-hover:text-black md:gap-10 md:py-10">
-        <span className="w-10 font-mono text-sm text-muted transition-colors group-hover:text-black/70 md:w-16 md:text-base">
-          {project.index}
-        </span>
-
-        <div className="flex-1">
-          <h3 className="font-display text-3xl uppercase leading-none tracking-tight transition-transform duration-300 group-hover:translate-x-2 md:text-6xl">
-            {project.name}
-          </h3>
-          <p className="mt-2 font-sans text-sm text-muted transition-colors duration-300 group-hover:text-black/70 md:text-base">
-            {L(project.summary, locale)}
-          </p>
-        </div>
-
-        <div className="hidden max-w-[14rem] flex-wrap justify-end gap-2 lg:flex">
-          {project.tags.slice(0, 3).map((tg) => (
-            <span
-              key={tg}
-              className="tag-chip transition-colors group-hover:border-black/30 group-hover:text-black/80"
-            >
-              {tg}
-            </span>
-          ))}
-        </div>
-
-        <span className="font-mono text-[0.7rem] uppercase tracking-[0.1em] text-muted transition-colors group-hover:text-black/70">
-          {L(project.kind, locale)}
-        </span>
-
-        <Arrow className="h-6 w-6 shrink-0 -rotate-45 text-muted transition-all duration-300 group-hover:rotate-0 group-hover:text-black md:h-8 md:w-8" />
+      <div className="[perspective:1200px]">
+        <MotionLink
+          href={`/work/${project.id}`}
+          onMouseMove={onMove}
+          onMouseLeave={reset}
+          style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+          data-cursor
+          className="relative flex aspect-[4/3] w-full items-end justify-between overflow-hidden rounded-2xl border border-line p-5"
+        >
+          <div
+            className="absolute inset-0"
+            style={{
+              background: `radial-gradient(circle at 28% 22%, ${color}33, transparent 55%), linear-gradient(150deg, ${color}1a, transparent 70%)`,
+            }}
+          />
+          <div className="bg-grid absolute inset-0 opacity-40" />
+          <span
+            className="pointer-events-none absolute right-3 top-1 font-display text-[6rem] leading-none text-transparent md:text-[7rem]"
+            style={{ WebkitTextStroke: `1.5px ${color}55` }}
+          >
+            {project.index}
+          </span>
+          <div className="relative z-10 flex flex-wrap gap-2">
+            {project.tags.slice(0, 3).map((tg) => (
+              <span key={tg} className="tag-chip border-white/20 text-fg/80">
+                {tg}
+              </span>
+            ))}
+          </div>
+          <div
+            className="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-black"
+            style={{ background: color }}
+          >
+            <Arrow className="h-4 w-4" />
+          </div>
+        </MotionLink>
       </div>
-    </MotionLink>
+
+      <div className="mt-6 flex flex-1 flex-col">
+        <div className="mb-3 flex items-center gap-3">
+          <span className="section-label">{L(project.kind, locale)}</span>
+        </div>
+
+        <h3 className="font-display text-3xl uppercase leading-[0.95] tracking-tight md:text-4xl">
+          {project.name}
+        </h3>
+
+        <p className="mt-3 font-sans text-sm leading-relaxed text-muted md:text-base">
+          {L(project.summary, locale)}
+        </p>
+
+        <div className="mt-6">
+          <MagneticButton
+            as="link"
+            href={`/work/${project.id}`}
+            ariaLabel={`${t.work.caseStudy} — ${project.name}`}
+            className="group inline-flex items-center gap-3 rounded-full border border-line px-5 py-2.5 font-mono text-xs uppercase tracking-[0.1em] transition-colors hover:bg-fg hover:text-black"
+          >
+            {t.work.caseStudy}
+            <Arrow className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+          </MagneticButton>
+        </div>
+      </div>
+    </motion.div>
   );
 }
