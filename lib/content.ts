@@ -461,43 +461,26 @@ export type TimelineItem = {
 
 export const timeline: TimelineItem[] = [
   {
-    id: "salus",
-    period: { it: "2024 — Oggi", en: "2024 — Present" },
-    role: { it: "Co-founder · Product & Digital Ops", en: "Co-founder · Product & Digital Ops" },
-    org: "Salus AI",
+    id: "its-incom",
+    period: { it: "2024 — 2026", en: "2024 — 2026" },
+    role: { it: "ITS — Digital Marketing Manager", en: "ITS — Digital Marketing Manager" },
+    org: "ITS Incom",
     desc: {
-      it: "Costruzione da zero di una startup healthtech: prodotto, hardware, app Flutter, AI, CRM, preventivi e business model.",
-      en: "Building a healthtech startup from scratch: product, hardware, Flutter app, AI, CRM, pricing and business model.",
+      it: "Percorso biennale ITS (2.000 ore, EQF 5) in digital marketing: strategia, social media, SEO/SEM, advertising e content marketing.",
+      en: "Two-year ITS program (2,000 hours, EQF 5) in digital marketing: strategy, social media, SEO/SEM, advertising and content marketing.",
     },
   },
   {
-    id: "cma",
-    period: { it: "2023 — 2024", en: "2023 — 2024" },
-    role: { it: "Digital Marketing & Content", en: "Digital Marketing & Content" },
-    org: "Centro Medico Ambrosiano",
-    desc: {
-      it: "Meta & Google Ads, SEO locale, creatività e funnel per l'acquisizione pazienti. Campagne per trattamenti come Fotona.",
-      en: "Meta & Google Ads, local SEO, creatives and funnels for patient acquisition. Campaigns for treatments such as Fotona.",
+    id: "diploma",
+    period: { it: "2024", en: "2024" },
+    role: {
+      it: "Diploma — Informatica e Telecomunicazioni",
+      en: "Diploma — Computer Science & Telecommunications",
     },
-  },
-  {
-    id: "web-eco",
-    period: { it: "2021 — 2023", en: "2021 — 2023" },
-    role: { it: "Web / CMS & Local SEO", en: "Web / CMS & Local SEO" },
-    org: "SuperMario24 · AziendaMultiservice",
+    org: "ISIS Keynes, Gazzada Schianno (VA)",
     desc: {
-      it: "Ecosistema web multi-sito di servizi locali: architettura SEO servizio/territorio, content operations e funnel di conversione.",
-      en: "A multi-site web ecosystem for local services: service/territory SEO architecture, content operations and conversion funnels.",
-    },
-  },
-  {
-    id: "edu",
-    period: { it: "Formazione", en: "Education" },
-    role: { it: "— da completare —", en: "— to be completed —" },
-    org: "—",
-    desc: {
-      it: "Sezione formazione: mandami titolo di studio, scuola/università e anni e la completo.",
-      en: "Education section: send me your degree, school/university and years and I'll complete it.",
+      it: "Diploma di Istituto Tecnico Tecnologico, indirizzo Informatica e Telecomunicazioni.",
+      en: "Technical high school diploma, Computer Science & Telecommunications track.",
     },
   },
 ];

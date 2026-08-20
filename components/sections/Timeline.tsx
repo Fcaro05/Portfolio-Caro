@@ -9,7 +9,7 @@ export default function Timeline() {
 
   return (
     <section
-      id="experience"
+      id="education"
       className="relative border-t border-line py-24 md:py-36"
     >
       <div className="mx-auto max-w-[1600px] px-5 md:px-10">
