@@ -44,10 +44,10 @@ export default function Contact() {
             <motion.a
               href={`mailto:${contact.email}`}
               data-cursor
-              className="group mt-10 inline-block font-display text-[8vw] uppercase leading-none tracking-tight text-fg transition-colors hover:text-acid md:text-[5vw]"
+              className="group mt-10 block font-display text-[6vw] uppercase leading-none tracking-tight text-fg transition-colors hover:text-acid md:text-[5vw]"
               whileHover={{ x: 8 }}
             >
-              <span className="hover-line break-all">{contact.email}</span>
+              <span className="hover-line whitespace-nowrap">{contact.email}</span>
             </motion.a>
 
             <div className="mt-8 flex flex-wrap items-center gap-4">

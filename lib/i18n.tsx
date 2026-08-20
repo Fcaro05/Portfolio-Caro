@@ -85,8 +85,8 @@ const dictionaries = {
       next: "Prossimo progetto",
     },
     timeline: {
-      label: "(04) — Percorso",
-      title: "Esperienza",
+      label: "(04) — Formazione",
+      title: "Formazione",
     },
     stats: {
       label: "(05) — In sintesi",
@@ -180,8 +180,8 @@ const dictionaries = {
       next: "Next project",
     },
     timeline: {
-      label: "(04) — Journey",
-      title: "Experience",
+      label: "(04) — Education",
+      title: "Education",
     },
     stats: {
       label: "(05) — At a glance",
