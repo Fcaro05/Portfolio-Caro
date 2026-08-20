@@ -96,11 +96,11 @@ export default function CentroMedicoDetail() {
       </section>
 
       {/* CONTRIBUTIONS + ASIDE */}
-      <section className="mx-auto grid max-w-[1400px] gap-12 border-t border-line px-5 py-16 md:grid-cols-12 md:gap-16 md:px-10 md:py-24">
-        <div className="md:col-span-7">
+      <section className="mx-auto grid max-w-[1400px] grid-cols-1 gap-12 border-t border-line px-5 py-16 md:grid-cols-12 md:gap-16 md:px-10 md:py-24">
+        <div className="min-w-0 md:col-span-7">
           <Contributions project={project} color={color} />
         </div>
-        <aside className="flex flex-col gap-12 md:col-span-5 md:pl-10">
+        <aside className="flex min-w-0 flex-col gap-12 md:col-span-5 md:pl-10">
           <Results project={project} color={color} />
           <StackList project={project} />
           <VisitCard project={project} color={color} />
