@@ -192,12 +192,16 @@ function MedBoxModel({ progress }: { progress: MutableProgress }) {
     }
 
     // ── CAMERA ──
+    // Extra breathing room vs. the source site: there the box is a full-viewport
+    // homepage hero, here it sits inside a project page, so it needs to start
+    // (and stay) noticeably smaller/further back to not overwhelm the section.
+    const MARGIN = 1.55;
     const ar = size.width / size.height || 1;
     const isPortrait = ar < 1;
     const arBoost = isPortrait ? 1 / Math.max(0.45, ar) : 1;
     const defAzim = explodeForFocus * Math.PI * 0.4;
     const defTilt = Math.pow(explodeForFocus, 0.7) * 1.05;
-    const defRadius = isPortrait ? S * 4.0 * arBoost : S * (2.4 + explodeForFocus * 1.6);
+    const defRadius = (isPortrait ? S * 4.0 * arBoost : S * (2.4 + explodeForFocus * 1.6)) * MARGIN;
     let defCamX = Math.sin(defAzim) * defRadius;
     let defCamY = defTilt * S * 1.4;
     let defCamZ = Math.cos(defAzim) * defRadius;
@@ -210,8 +214,8 @@ function MedBoxModel({ progress }: { progress: MutableProgress }) {
       const pt = clamp(preTilt);
       const mix = (a: number, b: number) => a + (b - a) * pt;
       defCamX = mix(defCamX, 0);
-      defCamY = mix(defCamY, S * 1.15);
-      defCamZ = mix(defCamZ, S * 2.05);
+      defCamY = mix(defCamY, S * 1.15 * MARGIN);
+      defCamZ = mix(defCamZ, S * 2.05 * MARGIN);
       defLookX = mix(defLookX, 0);
       defLookY = mix(defLookY, -S * 0.1);
     }
