@@ -523,8 +523,7 @@ export const contact = {
   email: "fcaro.personale@gmail.com",
   socials: [
     { label: "LinkedIn", href: "#", handle: "/in/francescocaro" },
-    { label: "GitHub", href: "#", handle: "@fcaro" },
-    { label: "Instagram", href: "#", handle: "@fcaro" },
+    { label: "GitHub", href: "https://github.com/Fcaro05", handle: "@Fcaro05" },
   ],
 };
 
