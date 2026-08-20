@@ -15,6 +15,7 @@ import {
   VisitCard,
   NextProject,
 } from "./parts";
+import MedBoxReveal from "./MedBoxReveal";
 
 const color = accentHex.acid;
 
@@ -36,39 +37,36 @@ export default function SalusAIDetail() {
 
         <div className="relative mx-auto max-w-[1400px]">
           <BackLink />
-          <div className="mt-10 grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
-            <HeroIn>
-              <div className="mb-5 flex flex-wrap items-center gap-3">
-                <span
-                  className="rounded-full px-3 py-1 font-mono text-[0.65rem] uppercase tracking-[0.15em] text-black"
-                  style={{ background: color }}
-                >
-                  {project.index}
-                </span>
-                <span className="section-label" style={{ color }}>
-                  {t.work.flagship}
-                </span>
-                <span className="section-label">{L(project.kind, locale)}</span>
-              </div>
-              <h1 className="font-display text-[16vw] uppercase leading-[0.82] tracking-tight sm:text-[12vw] lg:text-[8vw]">
-                Salus<br />AI
-              </h1>
-              <p
-                className="mt-5 max-w-xl font-display text-2xl uppercase leading-tight tracking-tight md:text-3xl"
-                style={{ color }}
+          <HeroIn>
+            <div className="mt-10 mb-5 flex flex-wrap items-center gap-3">
+              <span
+                className="rounded-full px-3 py-1 font-mono text-[0.65rem] uppercase tracking-[0.15em] text-black"
+                style={{ background: color }}
               >
-                {L(project.summary, locale)}
-              </p>
-            </HeroIn>
-
-            <HeroIn delay={0.15}>
-              <MedBox />
-            </HeroIn>
-          </div>
+                {project.index}
+              </span>
+              <span className="section-label" style={{ color }}>
+                {t.work.flagship}
+              </span>
+              <span className="section-label">{L(project.kind, locale)}</span>
+            </div>
+            <h1 className="font-display text-[16vw] uppercase leading-[0.82] tracking-tight sm:text-[12vw] lg:text-[8vw]">
+              Salus<br />AI
+            </h1>
+            <p
+              className="mt-5 max-w-2xl font-display text-2xl uppercase leading-tight tracking-tight md:text-3xl"
+              style={{ color }}
+            >
+              {L(project.summary, locale)}
+            </p>
+          </HeroIn>
 
           <HeaderMeta project={project} color={color} textColor="#111508" />
         </div>
       </header>
+
+      {/* SIGNATURE: scroll-driven exploded Smart Med Box */}
+      <MedBoxReveal color={color} />
 
       {/* OVERVIEW */}
       <section className="mx-auto max-w-[1400px] px-5 py-16 md:px-10 md:py-20">
@@ -111,68 +109,6 @@ export default function SalusAIDetail() {
 
       <NextProject slug="salus-ai" />
     </article>
-  );
-}
-
-/* --------------------------- Med box visual --------------------------- */
-
-function MedBox() {
-  return (
-    <div className="relative mx-auto w-full max-w-md">
-      {/* EKG */}
-      <svg viewBox="0 0 400 60" className="mb-4 w-full" aria-hidden>
-        <motion.path
-          d="M0 30 H120 l10 -22 l14 44 l12 -34 l10 12 H400"
-          fill="none"
-          stroke={color}
-          strokeWidth="2"
-          initial={{ pathLength: 0, opacity: 0.4 }}
-          animate={{ pathLength: 1, opacity: 1 }}
-          transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
-        />
-      </svg>
-
-      <div
-        className="rounded-3xl border bg-bg p-5"
-        style={{ borderColor: `${color}40`, boxShadow: `0 0 60px ${color}18` }}
-      >
-        <div className="mb-4 flex items-center justify-between">
-          <span className="font-display text-lg uppercase tracking-tight">Salus Med Box</span>
-          <span className="h-2.5 w-2.5 rounded-full" style={{ background: color }} />
-        </div>
-        <div className="grid grid-cols-4 gap-3">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <motion.div
-              key={i}
-              className="flex aspect-square items-center justify-center rounded-lg border bg-bg-soft"
-              style={{ borderColor: `${color}33` }}
-              animate={{
-                backgroundColor: [`${color}08`, `${color}26`, `${color}08`],
-              }}
-              transition={{ duration: 2.4, delay: i * 0.18, repeat: Infinity }}
-            >
-              <span className="h-2 w-2 rounded-full" style={{ background: `${color}aa` }} />
-            </motion.div>
-          ))}
-        </div>
-        <div className="mt-4 flex items-center justify-between border-t border-line pt-3 font-mono text-[0.7rem] uppercase tracking-[0.12em] text-muted">
-          <span>Sensori di peso</span>
-          <SensorReadout />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function SensorReadout() {
-  return (
-    <motion.span
-      style={{ color }}
-      animate={{ opacity: [0.5, 1, 0.5] }}
-      transition={{ duration: 1.6, repeat: Infinity }}
-    >
-      ● live
-    </motion.span>
   );
 }
 
