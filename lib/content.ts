@@ -397,6 +397,8 @@ export const pillars: Pillar[] = [
       "Cloud Functions",
       "Next.js / React",
       "WordPress / CMS",
+      "AI Specialist",
+      "Prompt Engineering",
       "AI Integration",
       "IoT / Sensori",
       "REST API",
@@ -511,6 +513,6 @@ export const contact = {
 };
 
 export const roleWordsHero = {
-  it: ["SVILUPPATORE", "MARKETER", "FOUNDER", "STRATEGA", "BUILDER"],
-  en: ["DEVELOPER", "MARKETER", "FOUNDER", "STRATEGIST", "BUILDER"],
+  it: ["SVILUPPATORE", "MARKETER", "FOUNDER", "STRATEGA", "AI SPECIALIST", "BUILDER"],
+  en: ["DEVELOPER", "MARKETER", "FOUNDER", "STRATEGIST", "AI SPECIALIST", "BUILDER"],
 };
