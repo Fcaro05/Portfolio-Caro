@@ -1,88 +1,203 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 import { useI18n } from "@/lib/i18n";
+import { GSAP_EASE } from "@/lib/motion";
+
+if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger, useGSAP);
+
+type Line = { pre: string; strike: string; color: string };
 
 export default function Manifesto() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const m = t.manifesto;
+  const root = useRef<HTMLElement>(null);
 
-  const lines: { pre: string; strike: string; color: string }[] = [
+  const lines: Line[] = [
     { pre: m.line1, strike: m.strike1, color: "bg-magenta" },
     { pre: m.line2, strike: m.strike2, color: "bg-cyan" },
     { pre: m.line3, strike: m.strike3, color: "bg-violet" },
   ];
+  const ghost = locale === "it" ? "IBRIDO" : "HYBRID";
+
+  useGSAP(
+    () => {
+      const q = gsap.utils.selector(root);
+      const rows = q<HTMLElement>("[data-line]");
+      const strikes = q<HTMLElement>("[data-strike]");
+      const punch = q("[data-punch]");
+      const paras = q("[data-para]");
+      const ghostEl = q("[data-ghost]");
+
+      const mm = gsap.matchMedia();
+
+      // ---- Desktop: pinned scrub, line-by-line ----
+      mm.add(
+        "(min-width: 768px) and (prefers-reduced-motion: no-preference)",
+        () => {
+          // pre-hide (scoped to this matchMedia context, reverted on teardown)
+          gsap.set(rows, { opacity: 0.12, yPercent: 80 });
+          gsap.set(strikes, { scaleX: 0, transformOrigin: "0% 50%" });
+          gsap.set(punch, { opacity: 0, yPercent: 110, scale: 0.9 });
+          gsap.set(paras, { opacity: 0, y: 36 });
+
+          const tl = gsap.timeline({
+            defaults: { ease: "none" },
+            scrollTrigger: {
+              trigger: root.current,
+              start: "top top",
+              end: "+=2800",
+              scrub: 1,
+              pin: true,
+              anticipatePin: 1,
+              invalidateOnRefresh: true,
+            },
+          });
+
+          rows.forEach((rowEl, i) => {
+            tl.to(
+              rowEl,
+              { opacity: 1, yPercent: 0, duration: 0.6, ease: "back.out(1.4)" },
+              i * 1.1
+            ).to(
+              strikes[i],
+              { scaleX: 1, duration: 0.4, ease: "power3.inOut" },
+              i * 1.1 + 0.45
+            );
+          });
+
+          tl.to(
+            punch,
+            {
+              opacity: 1,
+              yPercent: 0,
+              scale: 1,
+              duration: 0.7,
+              ease: "back.out(1.7)",
+            },
+            ">-0.1"
+          )
+            .fromTo(
+              root.current,
+              { backgroundColor: "rgba(212,255,54,0)" },
+              {
+                backgroundColor: "rgba(212,255,54,0.06)",
+                duration: 0.15,
+                yoyo: true,
+                repeat: 1,
+              },
+              "<"
+            )
+            .to(
+              paras,
+              { opacity: 1, y: 0, stagger: 0.15, duration: 0.6, ease: GSAP_EASE },
+              ">-0.1"
+            );
+
+          tl.to(ghostEl, { xPercent: -30, ease: "none" }, 0);
+        }
+      );
+
+      // ---- Mobile / reduced: simple in-view reveals, no pin ----
+      mm.add(
+        "(max-width: 767px), (prefers-reduced-motion: reduce)",
+        () => {
+          const reduce = window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+          ).matches;
+          if (reduce) return;
+
+          rows.forEach((rowEl, i) => {
+            gsap.from(rowEl, {
+              opacity: 0,
+              y: 26,
+              duration: 0.6,
+              ease: GSAP_EASE,
+              scrollTrigger: { trigger: rowEl, start: "top 88%" },
+              delay: i * 0.04,
+            });
+          });
+          gsap.from(strikes, {
+            scaleX: 0,
+            transformOrigin: "0% 50%",
+            duration: 0.5,
+            ease: "power3.inOut",
+            scrollTrigger: { trigger: rows[0], start: "top 70%" },
+          });
+          gsap.from(punch, {
+            opacity: 0,
+            y: 30,
+            duration: 0.6,
+            ease: "back.out(1.6)",
+            scrollTrigger: { trigger: punch, start: "top 85%" },
+          });
+          gsap.from(paras, {
+            opacity: 0,
+            y: 24,
+            stagger: 0.1,
+            duration: 0.6,
+            ease: GSAP_EASE,
+            scrollTrigger: { trigger: paras[0], start: "top 88%" },
+          });
+        }
+      );
+
+      return () => mm.revert();
+    },
+    { scope: root }
+  );
 
   return (
     <section
+      ref={root}
       id="about"
-      className="relative border-t border-line px-5 py-28 md:px-10 md:py-40"
+      className="relative flex min-h-screen flex-col justify-center overflow-hidden border-t border-line px-5 py-28 md:px-10 md:py-40"
     >
-      <div className="mx-auto max-w-[1600px]">
+      <span
+        data-ghost
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-1/2 -translate-y-1/2 whitespace-nowrap font-display text-[28vw] leading-none text-fg/[0.03] md:text-[20vw]"
+      >
+        {ghost} {ghost}
+      </span>
+
+      <div className="relative mx-auto w-full max-w-[1600px]">
         <p className="section-label mb-12 md:mb-20">{m.label}</p>
 
         <div className="font-display text-4xl uppercase leading-[1.05] tracking-tight sm:text-5xl md:text-7xl">
           {lines.map((l, i) => (
-            <motion.p
-              key={i}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-15%" }}
-              variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } }}
-              transition={{ duration: 0.7, delay: i * 0.12, ease: [0.16, 1, 0.3, 1] }}
-              className="text-muted/60"
-            >
+            <p key={i} data-line className="text-muted/60">
               {l.pre}{" "}
-              <Strike color={l.color}>{l.strike}</Strike>
-            </motion.p>
+              <span className="relative inline-block text-fg">
+                {l.strike}
+                <span
+                  data-strike
+                  aria-hidden
+                  className={`absolute left-0 top-[55%] h-[0.09em] w-full origin-left -translate-y-1/2 ${l.color}`}
+                />
+              </span>
+            </p>
           ))}
-
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-15%" }}
-            transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-6 text-acid glow-acid md:mt-10"
-          >
+          <p data-punch className="mt-6 text-acid glow-acid md:mt-10">
             {m.punch}
-          </motion.p>
+          </p>
         </div>
 
         <div className="mt-16 grid gap-8 border-t border-line pt-12 md:mt-28 md:grid-cols-2 md:gap-16">
           {[m.p1, m.p2].map((p, i) => (
-            <motion.p
+            <p
               key={i}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: i * 0.1 }}
+              data-para
               className="max-w-xl font-sans text-lg leading-relaxed text-fg/80 md:text-xl"
             >
               {p}
-            </motion.p>
+            </p>
           ))}
         </div>
       </div>
     </section>
-  );
-}
-
-function Strike({
-  children,
-  color,
-}: {
-  children: React.ReactNode;
-  color: string;
-}) {
-  return (
-    <span className="relative inline-block text-fg">
-      {children}
-      <motion.span
-        aria-hidden
-        className={`absolute left-0 top-[55%] h-[0.09em] w-full origin-left -translate-y-1/2 ${color}`}
-        variants={{ hidden: { scaleX: 0 }, visible: { scaleX: 1 } }}
-        transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-      />
-    </span>
   );
 }

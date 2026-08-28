@@ -261,6 +261,111 @@ a {
 }
 
 /* ============================================================== *
+ *  SCROLL-DRIVEN MOTION LAYER
+ * ============================================================== */
+
+/* Top-of-page scroll progress bar */
+.scroll-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 2px;
+  z-index: 130;
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, var(--acid), var(--cyan) 55%, var(--magenta));
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* Route-change wipe panel */
+.page-wipe {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform;
+}
+.page-wipe__mark {
+  font-family: var(--font-anton), Impact, sans-serif;
+  text-transform: uppercase;
+  font-size: clamp(3rem, 12vw, 9rem);
+  line-height: 0.8;
+  color: var(--acid);
+}
+
+/* Pinned horizontal galleries */
+.h-pin {
+  height: 100svh;
+  overflow: hidden;
+}
+.h-track {
+  display: flex;
+  height: 100%;
+  will-change: transform;
+}
+.h-panel {
+  position: relative;
+  flex: 0 0 auto;
+  height: 100%;
+}
+
+/* Progress rail (horizontal section + timeline) */
+.rail {
+  position: relative;
+  height: 2px;
+  width: 100%;
+  background: var(--line);
+  overflow: hidden;
+}
+.rail__fill {
+  position: absolute;
+  inset: 0;
+  transform-origin: 0 50%;
+  background: var(--acid);
+  will-change: transform;
+}
+
+/* GSAP / scroll reveal base — content stays visible if JS never runs */
+[data-anim] {
+  will-change: transform, opacity;
+}
+
+/* Velocity-reactive marquee: JS writes --vskew on the skew wrapper.
+   The translate keyframes live on the inner .marquee-track, so skew and
+   scroll animation never fight over `transform`. */
+.marquee-skew {
+  display: block;
+  transform: skewX(var(--vskew, 0deg));
+  will-change: transform;
+}
+
+/* Char/word split helpers */
+.split-line {
+  display: block;
+  overflow: hidden;
+}
+
+@media (max-width: 900px) {
+  /* Pinned horizontal galleries collapse to normal flow on small screens */
+  .h-pin.h-pin--responsive {
+    height: auto;
+    overflow: visible;
+  }
+  .h-pin.h-pin--responsive .h-track {
+    flex-direction: column;
+    height: auto;
+    transform: none !important;
+  }
+  .h-pin.h-pin--responsive .h-panel {
+    flex-basis: auto;
+    height: auto;
+    width: 100% !important;
+  }
+}
+
+/* ============================================================== *
  *  REDUCED MOTION
  * ============================================================== */
 
@@ -274,4 +379,32 @@ a {
     scroll-behavior: auto !important;
   }
   .grain { display: none; }
+  .scroll-progress { display: none; }
+
+  /* Never hide content behind an animation that won't play */
+  [data-anim] {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+  .h-pin {
+    height: auto;
+    overflow: visible;
+  }
+  .h-track {
+    flex-direction: column;
+    height: auto;
+    transform: none !important;
+  }
+  .h-panel {
+    flex-basis: auto;
+    height: auto;
+    width: 100% !important;
+  }
+  .marquee-skew {
+    transform: none !important;
+  }
+  .marquee-track {
+    animation-duration: 40s !important;
+  }
 }

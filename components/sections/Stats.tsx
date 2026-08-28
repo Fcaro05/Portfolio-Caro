@@ -1,9 +1,15 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import {
+  motion,
+  useInView,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 import { useI18n } from "@/lib/i18n";
 import { stats, L } from "@/lib/content";
+import { EASE, usePrefersReducedMotion } from "@/lib/motion";
 
 function CountUp({ value }: { value: string }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -37,9 +43,19 @@ function CountUp({ value }: { value: string }) {
 
 export default function Stats() {
   const { t, locale } = useI18n();
+  const reduced = usePrefersReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+  const ghostY = useTransform(scrollYProgress, [0, 1], [60, -60]);
 
   return (
-    <section className="relative border-t border-line py-24 md:py-36">
+    <section
+      ref={sectionRef}
+      className="relative border-t border-line py-24 md:py-36"
+    >
       <div className="mx-auto max-w-[1600px] px-5 md:px-10">
         <div className="mb-14 flex flex-col gap-4 md:mb-20 md:flex-row md:items-end md:justify-between">
           <div>
@@ -57,18 +73,33 @@ export default function Stats() {
           {stats.map((s, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={reduced ? false : { opacity: 0, y: 30 }}
+              whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: i * 0.08 }}
-              className="flex flex-col gap-3 bg-bg p-7 md:p-10"
+              transition={{ duration: 0.6, delay: i * 0.08, ease: EASE }}
+              className="group relative flex flex-col gap-3 overflow-hidden bg-bg p-7 md:p-10"
             >
-              <span className="font-display text-6xl leading-none tracking-tight text-acid md:text-8xl">
+              {/* ghost digit */}
+              <motion.span
+                aria-hidden
+                style={reduced ? undefined : { y: ghostY }}
+                className="pointer-events-none absolute -right-2 -top-6 select-none font-display text-[9rem] leading-none text-transparent md:text-[12rem]"
+              >
+                <span
+                  style={{ WebkitTextStroke: "1.5px rgba(255,255,255,0.06)" }}
+                >
+                  {s.value.padStart(2, "0")}
+                </span>
+              </motion.span>
+
+              <span className="relative font-display text-6xl leading-none tracking-tight text-acid md:text-8xl">
                 <CountUp value={s.value} />
               </span>
-              <span className="font-sans text-sm leading-snug text-muted">
+              <span className="relative font-sans text-sm leading-snug text-muted">
                 {L(s.label, locale)}
               </span>
+
+              <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-acid transition-all duration-500 group-hover:w-full" />
             </motion.div>
           ))}
         </div>

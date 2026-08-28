@@ -2,6 +2,7 @@
 
 import { useI18n } from "@/lib/i18n";
 import { scrollToTarget } from "@/components/providers/SmoothScroll";
+import { MaskLines, Parallax } from "@/components/ui/Reveal";
 
 export default function Footer() {
   const { t } = useI18n();
@@ -39,11 +40,11 @@ export default function Footer() {
       </div>
 
       {/* Giant outline wordmark */}
-      <div className="select-none px-2 pb-4">
+      <Parallax speed={70} className="select-none overflow-hidden px-2 pb-4">
         <h2 className="text-stroke text-center font-display text-[19vw] leading-[0.78] tracking-tight opacity-70">
-          FRANCESCO CARO
+          <MaskLines lines={["FRANCESCO CARO"]} lineClassName="text-center" />
         </h2>
-      </div>
+      </Parallax>
     </footer>
   );
 }

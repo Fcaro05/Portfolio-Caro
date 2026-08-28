@@ -11,9 +11,13 @@ export default function Loader() {
 
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const finish = () => {
+      setDone(true);
+      window.dispatchEvent(new Event("fc:loader-done"));
+    };
     if (reduce) {
       setCount(100);
-      setDone(true);
+      finish();
       return;
     }
     const start = performance.now();
@@ -24,7 +28,7 @@ export default function Loader() {
       const eased = 1 - Math.pow(1 - p, 3);
       setCount(Math.round(eased * 100));
       if (p < 1) raf = requestAnimationFrame(tick);
-      else setTimeout(() => setDone(true), 200);
+      else setTimeout(finish, 200);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);

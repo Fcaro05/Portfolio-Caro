@@ -5,6 +5,8 @@ import { I18nProvider } from "@/lib/i18n";
 import SmoothScroll from "@/components/providers/SmoothScroll";
 import Cursor from "@/components/ui/Cursor";
 import Nav from "@/components/ui/Nav";
+import ScrollProgress from "@/components/ui/ScrollProgress";
+import Hud from "@/components/ui/Hud";
 
 const anton = Anton({
   weight: "400",
@@ -64,6 +66,8 @@ export default function RootLayout({
         <I18nProvider>
           <SmoothScroll>
             <Cursor />
+            <ScrollProgress />
+            <Hud />
             <div className="grain" aria-hidden />
             <Nav />
             {children}

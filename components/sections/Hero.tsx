@@ -2,11 +2,17 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 import { useI18n } from "@/lib/i18n";
 import { roleWordsHero } from "@/lib/content";
+import { usePrefersReducedMotion } from "@/lib/motion";
 import Marquee from "@/components/ui/Marquee";
 import { scrollToTarget } from "@/components/providers/SmoothScroll";
+
+if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const HeroCanvas = dynamic(() => import("@/components/three/HeroCanvas"), {
   ssr: false,
@@ -15,17 +21,13 @@ const HeroCanvas = dynamic(() => import("@/components/three/HeroCanvas"), {
 export default function Hero() {
   const { t, locale } = useI18n();
   const ref = useRef<HTMLElement>(null);
-  const [reduced, setReduced] = useState(false);
+  const bgRef = useRef<HTMLDivElement>(null);
+  const reduced = usePrefersReducedMotion();
   const [active, setActive] = useState(true);
   const [roleIdx, setRoleIdx] = useState(0);
 
   const roles = roleWordsHero[locale];
 
-  useEffect(() => {
-    setReduced(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
-  }, []);
-
-  // Pause the WebGL canvas while the hero is scrolled out of view (perf).
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
@@ -38,21 +40,95 @@ export default function Hero() {
   }, []);
 
   useEffect(() => {
-    const id = setInterval(
-      () => setRoleIdx((i) => (i + 1) % roles.length),
-      2000
-    );
+    const id = setInterval(() => setRoleIdx((i) => (i + 1) % roles.length), 2000);
     return () => clearInterval(id);
   }, [roles.length]);
 
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-  const y = useTransform(scrollYProgress, [0, 1], [0, -120]);
-  const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+  useGSAP(
+    () => {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-  const delayBase = reduced ? 0 : 1.5;
+      const q = gsap.utils.selector(ref);
+      const chars = q<HTMLElement>("[data-hero-char]");
+      const intro = q("[data-hero-eyebrow], [data-hero-blurb]");
+
+      // Entrance — plays immediately under the intro loader (z-300), which
+      // covers it for ~1.7s. No delay → nothing to leave half-applied.
+      const tin = gsap.timeline();
+      tin
+        .from(chars, {
+          yPercent: 120,
+          duration: 1.1,
+          ease: "expo.out",
+          stagger: 0.028,
+        })
+        .from(
+          intro,
+          {
+            autoAlpha: 0,
+            y: 22,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: "power2.out",
+          },
+          0.3
+        );
+
+      // Pinned dismantle — desktop only
+      const mm = gsap.matchMedia();
+      mm.add(
+        "(min-width: 768px) and (prefers-reduced-motion: no-preference)",
+        () => {
+          if (!bgRef.current) return;
+          const tl = gsap.timeline({
+            defaults: { ease: "none" },
+            scrollTrigger: {
+              trigger: ref.current,
+              start: "top top",
+              end: "+=150%",
+              scrub: 1,
+              pin: true,
+              anticipatePin: 1,
+              invalidateOnRefresh: true,
+            },
+          });
+
+          tl.fromTo(
+            bgRef.current,
+            { scale: 1, filter: "blur(0px)", opacity: 1 },
+            { scale: 1.5, filter: "blur(14px)", opacity: 0.32, ease: "power1.in" },
+            0
+          )
+            .to("[data-hero-eyebrow]", { autoAlpha: 0, yPercent: -120 }, 0)
+            .to("[data-hero-meta-tl]", { xPercent: -60, yPercent: -80, autoAlpha: 0 }, 0)
+            .to("[data-hero-meta-tr]", { xPercent: 60, yPercent: -80, autoAlpha: 0 }, 0)
+            .to("[data-hero-meta-bl]", { xPercent: -60, yPercent: 80, autoAlpha: 0 }, 0)
+            .to("[data-hero-meta-br]", { xPercent: 60, yPercent: 80, autoAlpha: 0 }, 0)
+            .to("[data-hero-cue]", { autoAlpha: 0 }, 0)
+            .to("[data-hero-blurb]", { autoAlpha: 0, yPercent: -60 }, 0.08)
+            .to("[data-hero-role]", { scale: 1.35, autoAlpha: 0 }, 0.22)
+            .set(q(".hero-line-mask"), { overflow: "visible" }, 0.29)
+            .to(
+              chars,
+              {
+                yPercent: () => gsap.utils.random(-300, -130),
+                xPercent: () => gsap.utils.random(-130, 130),
+                rotation: () => gsap.utils.random(-110, 110),
+                autoAlpha: 0,
+                ease: "power2.in",
+                stagger: { each: 0.015, from: "center" },
+              },
+              0.3
+            )
+            .to("[data-hero-marquee]", { xPercent: -18, autoAlpha: 0 }, 0.45)
+            .to(ref.current, { autoAlpha: 0 }, 0.9);
+        }
+      );
+
+      return () => mm.revert();
+    },
+    { scope: ref }
+  );
 
   return (
     <section
@@ -60,8 +136,7 @@ export default function Hero() {
       id="top"
       className="relative flex h-[100svh] min-h-[640px] w-full flex-col overflow-hidden"
     >
-      {/* WebGL background */}
-      <div className="absolute inset-0">
+      <div ref={bgRef} className="absolute inset-0 will-change-transform">
         {reduced ? (
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(212,255,54,0.12),transparent_55%),radial-gradient(circle_at_75%_60%,rgba(255,45,142,0.12),transparent_55%)] bg-bg" />
         ) : (
@@ -74,40 +149,38 @@ export default function Hero() {
       <div className="pointer-events-none absolute inset-0 z-10 hidden p-6 md:block">
         <div className="flex h-full flex-col justify-between">
           <div className="flex justify-between pt-16">
-            <span className="section-label">Milano · IT</span>
-            <span className="section-label">Portfolio © 2026</span>
+            <span data-hero-meta-tl className="section-label">
+              Milano · IT
+            </span>
+            <span data-hero-meta-tr className="section-label">
+              Portfolio © 2026
+            </span>
           </div>
           <div className="flex justify-between pb-24">
-            <span className="section-label">Lat 45.46 — Lng 9.19</span>
-            <span className="section-label">Est. 2021</span>
+            <span data-hero-meta-bl className="section-label">
+              Lat 45.46 — Lng 9.19
+            </span>
+            <span data-hero-meta-br className="section-label">
+              Est. 2021
+            </span>
           </div>
         </div>
       </div>
 
       {/* Foreground content */}
-      <motion.div
-        style={{ y, opacity }}
-        className="relative z-20 flex flex-1 flex-col justify-center px-5 md:px-10"
-      >
+      <div className="relative z-20 flex flex-1 flex-col justify-center px-5 md:px-10">
         <div className="mx-auto w-full max-w-[1600px]">
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: delayBase, duration: 0.8 }}
-            className="section-label mb-5 md:mb-8"
-          >
+          <p data-hero-eyebrow className="section-label mb-5 md:mb-8">
             {t.hero.eyebrow}
-          </motion.p>
+          </p>
 
           <h1 className="font-display text-fg">
-            <Line text="FRANCESCO" delay={delayBase + 0.1} />
-            <span className="flex flex-wrap items-baseline gap-x-[0.12em]">
-              <Line text="CARO" className="text-stroke-acid" delay={delayBase + 0.2} />
-            </span>
+            <SplitLine text="FRANCESCO" />
+            <SplitLine text="CARO" className="text-stroke-acid" />
           </h1>
 
           {/* Rotating role */}
-          <div className="mt-4 flex items-center gap-4 md:mt-6">
+          <div data-hero-role className="mt-4 flex items-center gap-4 md:mt-6">
             <span className="hidden h-[2px] w-16 bg-acid md:block" />
             <div className="relative h-[1.15em] overflow-hidden font-display text-2xl leading-none text-acid glow-acid sm:text-4xl md:text-5xl">
               <AnimatePresence mode="wait">
@@ -125,19 +198,20 @@ export default function Hero() {
             </div>
           </div>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: delayBase + 0.5, duration: 1 }}
+          <p
+            data-hero-blurb
             className="mt-8 max-w-xl font-sans text-base leading-relaxed text-muted md:text-lg"
           >
             {t.hero.blurb}
-          </motion.p>
+          </p>
         </div>
-      </motion.div>
+      </div>
 
       {/* Bottom marquee + scroll cue */}
-      <div className="relative z-20 border-t border-line bg-bg/40 backdrop-blur-sm">
+      <div
+        data-hero-marquee
+        className="relative z-20 border-t border-line bg-bg/40 backdrop-blur-sm"
+      >
         <Marquee
           className="py-3 font-display text-xl uppercase tracking-tight text-fg/90 md:text-2xl"
           items={[
@@ -154,6 +228,7 @@ export default function Hero() {
       </div>
 
       <button
+        data-hero-cue
         onClick={() => scrollToTarget("#about")}
         aria-label={t.hero.scroll}
         className="absolute bottom-24 left-1/2 z-20 hidden -translate-x-1/2 flex-col items-center gap-2 md:flex"
@@ -167,25 +242,25 @@ export default function Hero() {
   );
 }
 
-function Line({
-  text,
-  className,
-  delay = 0,
-}: {
-  text: string;
-  className?: string;
-  delay?: number;
-}) {
+/** Headline line split into per-char spans for GSAP to drive. */
+function SplitLine({ text, className }: { text: string; className?: string }) {
   return (
-    <span className="block overflow-hidden">
-      <motion.span
-        initial={{ y: "110%" }}
-        animate={{ y: 0 }}
-        transition={{ duration: 1, delay, ease: [0.16, 1, 0.3, 1] }}
-        className={`block text-[19vw] leading-[0.82] tracking-tight md:text-[15vw] ${className ?? ""}`}
+    <span className="hero-line-mask block overflow-hidden">
+      <span
+        className={`block text-[19vw] leading-[0.82] tracking-tight md:text-[15vw] ${
+          className ?? ""
+        }`}
       >
-        {text}
-      </motion.span>
+        {[...text].map((ch, i) => (
+          <span
+            key={i}
+            data-hero-char
+            className="inline-block will-change-transform"
+          >
+            {ch}
+          </span>
+        ))}
+      </span>
     </span>
   );
 }

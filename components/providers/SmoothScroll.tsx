@@ -38,7 +38,20 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
 
     (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
 
+    // ScrollTrigger measures pixel offsets up front; recalc once late-loading
+    // fonts, the WebGL canvas and the intro loader have settled the layout.
+    const refresh = () => ScrollTrigger.refresh();
+    const t1 = window.setTimeout(refresh, 300);
+    const t2 = window.setTimeout(refresh, 1600);
+    if (document.fonts?.ready) document.fonts.ready.then(refresh).catch(() => {});
+    window.addEventListener("load", refresh);
+    window.addEventListener("fc:loader-done", refresh);
+
     return () => {
+      window.clearTimeout(t1);
+      window.clearTimeout(t2);
+      window.removeEventListener("load", refresh);
+      window.removeEventListener("fc:loader-done", refresh);
       gsap.ticker.remove(onTick);
       lenis.destroy();
       lenisRef.current = null;
