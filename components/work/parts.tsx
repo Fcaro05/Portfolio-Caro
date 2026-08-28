@@ -97,11 +97,11 @@ export function VisitCard({ project, color }: { project: Project; color: string 
       data-cursor
       className="group flex items-center justify-between gap-4 rounded-2xl border border-line p-6 transition-colors hover:border-fg/40"
     >
-      <span>
+      <span className="min-w-0">
         <span className="block font-mono text-[0.7rem] uppercase tracking-[0.15em] text-muted">
           {t.project.visit}
         </span>
-        <span className="mt-1 block font-display text-lg uppercase tracking-tight md:text-xl">
+        <span className="mt-1 block break-words font-display text-lg uppercase tracking-tight md:text-xl">
           {project.href.replace(/^https?:\/\//, "").replace(/\/$/, "")}
         </span>
       </span>
@@ -142,7 +142,7 @@ export function Contributions({ project, color }: { project: Project; color: str
   return (
     <Reveal>
       <Kicker>{t.project.contributions}</Kicker>
-      <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+      <ul className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
         {LA(project.contributions, locale).map((c, i) => (
           <li
             key={i}

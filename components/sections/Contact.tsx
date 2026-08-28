@@ -47,7 +47,7 @@ export default function Contact() {
               href={`mailto:${contact.email}`}
               data-cursor
               aria-label={contact.email}
-              className="group mt-10 inline-flex flex-wrap font-display text-[8vw] uppercase leading-none tracking-tight text-fg transition-colors hover:text-acid md:text-[5vw]"
+              className="group mt-10 inline-flex flex-wrap font-display text-[6vw] uppercase leading-none tracking-tight text-fg transition-colors hover:text-acid md:text-[5vw]"
             >
               {[...contact.email].map((ch, i) => (
                 <span
