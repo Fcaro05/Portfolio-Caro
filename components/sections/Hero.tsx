@@ -74,99 +74,62 @@ export default function Hero() {
           0.3
         );
 
-      // Pinned dismantle — desktop only
+      // Pinned dismantle — every width (phones included). The hero locks
+      // while the wordmark blows apart and the WebGL backdrop defocuses.
       const mm = gsap.matchMedia();
-      mm.add(
-        "(min-width: 768px) and (prefers-reduced-motion: no-preference)",
-        () => {
-          if (!bgRef.current) return;
-          const tl = gsap.timeline({
-            defaults: { ease: "none" },
-            scrollTrigger: {
-              trigger: ref.current,
-              start: "top top",
-              end: "+=150%",
-              scrub: 1,
-              pin: true,
-              anticipatePin: 1,
-              invalidateOnRefresh: true,
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        if (!bgRef.current) return;
+        const mobile = window.innerWidth < 768;
+        const tl = gsap.timeline({
+          defaults: { ease: "none" },
+          scrollTrigger: {
+            trigger: ref.current,
+            start: "top top",
+            end: mobile ? "+=115%" : "+=150%",
+            scrub: mobile ? 0.4 : 1,
+            pin: true,
+            pinType: "fixed",
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        tl.fromTo(
+          bgRef.current,
+          { scale: 1, filter: "blur(0px)", opacity: 1 },
+          {
+            scale: mobile ? 1.35 : 1.5,
+            filter: `blur(${mobile ? 12 : 14}px)`,
+            opacity: 0.32,
+            ease: "power1.in",
+          },
+          0
+        )
+          .to("[data-hero-eyebrow]", { autoAlpha: 0, yPercent: -120 }, 0)
+          .to("[data-hero-meta-tl]", { xPercent: -60, yPercent: -80, autoAlpha: 0 }, 0)
+          .to("[data-hero-meta-tr]", { xPercent: 60, yPercent: -80, autoAlpha: 0 }, 0)
+          .to("[data-hero-meta-bl]", { xPercent: -60, yPercent: 80, autoAlpha: 0 }, 0)
+          .to("[data-hero-meta-br]", { xPercent: 60, yPercent: 80, autoAlpha: 0 }, 0)
+          .to("[data-hero-cue]", { autoAlpha: 0 }, 0)
+          .to("[data-hero-blurb]", { autoAlpha: 0, yPercent: -60 }, 0.08)
+          .to("[data-hero-role]", { scale: 1.3, autoAlpha: 0 }, 0.2)
+          .set(q(".hero-line-mask"), { overflow: "visible" }, 0.24)
+          .to(
+            chars,
+            {
+              yPercent: () => gsap.utils.random(-260, -120),
+              xPercent: () => gsap.utils.random(-160, 160),
+              rotation: () => gsap.utils.random(-120, 120),
+              scale: () => gsap.utils.random(0.4, 1.4),
+              autoAlpha: 0,
+              ease: "power2.in",
+              stagger: { each: mobile ? 0.02 : 0.015, from: "center" },
             },
-          });
-
-          tl.fromTo(
-            bgRef.current,
-            { scale: 1, filter: "blur(0px)", opacity: 1 },
-            { scale: 1.5, filter: "blur(14px)", opacity: 0.32, ease: "power1.in" },
-            0
+            0.25
           )
-            .to("[data-hero-eyebrow]", { autoAlpha: 0, yPercent: -120 }, 0)
-            .to("[data-hero-meta-tl]", { xPercent: -60, yPercent: -80, autoAlpha: 0 }, 0)
-            .to("[data-hero-meta-tr]", { xPercent: 60, yPercent: -80, autoAlpha: 0 }, 0)
-            .to("[data-hero-meta-bl]", { xPercent: -60, yPercent: 80, autoAlpha: 0 }, 0)
-            .to("[data-hero-meta-br]", { xPercent: 60, yPercent: 80, autoAlpha: 0 }, 0)
-            .to("[data-hero-cue]", { autoAlpha: 0 }, 0)
-            .to("[data-hero-blurb]", { autoAlpha: 0, yPercent: -60 }, 0.08)
-            .to("[data-hero-role]", { scale: 1.35, autoAlpha: 0 }, 0.22)
-            .set(q(".hero-line-mask"), { overflow: "visible" }, 0.29)
-            .to(
-              chars,
-              {
-                yPercent: () => gsap.utils.random(-300, -130),
-                xPercent: () => gsap.utils.random(-130, 130),
-                rotation: () => gsap.utils.random(-110, 110),
-                autoAlpha: 0,
-                ease: "power2.in",
-                stagger: { each: 0.015, from: "center" },
-              },
-              0.3
-            )
-            .to("[data-hero-marquee]", { xPercent: -18, autoAlpha: 0 }, 0.45)
-            .to(ref.current, { autoAlpha: 0 }, 0.9);
-        }
-      );
-
-      // Mobile dismantle — same idea, no pin: scrubbed over one screen of
-      // normal scroll as the hero leaves the viewport.
-      mm.add(
-        "(max-width: 767px) and (prefers-reduced-motion: no-preference)",
-        () => {
-          if (!bgRef.current) return;
-          const tl = gsap.timeline({
-            defaults: { ease: "none" },
-            scrollTrigger: {
-              trigger: ref.current,
-              start: "top top",
-              end: "bottom top",
-              scrub: 0.6,
-              invalidateOnRefresh: true,
-            },
-          });
-
-          tl.fromTo(
-            bgRef.current,
-            { scale: 1, filter: "blur(0px)", opacity: 1 },
-            { scale: 1.3, filter: "blur(10px)", opacity: 0.4 },
-            0
-          )
-            .to("[data-hero-eyebrow]", { autoAlpha: 0, yPercent: -80 }, 0)
-            .to("[data-hero-blurb]", { autoAlpha: 0, yPercent: -50 }, 0.05)
-            .to("[data-hero-role]", { autoAlpha: 0, scale: 1.2 }, 0.12)
-            .set(q(".hero-line-mask"), { overflow: "visible" }, 0.15)
-            .to(
-              chars,
-              {
-                yPercent: () => gsap.utils.random(-180, -70),
-                xPercent: () => gsap.utils.random(-90, 90),
-                rotation: () => gsap.utils.random(-70, 70),
-                autoAlpha: 0,
-                ease: "power2.in",
-                stagger: { each: 0.012, from: "center" },
-              },
-              0.16
-            )
-            .to("[data-hero-marquee]", { autoAlpha: 0, xPercent: -12 }, 0.3);
-        }
-      );
+          .to("[data-hero-marquee]", { xPercent: -18, autoAlpha: 0 }, 0.5)
+          .to(ref.current, { autoAlpha: 0 }, 0.92);
+      });
 
       return () => mm.revert();
     },

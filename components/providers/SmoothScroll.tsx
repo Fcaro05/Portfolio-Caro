@@ -8,6 +8,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
+  // Mobile browsers fire resize on every URL-bar show/hide; without this,
+  // pinned sections jump around on phones.
+  ScrollTrigger.config({ ignoreMobileResize: true });
 }
 
 /**
