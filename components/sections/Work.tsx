@@ -168,10 +168,10 @@ function FlagshipCard({ project }: { project: Project }) {
   return (
     <motion.div
       data-card
-      initial={{ opacity: 0, y: 60, clipPath: "inset(0 0 100% 0)" }}
-      whileInView={{ opacity: 1, y: 0, clipPath: "inset(0 0 0% 0)" }}
-      viewport={{ once: true, margin: "-10%" }}
-      transition={{ duration: 0.9, ease: EASE }}
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "0px 0px -8% 0px" }}
+      transition={{ duration: 0.8, ease: EASE }}
       className="grid gap-8 rounded-3xl border border-line bg-bg-soft p-6 md:grid-cols-2 md:gap-12 md:p-10"
     >
       {/* Left: content */}
@@ -284,10 +284,10 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
   return (
     <motion.div
       data-card
-      initial={{ opacity: 0, y: 60, clipPath: "inset(0 0 100% 0)" }}
-      whileInView={{ opacity: 1, y: 0, clipPath: "inset(0 0 0% 0)" }}
-      viewport={{ once: true, margin: "-10%" }}
-      transition={{ duration: 0.8, delay: (index % 2) * 0.1, ease: EASE }}
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "0px 0px -8% 0px" }}
+      transition={{ duration: 0.7, delay: (index % 2) * 0.08, ease: EASE }}
       className="flex flex-col overflow-hidden rounded-3xl border border-line bg-bg-soft p-5 md:p-7"
     >
       <div className="[perspective:1200px]">
