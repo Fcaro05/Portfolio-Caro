@@ -101,47 +101,55 @@ export default function Manifesto() {
         }
       );
 
-      // ---- Mobile / reduced: simple in-view reveals, no pin ----
+      // ---- Mobile: scrubbed line-by-line reveal, no pin ----
       mm.add(
-        "(max-width: 767px), (prefers-reduced-motion: reduce)",
+        "(max-width: 767px) and (prefers-reduced-motion: no-preference)",
         () => {
-          const reduce = window.matchMedia(
-            "(prefers-reduced-motion: reduce)"
-          ).matches;
-          if (reduce) return;
+          gsap.set(rows, { opacity: 0.12, yPercent: 45 });
+          gsap.set(strikes, { scaleX: 0, transformOrigin: "0% 50%" });
+          gsap.set(punch, { opacity: 0, yPercent: 60, scale: 0.92 });
+          gsap.set(paras, { opacity: 0, y: 26 });
+
+          const tl = gsap.timeline({
+            defaults: { ease: "none" },
+            scrollTrigger: {
+              trigger: root.current,
+              start: "top 78%",
+              end: "bottom 65%",
+              scrub: 1,
+              invalidateOnRefresh: true,
+            },
+          });
 
           rows.forEach((rowEl, i) => {
-            gsap.from(rowEl, {
-              opacity: 0,
-              y: 26,
+            tl.to(
+              rowEl,
+              { opacity: 1, yPercent: 0, duration: 0.5, ease: "back.out(1.3)" },
+              i * 0.9
+            ).to(
+              strikes[i],
+              { scaleX: 1, duration: 0.35, ease: "power3.inOut" },
+              i * 0.9 + 0.35
+            );
+          });
+
+          tl.to(
+            punch,
+            {
+              opacity: 1,
+              yPercent: 0,
+              scale: 1,
               duration: 0.6,
-              ease: GSAP_EASE,
-              scrollTrigger: { trigger: rowEl, start: "top 88%" },
-              delay: i * 0.04,
-            });
-          });
-          gsap.from(strikes, {
-            scaleX: 0,
-            transformOrigin: "0% 50%",
-            duration: 0.5,
-            ease: "power3.inOut",
-            scrollTrigger: { trigger: rows[0], start: "top 70%" },
-          });
-          gsap.from(punch, {
-            opacity: 0,
-            y: 30,
-            duration: 0.6,
-            ease: "back.out(1.6)",
-            scrollTrigger: { trigger: punch, start: "top 85%" },
-          });
-          gsap.from(paras, {
-            opacity: 0,
-            y: 24,
-            stagger: 0.1,
-            duration: 0.6,
-            ease: GSAP_EASE,
-            scrollTrigger: { trigger: paras[0], start: "top 88%" },
-          });
+              ease: "back.out(1.6)",
+            },
+            ">-0.1"
+          ).to(
+            paras,
+            { opacity: 1, y: 0, stagger: 0.12, duration: 0.5, ease: GSAP_EASE },
+            ">-0.1"
+          );
+
+          tl.to(ghostEl, { xPercent: -18, ease: "none" }, 0);
         }
       );
 

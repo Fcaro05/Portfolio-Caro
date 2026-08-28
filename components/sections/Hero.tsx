@@ -125,6 +125,49 @@ export default function Hero() {
         }
       );
 
+      // Mobile dismantle — same idea, no pin: scrubbed over one screen of
+      // normal scroll as the hero leaves the viewport.
+      mm.add(
+        "(max-width: 767px) and (prefers-reduced-motion: no-preference)",
+        () => {
+          if (!bgRef.current) return;
+          const tl = gsap.timeline({
+            defaults: { ease: "none" },
+            scrollTrigger: {
+              trigger: ref.current,
+              start: "top top",
+              end: "bottom top",
+              scrub: 0.6,
+              invalidateOnRefresh: true,
+            },
+          });
+
+          tl.fromTo(
+            bgRef.current,
+            { scale: 1, filter: "blur(0px)", opacity: 1 },
+            { scale: 1.3, filter: "blur(10px)", opacity: 0.4 },
+            0
+          )
+            .to("[data-hero-eyebrow]", { autoAlpha: 0, yPercent: -80 }, 0)
+            .to("[data-hero-blurb]", { autoAlpha: 0, yPercent: -50 }, 0.05)
+            .to("[data-hero-role]", { autoAlpha: 0, scale: 1.2 }, 0.12)
+            .set(q(".hero-line-mask"), { overflow: "visible" }, 0.15)
+            .to(
+              chars,
+              {
+                yPercent: () => gsap.utils.random(-180, -70),
+                xPercent: () => gsap.utils.random(-90, 90),
+                rotation: () => gsap.utils.random(-70, 70),
+                autoAlpha: 0,
+                ease: "power2.in",
+                stagger: { each: 0.012, from: "center" },
+              },
+              0.16
+            )
+            .to("[data-hero-marquee]", { autoAlpha: 0, xPercent: -12 }, 0.3);
+        }
+      );
+
       return () => mm.revert();
     },
     { scope: ref }
