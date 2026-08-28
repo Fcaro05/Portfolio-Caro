@@ -30,9 +30,8 @@ export default function Home() {
         <SectionCurtain num="05" color="acid">
           <Stats />
         </SectionCurtain>
-        <SectionCurtain num="06" color="magenta">
-          <Contact />
-        </SectionCurtain>
+        {/* Contact + Footer left exactly as production — no curtain wipe */}
+        <Contact />
       </main>
       <Footer />
     </>

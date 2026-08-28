@@ -4,13 +4,11 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { useI18n } from "@/lib/i18n";
 import { contact } from "@/lib/content";
-import { EASE, usePrefersReducedMotion } from "@/lib/motion";
 import Marquee from "@/components/ui/Marquee";
 import MagneticButton from "@/components/ui/MagneticButton";
 
 export default function Contact() {
   const { t } = useI18n();
-  const reduced = usePrefersReducedMotion();
   const [copied, setCopied] = useState(false);
 
   const copy = async () => {
@@ -43,35 +41,14 @@ export default function Contact() {
               {t.contact.lead}
             </p>
 
-            <a
+            <motion.a
               href={`mailto:${contact.email}`}
               data-cursor
-              aria-label={contact.email}
-              className="group mt-10 inline-flex flex-wrap font-display text-[6vw] uppercase leading-none tracking-tight text-fg transition-colors hover:text-acid md:text-[5vw]"
+              className="group mt-10 block font-display text-[6vw] uppercase leading-none tracking-tight text-fg transition-colors hover:text-acid md:text-[5vw]"
+              whileHover={{ x: 8 }}
             >
-              {[...contact.email].map((ch, i) => (
-                <span
-                  key={i}
-                  className="inline-block overflow-hidden align-bottom"
-                  aria-hidden
-                >
-                  <motion.span
-                    className="inline-block transition-transform duration-300 group-hover:-translate-y-[0.08em]"
-                    style={{ transitionDelay: `${i * 12}ms` }}
-                    initial={reduced ? false : { y: "110%" }}
-                    whileInView={reduced ? undefined : { y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{
-                      duration: 0.6,
-                      delay: i * 0.02,
-                      ease: EASE,
-                    }}
-                  >
-                    {ch === "@" ? "@" : ch}
-                  </motion.span>
-                </span>
-              ))}
-            </a>
+              <span className="hover-line whitespace-nowrap">{contact.email}</span>
+            </motion.a>
 
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <MagneticButton
