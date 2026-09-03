@@ -148,14 +148,14 @@ export default function Capabilities() {
           reverse
           className="font-display text-3xl uppercase tracking-tight text-fg/15 md:text-5xl"
           items={[
-            "Product",
-            "Marketing",
-            "Strategy",
-            "Code",
-            "Design",
-            "Growth",
             "AI",
-            "Business",
+            "LLM",
+            "RAG",
+            "Code",
+            "Growth",
+            "Marketing",
+            "Design",
+            "Product",
           ]}
         />
       </div>

@@ -221,14 +221,14 @@ export default function Hero() {
         <Marquee
           className="py-3 font-display text-xl uppercase tracking-tight text-fg/90 md:text-2xl"
           items={[
+            "AI",
+            "LLM Agents",
+            "RAG",
             "Healthtech",
-            "Product",
             "Growth Marketing",
             "Local SEO",
-            "AI",
             "Flutter",
             "Next.js",
-            "Strategy",
           ]}
         />
       </div>

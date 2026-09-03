@@ -41,8 +41,8 @@ export const projects: Project[] = [
     year: "2024",
     kind: { it: "Startup Healthtech", en: "Healthtech Startup" },
     role: {
-      it: "Co-founder · Product & Digital Ops",
-      en: "Co-founder · Product & Digital Ops",
+      it: "Co-founder · Prodotto, AI & Ops",
+      en: "Co-founder · Product, AI & Ops",
     },
     summary: {
       it: "Ecosistema hardware + software + AI per l'aderenza terapeutica.",
@@ -105,8 +105,85 @@ export const projects: Project[] = [
     },
   },
   {
-    id: "centro-medico",
+    id: "ai-lab",
     index: "02",
+    name: "AI Lab",
+    year: "2025 — 2026",
+    kind: { it: "Progetti AI personali", en: "Personal AI Projects" },
+    role: { it: "Design & Sviluppo", en: "Design & Development" },
+    summary: {
+      it: "Strumenti costruiti attorno agli LLM: agenti, automazioni e RAG.",
+      en: "Tools built around LLMs: agents, automations and RAG.",
+    },
+    description: {
+      it: "Progetti personali in cui gli LLM sono componenti di sistema, non demo: un assistente conversazionale che scrive su un CRM, una pipeline di lead generation con visione artificiale e l'architettura RAG dell'assistente sanitario di Salus AI.",
+      en: "Personal projects where LLMs are system components, not demos: a conversational assistant that writes to a CRM, a lead-generation pipeline with computer vision, and the RAG architecture behind Salus AI's health assistant.",
+    },
+    tags: [
+      "LLM",
+      "RAG",
+      "AI Agents",
+      "Prompt Engineering",
+      "Structured Output",
+      "Python",
+      "OpenAI",
+      "Gemini",
+      "Vector Search",
+    ],
+    href: "https://github.com/Fcaro05",
+    accent: "violet",
+    overview: {
+      it: "Fuori dai progetti su commissione ho costruito strumenti personali per capire come si integrano davvero i modelli linguistici in un software reale: output strutturato, orchestrazione di tool esterni, retrieval sui dati dell'utente, controllo di costi e fallimenti del modello.",
+      en: "Outside client work I built personal tools to understand how language models really fit into real software: structured output, external-tool orchestration, retrieval over user data, and control of cost and model failures.",
+    },
+    challenge: {
+      it: "Un LLM in un prototipo è facile. Un LLM dentro un sistema che deve restare prevedibile è un altro problema: risposte fuori schema, allucinazioni sui dati, latenza e costo per chiamata. Volevo lavorare esattamente lì.",
+      en: "An LLM in a prototype is easy. An LLM inside a system that must stay predictable is another matter: off-schema responses, hallucinations over data, latency and per-call cost. I wanted to work exactly there.",
+    },
+    approach: {
+      it: "Tre progetti, tre problemi diversi. Task Manager conversazionale: un bot Telegram che interpreta messaggi in linguaggio naturale con Gemini come router d'intento a output JSON forzato, poi cerca e scrive le entità corrette su sei database Notion collegati. Lead Scraper con visione: una pipeline Playwright che raccoglie attività locali dalle mappe, ne estrae i contatti e usa un modello vision-language (GPT-4o-mini) per giudicare se il sito è migliorabile, con un agente di follow-up via email a template. Assistente sanitario RAG (Salus AI): architettura retrieval-augmented con embedding dei documenti, vector search su Firestore e prompt vincolati a rispondere solo dai dati del paziente.",
+      en: "Three projects, three different problems. Conversational task manager: a Telegram bot that reads natural-language messages with Gemini as a forced-JSON intent router, then looks up and writes the right entities across six linked Notion databases. Lead scraper with vision: a Playwright pipeline that collects local businesses from maps, extracts their contacts and uses a vision-language model (GPT-4o-mini) to judge whether a site is improvable, with a templated email follow-up agent. RAG health assistant (Salus AI): a retrieval-augmented architecture with document embeddings, Firestore vector search and prompts constrained to answer only from the patient's data.",
+    },
+    contributions: {
+      it: [
+        "Intent routing con LLM e output strutturato (JSON forzato)",
+        "Orchestrazione di lookup e scrittura su sei database collegati",
+        "Pipeline di raccolta dati con Playwright e gestione dello stato",
+        "Classificazione dei siti con modello vision-language",
+        "Agente di outreach via email con template",
+        "Progettazione della pipeline embedding + vector search + prompt (RAG)",
+        "Regole di sicurezza sui dati sensibili nei prompt",
+        "Gestione di costi, errori del modello e risposte non conformi",
+      ],
+      en: [
+        "LLM intent routing with structured output (forced JSON)",
+        "Orchestration of lookups and writes across six linked databases",
+        "Data-collection pipeline with Playwright and state handling",
+        "Website classification with a vision-language model",
+        "Templated email outreach agent",
+        "Design of the embedding + vector search + prompt pipeline (RAG)",
+        "Safety rules for sensitive data in prompts",
+        "Handling of cost, model errors and off-schema responses",
+      ],
+    },
+    results: {
+      it: [
+        "Due strumenti funzionanti e usati in prima persona, uno progettato a livello di architettura",
+        "Padronanza pratica di structured output, tool use e RAG",
+        "Esperienza reale sui limiti degli LLM: schema, allucinazioni, costo, latenza",
+        "Codice Python e integrazioni API scritti da zero, non da template",
+      ],
+      en: [
+        "Two working tools used first-hand, one designed at architecture level",
+        "Hands-on command of structured output, tool use and RAG",
+        "Real experience with LLM limits: schema, hallucinations, cost, latency",
+        "Python code and API integrations written from scratch, not from templates",
+      ],
+    },
+  },
+  {
+    id: "centro-medico",
+    index: "03",
     name: "Centro Medico Ambrosiano",
     year: "2023",
     kind: { it: "Marketing Sanitario", en: "Healthcare Marketing" },
@@ -167,7 +244,7 @@ export const projects: Project[] = [
   },
   {
     id: "supermario24",
-    index: "03",
+    index: "04",
     name: "SuperMario24",
     year: "2022",
     kind: { it: "Portale Pronto Intervento", en: "Emergency Services Portal" },
@@ -228,7 +305,7 @@ export const projects: Project[] = [
   },
   {
     id: "azienda-multiservice",
-    index: "04",
+    index: "05",
     name: "AziendaMultiservice",
     year: "2021",
     kind: { it: "Hub Multiservizio", en: "Multi-service Hub" },
@@ -287,7 +364,7 @@ export const projects: Project[] = [
   },
   {
     id: "tesi-creativa",
-    index: "05",
+    index: "06",
     name: "Tesi Creativa",
     year: "2026",
     kind: { it: "Tesi interattiva", en: "Interactive Thesis" },
@@ -370,6 +447,206 @@ export const accentHex: Record<Project["accent"], string> = {
 };
 
 /* ------------------------------------------------------------------ *
+ * WORK — four category cards (flagship style) on the home page.
+ * Salus AI links to its deep case study; the other three link to
+ * intermediate hub pages that list their sub-projects.
+ * ------------------------------------------------------------------ */
+
+export type WorkCategory = {
+  id: string;
+  num: string;
+  name: string;
+  kind: LStr;
+  meta: LStr;
+  summary: LStr;
+  description: LStr;
+  tags: string[];
+  accent: Project["accent"];
+  href: string;
+  cta: LStr;
+};
+
+export const workCategories: WorkCategory[] = [
+  {
+    id: "salus-ai",
+    num: "01",
+    name: "Salus AI",
+    kind: { it: "Startup Healthtech", en: "Healthtech Startup" },
+    meta: { it: "Case study completo", en: "Full case study" },
+    summary: {
+      it: "Ecosistema hardware + software + AI per l'aderenza terapeutica.",
+      en: "A hardware + software + AI ecosystem for medication adherence.",
+    },
+    description: {
+      it: "La mia iniziativa imprenditoriale: med box smart con sensori, app Flutter, backend serverless su Firebase e un livello AI che legge referti e documenti sanitari. Prodotto, UX, AI e business.",
+      en: "My venture: a smart med box with sensors, a Flutter app, a serverless Firebase backend and an AI layer that reads medical reports and documents. Product, UX, AI and business.",
+    },
+    tags: ["Flutter", "Firebase", "Cloud Functions", "AI", "IoT", "Product"],
+    accent: "acid",
+    href: "/work/salus-ai",
+    cta: { it: "Apri il case study", en: "Open the case study" },
+  },
+  {
+    id: "dev",
+    num: "02",
+    name: "Dev",
+    kind: { it: "Siti & interfacce", en: "Sites & interfaces" },
+    meta: { it: "3 progetti", en: "3 projects" },
+    summary: {
+      it: "Codice che si vede: storytelling, 3D e architetture di contenuto.",
+      en: "Code you can see: storytelling, 3D and content architecture.",
+    },
+    description: {
+      it: "Progetti dove il focus è il come sono costruiti: una SPA React con scroll-storytelling e scene Three.js, e portali con architetture di contenuto serializzabili e funnel di conversione.",
+      en: "Projects where the focus is how they're built: a React SPA with scroll storytelling and Three.js scenes, and portals with serializable content architectures and conversion funnels.",
+    },
+    tags: ["Next.js / React", "Three.js", "GSAP", "Framer Motion", "WordPress", "Content Architecture"],
+    accent: "cyan",
+    href: "/work/dev",
+    cta: { it: "Esplora i progetti", en: "Explore the projects" },
+  },
+  {
+    id: "ai-lab",
+    num: "03",
+    name: "AI Lab",
+    kind: { it: "Progetti AI personali", en: "Personal AI projects" },
+    meta: { it: "3 progetti", en: "3 projects" },
+    summary: {
+      it: "Gli LLM come componenti di sistema: agenti, automazioni e RAG.",
+      en: "LLMs as system components: agents, automations and RAG.",
+    },
+    description: {
+      it: "Strumenti costruiti attorno ai modelli linguistici: un assistente conversazionale che scrive su un CRM, una pipeline di lead generation con visione artificiale e l'architettura RAG dell'assistente di Salus AI.",
+      en: "Tools built around language models: a conversational assistant that writes to a CRM, a lead-generation pipeline with computer vision, and the RAG architecture behind the Salus AI assistant.",
+    },
+    tags: ["LLM", "RAG", "AI Agents", "Prompt Engineering", "Python", "OpenAI", "Gemini"],
+    accent: "violet",
+    href: "/work/ai-lab",
+    cta: { it: "Esplora i progetti", en: "Explore the projects" },
+  },
+  {
+    id: "growth",
+    num: "04",
+    name: "Growth",
+    kind: { it: "Acquisizione & performance", en: "Acquisition & performance" },
+    meta: { it: "3 progetti", en: "3 projects" },
+    summary: {
+      it: "Traffico qualificato, lead e conversioni in contesti reali.",
+      en: "Qualified traffic, leads and conversions in real contexts.",
+    },
+    description: {
+      it: "Advertising su Meta e Google costruito sull'intento, SEO locale su matrici enormi di servizi e territori, creatività e funnel orientati alla conversione, leve commerciali e prova sociale.",
+      en: "Meta and Google advertising built on intent, local SEO across huge matrices of services and territories, conversion-focused creatives and funnels, commercial levers and social proof.",
+    },
+    tags: ["Meta Ads", "Google Ads", "SEO Locale", "Funnel", "CRO", "Copywriting"],
+    accent: "magenta",
+    href: "/work/growth",
+    cta: { it: "Esplora i progetti", en: "Explore the projects" },
+  },
+];
+
+/* ------------------------------------------------------------------ *
+ * WORK HUBS — intermediate pages listing sub-projects per category.
+ * ------------------------------------------------------------------ */
+
+export type HubEntry = {
+  name: string;
+  blurb: LStr;
+  href: string;
+  tags: string[];
+};
+
+export type WorkHub = {
+  id: string;
+  label: LStr;
+  title: LStr;
+  intro: LStr;
+  accent: Project["accent"];
+  entries: HubEntry[];
+};
+
+export const workHubs: Record<string, WorkHub> = {
+  dev: {
+    id: "dev",
+    label: { it: "Dev", en: "Dev" },
+    title: { it: "So programmare", en: "I can build" },
+    intro: {
+      it: "Progetti in cui conta il come sono fatti: architettura, interazione, performance. Gli stessi portali tornano nell'area Growth, raccontati dal lato acquisizione.",
+      en: "Projects where what matters is how they're made: architecture, interaction, performance. The same portals also appear under Growth, told from the acquisition side.",
+    },
+    accent: "cyan",
+    entries: [
+      {
+        name: "Tesi Creativa",
+        blurb: {
+          it: "SPA React/Vite con storytelling guidato dallo scroll: animazioni Framer Motion, scroll inerziale Lenis e scene 3D Three.js, incluso il modello esploso dello Smart Med Box. Circa 5.000 righe di sorgente.",
+          en: "A React/Vite SPA with scroll-driven storytelling: Framer Motion animation, Lenis inertial scroll and Three.js 3D scenes, including the exploded Smart Med Box model. Around 5,000 lines of source.",
+        },
+        href: "/work/tesi-creativa",
+        tags: ["React", "Vite", "Three.js", "GSAP", "Framer Motion"],
+      },
+      {
+        name: "SuperMario24",
+        blurb: {
+          it: "Architettura di contenuti serializzabile su servizio × provincia × comune, con template riusabili e coerenti su una matrice enorme di pagine, e funnel click-to-call.",
+          en: "A content architecture serializable across service × province × town, with reusable, coherent templates over a huge matrix of pages, and a click-to-call funnel.",
+        },
+        href: "/work/supermario24",
+        tags: ["Next.js", "Content Architecture", "Templating"],
+      },
+      {
+        name: "AziendaMultiservice",
+        blurb: {
+          it: "Hub con catalogo molto ampio, blocchi dinamici, widget recensioni collegati a Google via place_id ed embed social, tutto integrato nello stesso funnel.",
+          en: "A hub with a very broad catalog, dynamic blocks, Google-linked review widgets via place_id and social embeds, all wired into the same funnel.",
+        },
+        href: "/work/azienda-multiservice",
+        tags: ["WordPress", "CMS", "Dynamic Blocks"],
+      },
+    ],
+  },
+  growth: {
+    id: "growth",
+    label: { it: "Growth", en: "Growth" },
+    title: { it: "So far crescere", en: "I can grow it" },
+    intro: {
+      it: "Progetti in cui conta il risultato commerciale: traffico qualificato, lead, conversioni. I due portali tornano nell'area Dev, raccontati dal lato di come sono costruiti.",
+      en: "Projects where what matters is the commercial result: qualified traffic, leads, conversions. The two portals also appear under Dev, told from the build side.",
+    },
+    accent: "magenta",
+    entries: [
+      {
+        name: "Centro Medico Ambrosiano",
+        blurb: {
+          it: "Campagne Meta e Google costruite su target e intento di ricerca, SEO locale sulle pagine servizio, creatività che spiegano il beneficio in pochi secondi e CTA 'valutazione gratuita' per abbassare la barriera.",
+          en: "Meta and Google campaigns built on audience and search intent, local SEO on service pages, creatives that explain the benefit in seconds, and a 'free evaluation' CTA to lower the barrier.",
+        },
+        href: "/work/centro-medico",
+        tags: ["Meta Ads", "Google Ads", "SEO Locale", "Copywriting"],
+      },
+      {
+        name: "SuperMario24",
+        blurb: {
+          it: "Macchina di SEO locale: presidio di query informative, transazionali e geolocalizzate su una matrice enorme di servizi e territori, con funnel centrato su click-to-call e form.",
+          en: "A local-SEO machine: covering informational, transactional and geo queries across a huge matrix of services and territories, with a funnel centered on click-to-call and forms.",
+        },
+        href: "/work/supermario24",
+        tags: ["Local SEO", "Content Ops", "Funnel"],
+      },
+      {
+        name: "AziendaMultiservice",
+        blurb: {
+          it: "Leve commerciali esplicite — promo, finanziamento — e prova sociale via recensioni Google per abbassare l'attrito decisionale su un ventaglio vastissimo di query locali.",
+          en: "Explicit commercial levers — promos, financing — and social proof via Google reviews to lower decision friction across a vast range of local queries.",
+        },
+        href: "/work/azienda-multiservice",
+        tags: ["Local SEO", "CRO", "Reviews"],
+      },
+    ],
+  },
+};
+
+/* ------------------------------------------------------------------ *
  * CAPABILITIES — three pillars.
  * ------------------------------------------------------------------ */
 
@@ -384,30 +661,51 @@ export type Pillar = {
 
 export const pillars: Pillar[] = [
   {
-    id: "product",
+    id: "ai",
     num: "01",
-    title: { it: "Prodotto & Tech", en: "Product & Tech" },
+    title: { it: "AI Specialist", en: "AI Specialist" },
     blurb: {
-      it: "Dall'idea al prodotto funzionante: app, web, AI e hardware connesso.",
-      en: "From idea to working product: apps, web, AI and connected hardware.",
+      it: "Gli LLM come componenti di sistema: agenti, RAG, output strutturato e automazioni che reggono in produzione.",
+      en: "LLMs as system components: agents, RAG, structured output and automations that hold up in production.",
     },
     items: [
-      "Flutter",
-      "Firebase",
-      "Cloud Functions",
-      "Next.js / React",
-      "WordPress / CMS",
-      "AI Integration",
-      "IoT / Sensori",
-      "REST API",
-      "UX / Product",
+      "LLM Integration",
+      "RAG",
+      "AI Agents",
+      "Prompt Engineering",
+      "Structured Output",
+      "Embeddings & Vector Search",
+      "OpenAI API",
+      "Gemini API",
+      "Computer Vision",
     ],
     accent: "acid",
   },
   {
-    id: "growth",
+    id: "dev",
     num: "02",
-    title: { it: "Growth & Marketing", en: "Growth & Marketing" },
+    title: { it: "Sviluppo", en: "Development" },
+    blurb: {
+      it: "Dall'idea al prodotto funzionante: app mobile, web app e backend serverless.",
+      en: "From idea to working product: mobile apps, web apps and serverless backends.",
+    },
+    items: [
+      "Flutter",
+      "Next.js / React",
+      "Firebase",
+      "Cloud Functions",
+      "Python",
+      "REST API",
+      "WordPress / CMS",
+      "IoT / Sensori",
+      "UX",
+    ],
+    accent: "cyan",
+  },
+  {
+    id: "growth",
+    num: "03",
+    title: { it: "Growth", en: "Growth" },
     blurb: {
       it: "Traffico, lead e conversioni. Performance marketing end-to-end.",
       en: "Traffic, leads and conversions. End-to-end performance marketing.",
@@ -420,30 +718,9 @@ export const pillars: Pillar[] = [
       "Copywriting",
       "Content",
       "CRO",
-      "Branding",
       "Analytics",
     ],
     accent: "magenta",
-  },
-  {
-    id: "business",
-    num: "03",
-    title: { it: "Impresa & Strategia", en: "Business & Strategy" },
-    blurb: {
-      it: "Penso come un founder: mercato, modello di business e operations.",
-      en: "I think like a founder: market, business model and operations.",
-    },
-    items: [
-      "Business Model",
-      "Analisi di Mercato",
-      "Preventivi",
-      "CRM",
-      "Posizionamento",
-      "Operations",
-      "Pricing",
-      "Strategia",
-    ],
-    accent: "cyan",
   },
 ];
 
@@ -492,8 +769,8 @@ export const timeline: TimelineItem[] = [
 export type Stat = { value: string; label: LStr };
 
 export const stats: Stat[] = [
-  { value: "05", label: { it: "Progetti in vetrina", en: "Featured projects" } },
-  { value: "03", label: { it: "Ambiti: Prodotto · Growth · Web", en: "Domains: Product · Growth · Web" } },
+  { value: "06", label: { it: "Progetti in vetrina", en: "Featured projects" } },
+  { value: "03", label: { it: "Ambiti: AI · Sviluppo · Growth", en: "Domains: AI · Development · Growth" } },
   { value: "02", label: { it: "Lingue", en: "Languages" } },
   { value: "1", label: { it: "Startup costruita da zero", en: "Startup built from scratch" } },
 ];
@@ -511,6 +788,6 @@ export const contact = {
 };
 
 export const roleWordsHero = {
-  it: ["SVILUPPATORE", "MARKETER", "FOUNDER", "STRATEGA", "BUILDER"],
-  en: ["DEVELOPER", "MARKETER", "FOUNDER", "STRATEGIST", "BUILDER"],
+  it: ["AI SPECIALIST", "SVILUPPATORE", "BUILDER", "MARKETER", "FOUNDER"],
+  en: ["AI SPECIALIST", "DEVELOPER", "BUILDER", "MARKETER", "FOUNDER"],
 };

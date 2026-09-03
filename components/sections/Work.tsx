@@ -1,13 +1,13 @@
 "use client";
 
 import { useRef, useState } from "react";
-import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import Link from "next/link";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useI18n } from "@/lib/i18n";
-import { projects, L, type Project } from "@/lib/content";
+import { workCategories, L, type WorkCategory } from "@/lib/content";
 import { EASE } from "@/lib/motion";
 import MagneticButton from "@/components/ui/MagneticButton";
 
@@ -35,7 +35,7 @@ function useTilt() {
 
 const MotionLink = motion.create(Link);
 
-const cssVar: Record<Project["accent"], string> = {
+const cssVar: Record<WorkCategory["accent"], string> = {
   acid: "#d4ff36",
   magenta: "#ff2d8e",
   cyan: "#34e7e4",
@@ -56,8 +56,7 @@ const Arrow = ({ className = "" }: { className?: string }) => (
 export default function Work() {
   const { t } = useI18n();
   const root = useRef<HTMLElement>(null);
-  const [flagship, ...rest] = projects;
-  const total = projects.length;
+  const total = workCategories.length;
   const [active, setActive] = useState(1);
 
   useGSAP(
@@ -101,8 +100,7 @@ export default function Work() {
         );
 
         // Live counter in the header.
-        const counter = q<HTMLElement>("[data-card]");
-        counter.forEach((card, i) => {
+        q<HTMLElement>("[data-card]").forEach((card, i) => {
           ScrollTrigger.create({
             trigger: card,
             start: "top center",
@@ -139,30 +137,32 @@ export default function Work() {
             </h2>
           </div>
           <span className="hidden font-mono text-sm text-muted md:block">
-            <span className="text-acid">
-              {String(active).padStart(2, "0")}
-            </span>{" "}
-            / {String(total).padStart(2, "0")}
+            <span className="text-acid">{String(active).padStart(2, "0")}</span> /{" "}
+            {String(total).padStart(2, "0")}
           </span>
         </div>
 
-        <FlagshipCard project={flagship} />
-      </div>
-
-      <div className="relative mx-auto mt-8 grid max-w-[1600px] gap-8 px-5 md:mt-12 md:grid-cols-2 md:gap-10 md:px-10">
-        {rest.map((p, i) => (
-          <ProjectCard key={p.id} project={p} index={i} />
-        ))}
+        <div className="flex flex-col gap-8 md:gap-12">
+          {workCategories.map((c, i) => (
+            <CategoryCard key={c.id} category={c} index={i} />
+          ))}
+        </div>
       </div>
     </section>
   );
 }
 
-/* ----------------------------- Flagship ----------------------------- */
+/* --------------------------- Category card --------------------------- */
 
-function FlagshipCard({ project }: { project: Project }) {
-  const { t, locale } = useI18n();
-  const color = cssVar[project.accent];
+function CategoryCard({
+  category,
+  index,
+}: {
+  category: WorkCategory;
+  index: number;
+}) {
+  const { locale } = useI18n();
+  const color = cssVar[category.accent];
   const { rotateX, rotateY, onMove, reset } = useTilt();
 
   return (
@@ -171,7 +171,7 @@ function FlagshipCard({ project }: { project: Project }) {
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "0px 0px -8% 0px" }}
-      transition={{ duration: 0.8, ease: EASE }}
+      transition={{ duration: 0.8, delay: (index % 2) * 0.06, ease: EASE }}
       className="grid gap-8 rounded-3xl border border-line bg-bg-soft p-6 md:grid-cols-2 md:gap-12 md:p-10"
     >
       {/* Left: content */}
@@ -182,50 +182,47 @@ function FlagshipCard({ project }: { project: Project }) {
         viewport={{ once: true }}
         transition={{ duration: 0.7, delay: 0.15, ease: EASE }}
       >
-        <div className="mb-6 flex items-center gap-3">
+        <div className="mb-6 flex flex-wrap items-center gap-3">
           <span
             className="rounded-full px-3 py-1 font-mono text-[0.65rem] uppercase tracking-[0.15em] text-black"
             style={{ background: color }}
           >
-            {t.work.flagship}
+            {L(category.meta, locale)}
           </span>
-          <span className="section-label">{L(project.kind, locale)}</span>
+          <span className="section-label">{L(category.kind, locale)}</span>
         </div>
 
         <h3 className="font-display text-5xl uppercase leading-[0.9] tracking-tight md:text-7xl">
-          {project.name}
+          {category.name}
         </h3>
 
         <p
           className="mt-4 font-display text-xl uppercase tracking-tight md:text-2xl"
           style={{ color }}
         >
-          {L(project.summary, locale)}
+          {L(category.summary, locale)}
         </p>
 
         <p className="mt-6 max-w-xl font-sans text-base leading-relaxed text-muted">
-          {L(project.description, locale)}
+          {L(category.description, locale)}
         </p>
 
-        <div className="mt-8 grid grid-cols-2 gap-4 border-t border-line pt-6 font-mono text-xs">
-          <div>
-            <div className="mb-1 text-muted/60">{t.work.role}</div>
-            <div className="text-fg">{L(project.role, locale)}</div>
-          </div>
-          <div>
-            <div className="mb-1 text-muted/60">{t.work.stack}</div>
-            <div className="text-fg">{project.tags.slice(0, 4).join(" · ")}</div>
-          </div>
-        </div>
+        <ul className="mt-8 flex flex-wrap gap-2 border-t border-line pt-6">
+          {category.tags.map((tg) => (
+            <li key={tg} className="tag-chip">
+              {tg}
+            </li>
+          ))}
+        </ul>
 
         <div className="mt-8">
           <MagneticButton
             as="link"
-            href={`/work/${project.id}`}
-            ariaLabel={`${t.work.caseStudy} — ${project.name}`}
+            href={category.href}
+            ariaLabel={`${L(category.cta, locale)} — ${category.name}`}
             className="group inline-flex items-center gap-3 rounded-full border border-line px-6 py-3 font-mono text-sm uppercase tracking-[0.1em] transition-colors hover:bg-fg hover:text-black"
           >
-            {t.work.caseStudy}
+            {L(category.cta, locale)}
             <Arrow className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
           </MagneticButton>
         </div>
@@ -234,12 +231,13 @@ function FlagshipCard({ project }: { project: Project }) {
       {/* Right: tilt visual */}
       <div className="[perspective:1200px]">
         <MotionLink
-          href={`/work/${project.id}`}
+          href={category.href}
           onMouseMove={onMove}
           onMouseLeave={reset}
           style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
           data-cursor
           className="relative flex aspect-[4/3] w-full items-end justify-between overflow-hidden rounded-2xl border border-line p-6 md:aspect-auto md:h-full"
+          aria-label={`${L(category.cta, locale)} — ${category.name}`}
         >
           <div
             className="absolute inset-0"
@@ -253,10 +251,10 @@ function FlagshipCard({ project }: { project: Project }) {
             className="pointer-events-none absolute right-4 top-0 font-display text-[10rem] leading-none text-transparent will-change-transform md:text-[14rem]"
             style={{ WebkitTextStroke: `1.5px ${color}66` }}
           >
-            {project.index}
+            {category.num}
           </span>
           <div className="relative z-10 flex flex-wrap gap-2">
-            {project.tags.map((tg) => (
+            {category.tags.slice(0, 4).map((tg) => (
               <span key={tg} className="tag-chip border-white/20 text-fg/80">
                 {tg}
               </span>
@@ -269,90 +267,6 @@ function FlagshipCard({ project }: { project: Project }) {
             <Arrow className="h-5 w-5" />
           </div>
         </MotionLink>
-      </div>
-    </motion.div>
-  );
-}
-
-/* ----------------------------- Cards ----------------------------- */
-
-function ProjectCard({ project, index }: { project: Project; index: number }) {
-  const { t, locale } = useI18n();
-  const color = cssVar[project.accent];
-  const { rotateX, rotateY, onMove, reset } = useTilt();
-
-  return (
-    <motion.div
-      data-card
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "0px 0px -8% 0px" }}
-      transition={{ duration: 0.7, delay: (index % 2) * 0.08, ease: EASE }}
-      className="flex flex-col overflow-hidden rounded-3xl border border-line bg-bg-soft p-5 md:p-7"
-    >
-      <div className="[perspective:1200px]">
-        <MotionLink
-          href={`/work/${project.id}`}
-          onMouseMove={onMove}
-          onMouseLeave={reset}
-          style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-          data-cursor
-          className="relative flex aspect-[4/3] w-full items-end justify-between overflow-hidden rounded-2xl border border-line p-5"
-        >
-          <div
-            className="absolute inset-0"
-            style={{
-              background: `radial-gradient(circle at 28% 22%, ${color}33, transparent 55%), linear-gradient(150deg, ${color}1a, transparent 70%)`,
-            }}
-          />
-          <div className="bg-grid absolute inset-0 opacity-40" />
-          <span
-            data-idx
-            className="pointer-events-none absolute right-3 top-0 font-display text-[7rem] leading-none text-transparent will-change-transform md:text-[8.5rem]"
-            style={{ WebkitTextStroke: `1.5px ${color}66` }}
-          >
-            {project.index}
-          </span>
-          <div className="relative z-10 flex flex-wrap gap-2">
-            {project.tags.slice(0, 3).map((tg) => (
-              <span key={tg} className="tag-chip border-white/20 text-fg/80">
-                {tg}
-              </span>
-            ))}
-          </div>
-          <div
-            className="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-black"
-            style={{ background: color }}
-          >
-            <Arrow className="h-4 w-4" />
-          </div>
-        </MotionLink>
-      </div>
-
-      <div className="mt-6 flex flex-1 flex-col">
-        <div className="mb-3 flex items-center gap-3">
-          <span className="section-label">{L(project.kind, locale)}</span>
-        </div>
-
-        <h3 className="font-display text-3xl uppercase leading-[0.95] tracking-tight md:text-4xl">
-          {project.name}
-        </h3>
-
-        <p className="mt-3 font-sans text-sm leading-relaxed text-muted md:text-base">
-          {L(project.summary, locale)}
-        </p>
-
-        <div className="mt-6">
-          <MagneticButton
-            as="link"
-            href={`/work/${project.id}`}
-            ariaLabel={`${t.work.caseStudy} — ${project.name}`}
-            className="group inline-flex items-center gap-3 rounded-full border border-line px-5 py-2.5 font-mono text-xs uppercase tracking-[0.1em] transition-colors hover:bg-fg hover:text-black"
-          >
-            {t.work.caseStudy}
-            <Arrow className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-          </MagneticButton>
-        </div>
       </div>
     </motion.div>
   );
