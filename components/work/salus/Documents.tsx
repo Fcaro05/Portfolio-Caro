@@ -168,7 +168,7 @@ export default function Documents({ color }: { color: string }) {
                 />
               </button>
 
-              <div className="mt-4 flex gap-2 overflow-x-auto pb-2" data-lenis-prevent>
+              <div className="mt-4 flex gap-2 overflow-x-auto pb-2">
                 {Array.from({ length: doc.pages }, (_, i) => (
                   <button
                     key={i}
@@ -188,7 +188,7 @@ export default function Documents({ color }: { color: string }) {
                     <img
                       src={pageSrc(doc.folder, i)}
                       alt=""
-                      loading="lazy"
+                      loading="lazy" decoding="async"
                       width={portrait ? 1000 : 1280}
                       height={portrait ? 1415 : 720}
                       className="h-auto w-full"

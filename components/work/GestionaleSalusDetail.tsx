@@ -184,7 +184,7 @@ export default function GestionaleSalusDetail() {
           en: "The administrator creates operators and grants each one, module by module, read-only or edit access. The matrix below uses example values.",
         }}
       >
-        <div className="overflow-x-auto" data-lenis-prevent>
+        <div className="overflow-x-auto">
           <table className="w-full min-w-[420px] border-collapse text-left">
             <thead>
               <tr className="border-b border-line font-mono text-[0.65rem] uppercase tracking-[0.14em] text-muted">

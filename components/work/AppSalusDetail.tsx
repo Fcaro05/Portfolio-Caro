@@ -95,8 +95,8 @@ function HeroPhones() {
     <div className="relative mx-auto flex h-[340px] max-w-md items-center justify-center sm:h-[440px] lg:h-[560px]">
       <div
         aria-hidden
-        className="absolute inset-x-8 top-1/2 h-2/3 -translate-y-1/2 rounded-full blur-3xl"
-        style={{ background: `${color}33` }}
+        className="absolute inset-x-0 top-1/2 h-4/5 -translate-y-1/2"
+        style={{ background: `radial-gradient(closest-side, ${color}38, transparent)` }}
       />
       <motion.div
         initial={{ opacity: 0, y: 40, rotate: -9 }}
@@ -181,7 +181,7 @@ function FeatureSwipe({ num }: { num: string }) {
       <div ref={track} className="mt-10" style={{ height: `${100 + (N - 1) * 55}svh` }}>
         <div className="sticky top-0 flex h-[100svh] flex-col items-center justify-center gap-6 pb-6 pt-20">
           <div className="relative w-[170px] shrink-0">
-            <div aria-hidden className="absolute -inset-4 rounded-[2.5rem] blur-2xl" style={{ background: `${color}2a` }} />
+            <div aria-hidden className="absolute -inset-10" style={{ background: `radial-gradient(closest-side, ${color}30, transparent)` }} />
             <div className="relative aspect-[640/1424]">
               {appFeatures.map((f, i) => (
                 <div
@@ -237,7 +237,7 @@ function FeatureScroll({ num }: { num: string }) {
       <div className="col-span-5">
         <div className="sticky top-24">
           <div className="relative mx-auto w-[260px] lg:w-[300px]">
-            <div aria-hidden className="absolute -inset-6 rounded-[3rem] blur-3xl" style={{ background: `${color}22` }} />
+            <div aria-hidden className="absolute -inset-16" style={{ background: `radial-gradient(closest-side, ${color}28, transparent)` }} />
             <div className="relative aspect-[640/1424]">
               {appFeatures.map((f, i) => (
                 <div

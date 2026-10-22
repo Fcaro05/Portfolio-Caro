@@ -28,7 +28,7 @@ export function BrowserFrame({
         </span>
       </div>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={src} alt={alt} loading="lazy" width={1280} height={800} className="block h-auto w-full" />
+      <img src={src} alt={alt} loading="lazy" decoding="async" width={1280} height={800} className="block h-auto w-full" />
     </figure>
   );
 }
@@ -50,7 +50,7 @@ export function PhoneFrame({
   return (
     <figure className={`overflow-hidden rounded-[2rem] border-4 border-fg/15 bg-bg-soft ${className}`}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={src} alt={alt} loading="lazy" width={w} height={h} className="block h-auto w-full" />
+      <img src={src} alt={alt} loading="lazy" decoding="async" width={w} height={h} className="block h-auto w-full" />
     </figure>
   );
 }

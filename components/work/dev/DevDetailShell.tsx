@@ -23,6 +23,9 @@ export default function DevDetailShell({
   title,
   badge,
   visual,
+  backToDev = true,
+  showStory = true,
+  compactMobile = false,
   children,
 }: {
   slug: string;
@@ -30,6 +33,12 @@ export default function DevDetailShell({
   badge: string;
   /** Immagini a destra della hero (da lg in su; sotto il testo su mobile). */
   visual?: React.ReactNode;
+  /** false = il link torna ai lavori della home invece che all'area Dev. */
+  backToDev?: boolean;
+  /** false = niente blocco «sfida e approccio» (la pagina racconta già tutto nei suoi casi). */
+  showStory?: boolean;
+  /** true = su mobile niente elenco «Cosa ho fatto» e meno spazio: serve a pagine già molto lunghe. */
+  compactMobile?: boolean;
   children: React.ReactNode;
 }) {
   const { t, locale } = useI18n();
@@ -48,7 +57,7 @@ export default function DevDetailShell({
         <div className="bg-grid absolute inset-0 opacity-25" aria-hidden />
 
         <div className="relative mx-auto max-w-[1400px]">
-          <BackLink dev />
+          <BackLink dev={backToDev} />
           <div
             className={visual ? "grid items-center gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-6" : undefined}
           >
@@ -84,13 +93,15 @@ export default function DevDetailShell({
 
       {children}
 
+      {showStory && (
       <section className="mx-auto grid max-w-[1400px] gap-12 border-t border-line px-5 py-16 md:grid-cols-2 md:gap-16 md:px-10 md:py-24">
         <Prose label={t.project.challenge} text={L(project.challenge, locale)} accent={color} />
         <Prose label={t.project.approach} text={L(project.approach, locale)} />
       </section>
+      )}
 
-      <section className="mx-auto grid max-w-[1400px] grid-cols-1 gap-12 border-t border-line px-5 py-16 md:grid-cols-12 md:gap-16 md:px-10 md:py-24">
-        <div className="min-w-0 md:col-span-7">
+      <section className={`mx-auto grid max-w-[1400px] grid-cols-1 border-t border-line px-5 md:grid-cols-12 md:gap-16 md:px-10 md:py-24 ${compactMobile ? "gap-8 py-10" : "gap-12 py-16"}`}>
+        <div className={`min-w-0 md:col-span-7 ${compactMobile ? "hidden md:block" : ""}`}>
           <Contributions project={project} color={color} />
         </div>
         <aside className="flex min-w-0 flex-col gap-12 md:col-span-5 md:pl-10">
