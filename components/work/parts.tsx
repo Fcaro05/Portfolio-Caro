@@ -31,14 +31,14 @@ export const Arrow = ({
   </svg>
 );
 
-export function BackLink() {
-  const { t } = useI18n();
+export function BackLink({ dev }: { dev?: boolean }) {
+  const { t, locale } = useI18n();
   return (
     <Link
-      href="/#work"
+      href={dev ? "/work/dev" : "/#work"}
       className="hover-line inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.18em] text-muted transition-colors hover:text-fg"
     >
-      ← {t.project.back}
+      ← {dev ? (locale === "it" ? "Area Dev" : "Dev area") : t.project.back}
     </Link>
   );
 }
@@ -72,6 +72,7 @@ export function VisitButton({
   textColor?: string;
 }) {
   const { t } = useI18n();
+  if (!project.href) return null;
   return (
     <a
       href={project.href}
@@ -89,6 +90,7 @@ export function VisitButton({
 
 export function VisitCard({ project, color }: { project: Project; color: string }) {
   const { t } = useI18n();
+  if (!project.href) return null;
   return (
     <a
       href={project.href}
@@ -234,7 +236,11 @@ export function HeaderMeta({
 }) {
   const { t, locale } = useI18n();
   return (
-    <div className="mt-12 grid gap-6 border-t border-line pt-8 md:grid-cols-[1fr_1fr_1fr_auto] md:items-end md:gap-10">
+    <div
+      className={`mt-12 grid gap-6 border-t border-line pt-8 md:items-end md:gap-10 ${
+        project.href ? "md:grid-cols-[1fr_1fr_1fr_auto]" : "md:grid-cols-3"
+      }`}
+    >
       <Meta label={t.project.role} value={L(project.role, locale)} />
       <Meta label={t.project.year} value={project.year} />
       <Meta label={t.project.type} value={L(project.kind, locale)} />

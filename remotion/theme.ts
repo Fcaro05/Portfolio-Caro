@@ -64,14 +64,6 @@ export const REEL_PROJECTS: ReelProject[] = [
     accent: "violet",
     tags: ["WordPress", "Reviews", "Conversion"],
   },
-  {
-    index: "05",
-    name: "Tesi Creativa",
-    kind: "Interactive Thesis",
-    role: "Concept · Direction · Dev",
-    accent: "acid",
-    tags: ["Creative Direction", "UX/UI", "WebGL"],
-  },
 ];
 
 export const REEL = {

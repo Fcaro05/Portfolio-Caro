@@ -4,7 +4,8 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { useI18n } from "@/lib/i18n";
 import { workHubs, accentHex, L, type WorkHub as Hub } from "@/lib/content";
-import { BackLink, Kicker, HeroIn, Prose } from "./parts";
+import { BackLink, Kicker, HeroIn } from "./parts";
+import DevHubView from "./dev/DevHubView";
 
 function HubView({ hub }: { hub: Hub }) {
   const { t, locale } = useI18n();
@@ -121,7 +122,7 @@ function HubView({ hub }: { hub: Hub }) {
 }
 
 export function DevHub() {
-  return <HubView hub={workHubs.dev} />;
+  return <DevHubView />;
 }
 
 export function GrowthHub() {

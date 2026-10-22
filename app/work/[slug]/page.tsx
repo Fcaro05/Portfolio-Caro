@@ -8,7 +8,9 @@ import AiLabDetail from "@/components/work/AiLabDetail";
 import CentroMedicoDetail from "@/components/work/CentroMedicoDetail";
 import SuperMario24Detail from "@/components/work/SuperMario24Detail";
 import AziendaMultiserviceDetail from "@/components/work/AziendaMultiserviceDetail";
-import TesiCreativaDetail from "@/components/work/TesiCreativaDetail";
+import SitoSalusDetail from "@/components/work/SitoSalusDetail";
+import GestionaleSalusDetail from "@/components/work/GestionaleSalusDetail";
+import AppSalusDetail from "@/components/work/AppSalusDetail";
 import { DevHub, GrowthHub } from "@/components/work/WorkHub";
 
 const registry: Record<string, ComponentType> = {
@@ -17,7 +19,9 @@ const registry: Record<string, ComponentType> = {
   "centro-medico": CentroMedicoDetail,
   supermario24: SuperMario24Detail,
   "azienda-multiservice": AziendaMultiserviceDetail,
-  "tesi-creativa": TesiCreativaDetail,
+  "sito-salus": SitoSalusDetail,
+  "gestionale-salus": GestionaleSalusDetail,
+  "app-salus": AppSalusDetail,
   dev: DevHub,
   growth: GrowthHub,
 };

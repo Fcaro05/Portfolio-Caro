@@ -1,14 +1,14 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { useI18n } from "@/lib/i18n";
 import { getProject, accentHex, L } from "@/lib/content";
+import Reveal from "@/components/ui/Reveal";
 import {
   BackLink,
   Kicker,
-  HeaderMeta,
+  Meta,
+  VisitButton,
   HeroIn,
-  Prose,
   Contributions,
   Results,
   StackList,
@@ -16,6 +16,12 @@ import {
   NextProject,
 } from "./parts";
 import MedBoxReveal from "./MedBoxReveal";
+import ModelFlow from "./salus/ModelFlow";
+import Chronicle from "./salus/Chronicle";
+import Products from "./salus/Products";
+import Domains from "./salus/Domains";
+import Economics from "./salus/Economics";
+import Documents from "./salus/Documents";
 
 const color = accentHex.acid;
 
@@ -23,11 +29,21 @@ export default function SalusAIDetail() {
   const { t, locale } = useI18n();
   const project = getProject("salus-ai");
   if (!project) return null;
+  const it = locale === "it";
+
+  const facts: { label: string; value: string }[] = [
+    { label: it ? "Costituita" : "Founded", value: it ? "5 settembre 2025" : "5 September 2025" },
+    { label: it ? "Sede" : "Based in", value: "Vergiate (VA)" },
+    { label: it ? "Status" : "Status", value: it ? "Startup innovativa" : "Innovative startup" },
+    { label: it ? "Team operativo" : "Operating team", value: it ? "2 co-founder" : "2 co-founders" },
+    { label: it ? "Prodotti" : "Products", value: it ? "3, a stadi diversi" : "3, at different stages" },
+    { label: it ? "Capitale esterno" : "Outside capital", value: it ? "Nessuno" : "None" },
+  ];
 
   return (
     <article className="relative">
-      {/* HERO — split: text + med box */}
-      <header className="relative overflow-hidden border-b border-line px-5 pb-16 pt-28 md:px-10 md:pb-24 md:pt-44">
+      {/* HERO */}
+      <header className="relative flex min-h-[100svh] flex-col overflow-hidden border-b border-line px-5 pb-10 pt-28 md:px-10 md:pb-12 md:pt-32">
         <div
           aria-hidden
           className="absolute inset-0"
@@ -35,10 +51,10 @@ export default function SalusAIDetail() {
         />
         <div className="bg-grid absolute inset-0 opacity-25" aria-hidden />
 
-        <div className="relative mx-auto max-w-[1400px]">
+        <div className="relative mx-auto flex w-full max-w-[1400px] flex-1 flex-col">
           <BackLink />
-          <HeroIn>
-            <div className="mt-10 mb-5 flex flex-wrap items-center gap-3">
+          <HeroIn className="my-10 md:my-auto md:py-8">
+            <div className="mb-5 flex flex-wrap items-center gap-3">
               <span
                 className="rounded-full px-3 py-1 font-mono text-[0.65rem] uppercase tracking-[0.15em] text-black"
                 style={{ background: color }}
@@ -50,52 +66,59 @@ export default function SalusAIDetail() {
               </span>
               <span className="section-label">{L(project.kind, locale)}</span>
             </div>
-            <h1 className="font-display text-[16vw] uppercase leading-[0.82] tracking-tight sm:text-[12vw] lg:text-[8vw]">
-              Salus<br />AI
-            </h1>
-            <p
-              className="mt-5 max-w-2xl font-display text-2xl uppercase leading-tight tracking-tight md:text-3xl"
-              style={{ color }}
-            >
-              {L(project.summary, locale)}
-            </p>
+            <div className="grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:items-end lg:gap-14">
+              <div>
+                <h1 className="font-display text-[16vw] uppercase leading-[0.82] tracking-tight sm:text-[12vw] lg:text-[8vw]">
+                  Salus<br />AI
+                </h1>
+                <p
+                  className="mt-5 max-w-3xl font-display text-2xl uppercase leading-tight tracking-tight md:text-3xl"
+                  style={{ color }}
+                >
+                  {L(project.summary, locale)}
+                </p>
+              </div>
+              <div>
+                <VisitButton project={project} color={color} textColor="#111508" />
+                <p className="mt-6 max-w-xl font-sans text-lg leading-relaxed text-fg/80">
+                  {L(project.overview, locale)}
+                </p>
+              </div>
+            </div>
           </HeroIn>
 
-          <HeaderMeta project={project} color={color} textColor="#111508" />
+          <div className="mt-auto grid grid-cols-2 gap-6 border-t border-line pt-8 md:grid-cols-3 lg:grid-cols-6">
+            {facts.map((f) => (
+              <Meta key={f.label} label={f.label} value={f.value} />
+            ))}
+          </div>
         </div>
       </header>
 
+      <ModelFlow color={color} />
+      <Chronicle color={color} />
+      <Products color={color} />
+
       {/* SIGNATURE: scroll-driven exploded Smart Med Box */}
-      <MedBoxReveal color={color} />
-
-      {/* OVERVIEW */}
-      <section className="mx-auto max-w-[1400px] px-5 py-16 md:px-10 md:py-20">
-        <Prose label={t.project.overview} text={L(project.overview, locale)} />
-      </section>
-
-      {/* SIGNATURE: ecosystem */}
-      <section className="border-y border-line bg-bg-soft px-5 py-16 md:px-10 md:py-24">
-        <div className="mx-auto max-w-[1400px]">
-          <Kicker>{locale === "it" ? "L'ecosistema" : "The ecosystem"}</Kicker>
-          <Ecosystem locale={locale} />
+      <section id="med-box" className="scroll-mt-0 border-t border-line">
+        <div className="mx-auto max-w-[1400px] px-5 pb-10 pt-16 md:px-10 md:pt-24">
+          <Reveal>
+            <Kicker>{it ? "Smart Med Box, scomposto" : "Smart Med Box, taken apart"}</Kicker>
+            <p className="mt-5 max-w-2xl font-sans text-lg leading-relaxed text-fg/80 md:text-xl">
+              {it
+                ? "Il prodotto che i servizi stanno finanziando. Scorri per aprirlo pezzo per pezzo."
+                : "The product the services are funding. Scroll to open it up piece by piece."}
+            </p>
+          </Reveal>
         </div>
+        <MedBoxReveal color={color} />
       </section>
 
-      {/* CHALLENGE + APPROACH */}
-      <section className="mx-auto grid max-w-[1400px] gap-12 px-5 py-16 md:grid-cols-2 md:gap-16 md:px-10 md:py-24">
-        <Prose label={t.project.challenge} text={L(project.challenge, locale)} accent={color} />
-        <Prose label={t.project.approach} text={L(project.approach, locale)} />
-      </section>
+      <Domains color={color} />
+      <Economics color={color} />
+      <Documents color={color} />
 
-      {/* SIGNATURE: intake flow */}
-      <section className="border-t border-line px-5 py-16 md:px-10 md:py-24">
-        <div className="mx-auto max-w-[1400px]">
-          <Kicker>{locale === "it" ? "Come funziona" : "How it works"}</Kicker>
-          <IntakeFlow locale={locale} />
-        </div>
-      </section>
-
-      {/* CONTRIBUTIONS + ASIDE */}
+      {/* IL MIO RUOLO */}
       <section className="mx-auto grid max-w-[1400px] grid-cols-1 gap-12 border-t border-line px-5 py-16 md:grid-cols-12 md:gap-16 md:px-10 md:py-24">
         <div className="min-w-0 md:col-span-7">
           <Contributions project={project} color={color} />
@@ -109,90 +132,5 @@ export default function SalusAIDetail() {
 
       <NextProject slug="salus-ai" />
     </article>
-  );
-}
-
-/* --------------------------- Ecosystem diagram --------------------------- */
-
-function Ecosystem({ locale }: { locale: "it" | "en" }) {
-  const nodes = [
-    {
-      t: { it: "Med Box", en: "Med Box" },
-      c: { it: "Hardware + sensori di peso", en: "Hardware + weight sensors" },
-    },
-    {
-      t: { it: "App Flutter", en: "Flutter App" },
-      c: { it: "Terapie, promemoria, documenti", en: "Therapies, reminders, documents" },
-    },
-    {
-      t: { it: "Cloud + AI", en: "Cloud + AI" },
-      c: { it: "Firebase · analisi referti", en: "Firebase · report analysis" },
-    },
-    {
-      t: { it: "Insights", en: "Insights" },
-      c: { it: "Storico · caregiver · medico", en: "History · caregiver · doctor" },
-    },
-  ];
-  return (
-    <div className="mt-8 grid gap-4 md:grid-cols-7 md:items-stretch">
-      {nodes.map((n, i) => (
-        <div key={i} className="contents">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.12, duration: 0.6 }}
-            className="flex flex-col gap-2 rounded-2xl border border-line bg-bg p-6 md:col-span-2"
-          >
-            <span className="font-mono text-xs" style={{ color }}>
-              0{i + 1}
-            </span>
-            <span className="font-display text-2xl uppercase leading-none tracking-tight">
-              {n.t[locale]}
-            </span>
-            <span className="font-sans text-sm text-muted">{n.c[locale]}</span>
-          </motion.div>
-          {i < nodes.length - 1 && (
-            <div className="hidden items-center justify-center md:flex">
-              <span className="font-display text-2xl" style={{ color }}>
-                →
-              </span>
-            </div>
-          )}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-/* --------------------------- Intake flow --------------------------- */
-
-function IntakeFlow({ locale }: { locale: "it" | "en" }) {
-  const steps: { it: string; en: string }[] = [
-    { it: "Carichi la terapia nell'app", en: "Load the therapy in the app" },
-    { it: "Inserisci i farmaci negli scompartimenti", en: "Place meds in the compartments" },
-    { it: "L'app ricorda quando assumere", en: "The app reminds you when to take them" },
-    { it: "I sensori rilevano la variazione di peso", en: "Sensors detect the weight change" },
-    { it: "Il sistema registra: assunto / mancato / dubbio", en: "The system logs: taken / missed / unsure" },
-    { it: "L'AI analizza dati e documenti sanitari", en: "AI analyzes health data and documents" },
-  ];
-  return (
-    <div className="mt-8 grid gap-px overflow-hidden rounded-2xl border border-line bg-line md:grid-cols-3">
-      {steps.map((s, i) => (
-        <motion.div
-          key={i}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: i * 0.08 }}
-          className="flex items-start gap-4 bg-bg p-6"
-        >
-          <span className="font-display text-3xl leading-none" style={{ color }}>
-            {String(i + 1).padStart(2, "0")}
-          </span>
-          <span className="font-sans text-base leading-snug text-fg/85">{s[locale]}</span>
-        </motion.div>
-      ))}
-    </div>
   );
 }

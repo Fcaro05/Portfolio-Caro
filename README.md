@@ -49,7 +49,6 @@ Quasi tutto e' in **`lib/content.ts`** e **`lib/i18n.tsx`**.
 2. **Email** — `lib/content.ts` -> `contact.email` (ora `fcaro.personale@gmail.com`).
 3. **Formazione** — `lib/content.ts` -> `timeline` (voce `edu`): titolo di studio, scuola/universita', anni.
 4. **Ruoli reali** — `lib/content.ts` -> `projects[].role` e `timeline[].role`.
-5. **Tesi Creativa** — `lib/content.ts` -> progetto `tesi-creativa`: descrizione reale.
 6. **Date progetti** — `projects[].year` se vuoi precisarle.
 
 Ogni progetto ha la sua pagina dettaglio in `/work/[slug]`: i contenuti del case study
