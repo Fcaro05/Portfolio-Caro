@@ -14,7 +14,7 @@ export default function SitoSalusDetail() {
   const it = locale === "it";
 
   return (
-    <DevDetailShell slug="sito-salus" badge="06" title={<>Sito web<br />Salus</>}>
+    <DevDetailShell slug="sito-salus" badge="04" title={<>Sito web<br />Salus</>}>
       {/* SCHERMATE */}
       <DevSection
         id="schermate"

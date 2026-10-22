@@ -4,7 +4,8 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { useI18n } from "@/lib/i18n";
 import { accentHex } from "@/lib/content";
-import { BackLink, HeroIn, Meta } from "../parts";
+import { BackLink, HeroIn, Meta, NextProject, SeeAlso } from "../parts";
+import { seeAlso as links } from "@/lib/seealso";
 import { SectionHead, useT } from "../salus/ui";
 import { BrowserFrame, PhoneFrame } from "./ui";
 import { appShots, devProjects, quoteFlow, stackGroups, type DevProject } from "./data";
@@ -123,6 +124,9 @@ export default function DevHubView() {
           </Link>
         </div>
       </section>
+
+      <SeeAlso items={[links.salus, links.aiLab]} />
+      <NextProject slug="dev" />
     </article>
   );
 }

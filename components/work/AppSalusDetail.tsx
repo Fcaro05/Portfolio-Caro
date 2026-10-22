@@ -18,7 +18,7 @@ export default function AppSalusDetail() {
   const num = () => String(++n).padStart(2, "0");
 
   return (
-    <DevDetailShell slug="app-salus" badge="08" title={<>App<br />Salus</>} visual={<HeroPhones />}>
+    <DevDetailShell slug="app-salus" badge="06" title={<>App<br />Salus</>} visual={<HeroPhones />}>
       {/* L'APP DALL'INTERNO: un telefono fisso che cambia schermata mentre si legge */}
       <section className="border-t border-line px-5 py-16 md:px-10 md:py-24">
         <div className="mx-auto max-w-[1400px]">

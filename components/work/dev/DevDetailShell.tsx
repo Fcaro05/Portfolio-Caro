@@ -12,7 +12,10 @@ import {
   StackList,
   VisitCard,
   NextProject,
+  SeeAlso,
+  type SeeAlsoItem,
 } from "../parts";
+import { seeAlso as links } from "@/lib/seealso";
 
 /**
  * Impalcatura comune alle pagine progetto dell'area Dev: hero, panoramica, sfida e approccio,
@@ -26,6 +29,7 @@ export default function DevDetailShell({
   backToDev = true,
   showStory = true,
   compactMobile = false,
+  seeAlso,
   children,
 }: {
   slug: string;
@@ -39,6 +43,8 @@ export default function DevDetailShell({
   showStory?: boolean;
   /** true = su mobile niente elenco «Cosa ho fatto» e meno spazio: serve a pagine già molto lunghe. */
   compactMobile?: boolean;
+  /** «Vedi anche»; se manca, le pagine dei progetti Dev rimandano a Salus AI e ad AI Lab. */
+  seeAlso?: SeeAlsoItem[];
   children: React.ReactNode;
 }) {
   const { t, locale } = useI18n();
@@ -111,6 +117,7 @@ export default function DevDetailShell({
         </aside>
       </section>
 
+      <SeeAlso items={seeAlso ?? [links.salus, links.aiLab]} />
       <NextProject slug={slug} />
     </article>
   );

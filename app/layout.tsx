@@ -7,6 +7,7 @@ import Cursor from "@/components/ui/Cursor";
 import Nav from "@/components/ui/Nav";
 import ScrollProgress from "@/components/ui/ScrollProgress";
 import Hud from "@/components/ui/Hud";
+import { SITE_URL } from "@/lib/site";
 
 const anton = Anton({
   weight: "400",
@@ -26,6 +27,9 @@ const jbmono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  // «./» = l'indirizzo della pagina stessa, risolto sul dominio sopra
+  alternates: { canonical: "./" },
   title: "Francesco Caro — Developer · Marketer · Builder",
   description:
     "Portfolio di Francesco Caro. Prodotto, growth marketing e sistemi web scalabili. Healthtech, AI e crescita digitale — dove tecnologia, marketing e business si incontrano.",
@@ -45,6 +49,8 @@ export const metadata: Metadata = {
     description:
       "Prodotto, growth marketing e sistemi web scalabili. Dove tecnologia, marketing e business si incontrano.",
     type: "website",
+    siteName: "Francesco Caro",
+    locale: "it_IT",
   },
 };
 
