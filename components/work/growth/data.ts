@@ -221,3 +221,37 @@ export const principles: { title: LStr; body: LStr }[] = [
     body: { it: "Pochi campi e ben visibili, con un menù per la fascia oraria. La pagina ha un solo percorso: prenotare.", en: "Few, visible fields, with a menu for the time slot. The page has one path: book." },
   },
 ];
+
+/** Esito della correzione, solo con ciò che è stato verificato: nessun numero di contatti dopo, perché non c'è ancora. */
+export const beforeAfter: { before: LArr; after: LArr; note: LStr } = {
+  before: {
+    it: [
+      "Il pixel registra circa 33.000 visite e solo 2 contatti in 30 giorni.",
+      "Dal browser non parte nessuna richiesta verso Meta, nemmeno forzando un evento a mano.",
+      "La campagna spende senza dati per ottimizzare.",
+    ],
+    en: [
+      "The pixel records about 33,000 page views and only 2 leads in 30 days.",
+      "The browser sends no request to Meta, even when forcing an event by hand.",
+      "The campaign spends with no data to optimise on.",
+    ],
+  },
+  after: {
+    it: [
+      "Ogni contatto del modulo arriva a Meta dal server, con l'origine vera.",
+      "Prova con dati di prova: Meta risponde 200 e conferma 1 evento ricevuto.",
+      "Un contatto reale inviato a Meta compare in Events Manager come «Acquisizione contatti».",
+      "Lo stesso percorso è stato riusato per la criolipolisi e provato dal sito pubblico.",
+    ],
+    en: [
+      "Every lead from the form reaches Meta from the server, with its true origin.",
+      "Tested with test data: Meta replies 200 and confirms 1 event received.",
+      "A real lead sent to Meta shows up in Events Manager as “Lead acquisition”.",
+      "The same path was reused for cryolipolysis and tested from the public site.",
+    ],
+  },
+  note: {
+    it: "Non pubblico un numero di contatti dopo la correzione: non è ancora un dato, perché gli annunci puntano ancora alla landing precedente e il cambio è rimandato.",
+    en: "I'm not publishing a lead count after the fix: it isn't data yet, because the ads still point to the previous landing and the switch is postponed.",
+  },
+};
