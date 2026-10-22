@@ -21,7 +21,7 @@ const CYAN = "#34e7e4";
 const VIOLET = "#8b5cff";
 
 export const homeSeo: PageSeo = {
-  title: "Francesco Caro — AI specialist, sviluppatore e growth marketer per l'healthtech",
+  title: "Francesco Caro — AI specialist, sviluppatore e marketer per l'healthtech",
   description:
     "Costruisco software e AI per il medicale e faccio crescere i prodotti digitali. Founder di Salus AI, Milano. Quattro aree di lavoro con schermate, codice e numeri veri.",
   eyebrow: "Portfolio",
