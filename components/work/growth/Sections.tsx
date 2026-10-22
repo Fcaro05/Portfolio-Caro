@@ -83,24 +83,27 @@ function Chips<T extends string | number>({
   onChange,
   label,
   accent,
+  compact,
 }: {
   items: { id: T; label: string; color?: string }[];
   value: T;
   onChange: (v: T) => void;
   label?: LStr;
   accent?: string;
+  /** pulsanti più bassi: servono quando i selettori stanno attaccati a un'immagine */
+  compact?: boolean;
 }) {
   const { tr, locale } = useT();
   const hint = label ? tr(label) : locale === "it" ? "Tocca per cambiare" : "Tap to change";
   return (
     <div>
-      <p className="mb-2.5 flex items-center gap-2 font-mono text-[0.65rem] uppercase tracking-[0.14em] text-muted">
+      <p className={`flex items-center gap-2 font-mono text-[0.65rem] uppercase tracking-[0.14em] text-muted ${compact ? "mb-2" : "mb-2.5"}`}>
         <span aria-hidden className="text-sm leading-none" style={{ color }}>
           ↓
         </span>
         {hint}
       </p>
-      <div className="flex flex-wrap gap-2.5" role="tablist">
+      <div className={`flex flex-wrap ${compact ? "gap-2" : "gap-2.5"}`} role="tablist">
         {items.map((it) => {
           const on = it.id === value;
           const c = it.color ?? accent ?? color;
@@ -112,7 +115,7 @@ function Chips<T extends string | number>({
               aria-selected={on}
               data-cursor
               onClick={() => onChange(it.id)}
-              className={`inline-flex min-h-11 items-center gap-2.5 rounded-xl border-2 px-4 py-2 font-mono text-xs uppercase tracking-[0.08em] transition-all duration-200 active:scale-[0.97] ${
+              className={`inline-flex items-center rounded-xl border-2 font-mono uppercase tracking-[0.08em] transition-all ${compact ? "min-h-10 gap-2 px-3 py-1.5 text-[0.68rem]" : "min-h-11 gap-2.5 px-4 py-2 text-xs"} duration-200 active:scale-[0.97] ${
                 on ? "font-bold" : "bg-bg text-fg hover:-translate-y-0.5 hover:border-fg"
               }`}
               style={on ? { background: c, borderColor: c, color: "#0b0b10" } : { borderColor: "color-mix(in srgb, var(--fg) 35%, transparent)" }}
@@ -197,11 +200,11 @@ function StrategyBlock({ f, letter }: { f: Flow; letter: string }) {
       <SubHead n={letter} accent={f.color} title={{ it: "La strategia", en: "The strategy" }} />
       <dl className="mt-5 grid gap-px overflow-hidden rounded-2xl border border-line bg-line md:grid-cols-2">
         {f.strategy.map((r) => (
-          <div key={r.label.it} className="bg-bg p-5 md:p-6">
-            <dt className="font-mono text-[0.65rem] uppercase tracking-[0.14em]" style={{ color: f.color }}>
+          <div key={r.label.it} className="bg-bg p-4 md:p-6">
+            <dt className="font-mono text-[0.62rem] uppercase tracking-[0.14em] md:text-[0.65rem]" style={{ color: f.color }}>
               {tr(r.label)}
             </dt>
-            <dd className="mt-2 font-sans text-sm leading-relaxed text-fg/90 md:text-base">{tr(r.text)}</dd>
+            <dd className="mt-1.5 font-sans text-sm leading-relaxed text-fg/90 md:mt-2 md:text-base">{tr(r.text)}</dd>
           </div>
         ))}
       </dl>
@@ -222,51 +225,51 @@ function AdsBlock({ f, letter }: { f: Flow; letter: string }) {
   return (
     <div>
       <SubHead n={letter} accent={f.color} title={{ it: "Gli annunci", en: "The ads" }} />
-      <div className="mt-5 grid gap-8 lg:grid-cols-2 lg:items-center lg:gap-14">
-        <div className="flex min-h-[260px] items-center justify-center rounded-2xl border border-line bg-bg-soft p-4 md:p-8">
-          <div
-            className="overflow-hidden rounded-xl border border-line bg-bg"
-            style={{ aspectRatio: String(info.r), width: `min(100%, calc(min(66svh, 560px) * ${info.r}))` }}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              key={`${ad.id}-${cur}`}
-              src={ad.images[cur]}
-              alt={tr(ad.headline)}
-              decoding="async"
-              className="block h-full w-full object-cover"
+      <div className="mt-5 grid gap-6 lg:grid-cols-2 lg:items-start lg:gap-14">
+        {/* i selettori stanno dentro lo stesso riquadro dell'immagine: si vede cosa cambiano */}
+        <div className="flex flex-col gap-4 rounded-2xl border border-line bg-bg-soft p-4 md:p-6">
+          {f.ads.length > 1 && (
+            <Chips
+              accent={f.color}
+              compact
+              items={f.ads.map((a, i) => ({ id: i, label: tr(a.name).replace(/^(Variante|Variant) /, "").replace(/^(Creatività|Creative) /, "") }))}
+              value={v}
+              onChange={setV}
+              label={{ it: "Scegli la variante dell'annuncio", en: "Choose the ad variant" }}
             />
+          )}
+          {avail.length > 1 && (
+            <Chips
+              accent={f.color}
+              compact
+              items={avail.map((x) => ({ id: x, label: `${tr(formatInfo[x].label)} ${formatInfo[x].ratio}` }))}
+              value={cur}
+              onChange={setFm}
+              label={{ it: "Scegli il formato", en: "Choose the format" }}
+            />
+          )}
+          <div className="flex min-h-[260px] items-center justify-center rounded-xl bg-bg/60 p-3 md:p-5">
+            <div
+              className="overflow-hidden rounded-xl border border-line bg-bg"
+              style={{ aspectRatio: String(info.r), width: `min(100%, calc(min(66svh, 560px) * ${info.r}))` }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                key={`${ad.id}-${cur}`}
+                src={ad.images[cur]}
+                alt={tr(ad.headline)}
+                decoding="async"
+                className="block h-full w-full object-cover"
+              />
+            </div>
           </div>
+          <p className="font-sans text-sm leading-relaxed text-muted">{tr(info.note)}</p>
         </div>
 
         <div className="min-w-0">
-          {f.ads.length > 1 && (
-            <div className="mb-6">
-              <Chips
-                accent={f.color}
-                items={f.ads.map((a, i) => ({ id: i, label: tr(a.name) }))}
-                value={v}
-                onChange={setV}
-                label={{ it: "Scegli la variante dell'annuncio", en: "Choose the ad variant" }}
-              />
-            </div>
-          )}
           <h4 className="font-display text-3xl uppercase leading-[0.95] tracking-tight md:text-4xl">{tr(ad.headline)}</h4>
           <p className="mt-3 font-sans text-base leading-relaxed text-fg/85">{tr(ad.note)}</p>
-
-          {avail.length > 1 && (
-            <div className="mt-6">
-              <Chips
-                accent={f.color}
-                items={avail.map((x) => ({ id: x, label: `${tr(formatInfo[x].label)} ${formatInfo[x].ratio}` }))}
-                value={cur}
-                onChange={setFm}
-                label={{ it: "Scegli il formato", en: "Choose the format" }}
-              />
-              <p className="mt-3 font-sans text-sm leading-relaxed text-muted">{tr(info.note)}</p>
-            </div>
-          )}
-          {f.id === "fotona" && v === 0 && cur !== "story" && (
+          {f.id === "fotona" && ad.id !== "nuovo" && (
             <p className="mt-4 font-sans text-xs text-muted">
               {it
                 ? "Il testo sull'immagine è quello dei file originali, refusi compresi."
@@ -290,7 +293,7 @@ function VideosBlock({ f, letter }: { f: Flow; letter: string }) {
           ? "Un video per ogni sintomo, sempre in verticale e con i sottotitoli scritti sull'immagine, perché sui social si guarda senza audio. Qui sono i primi 24 secondi."
           : "One video per symptom, always vertical and with captions written on the image, because on social you watch without sound. Here are the first 24 seconds."}
       </p>
-      <div className="mt-6 grid gap-8 sm:grid-cols-2 lg:max-w-3xl">
+      <div className="mt-6 grid gap-7 sm:grid-cols-2 lg:max-w-3xl">
         {flowVideos.map((v) => (
           <figure key={v.id} className="min-w-0">
             <video
@@ -298,11 +301,11 @@ function VideosBlock({ f, letter }: { f: Flow; letter: string }) {
               playsInline
               preload="none"
               poster={v.poster}
-              className="block aspect-[9/16] w-full max-w-[280px] rounded-2xl border border-line bg-bg-soft object-cover"
+              className="block aspect-[9/16] w-full max-w-[240px] rounded-2xl md:max-w-[280px] border border-line bg-bg-soft object-cover"
             >
               <source src={v.src} type="video/mp4" />
             </video>
-            <figcaption className="mt-3 max-w-[280px]">
+            <figcaption className="mt-3 max-w-[240px] md:max-w-[280px]">
               <span className="font-mono text-[0.65rem] uppercase tracking-[0.12em]" style={{ color: f.color }}>
                 {tr(v.title)}
               </span>
@@ -315,13 +318,38 @@ function VideosBlock({ f, letter }: { f: Flow; letter: string }) {
   );
 }
 
+/** Un percorso a passi: elenco compatto su mobile, schede con frecce da md in su. */
+function PathList({ nodes, color: accent }: { nodes: { title: string; sub: LStr }[]; color: string }) {
+  const { tr } = useT();
+  return (
+    <>
+      <ol className="flex flex-col md:hidden">
+        {nodes.map((n, i) => (
+          <li key={n.title} className="flex gap-4 border-t border-line py-3 first:border-t-0 first:pt-0">
+            <span className="w-6 shrink-0 pt-1 font-mono text-xs" style={{ color: accent }}>
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <div className="min-w-0">
+              <span className="font-display text-xl uppercase leading-none tracking-tight">{n.title}</span>
+              <span className="mt-1 block font-sans text-sm text-muted">{tr(n.sub)}</span>
+            </div>
+          </li>
+        ))}
+      </ol>
+      <div className="hidden md:block">
+        <FlowRow nodes={nodes} color={accent} />
+      </div>
+    </>
+  );
+}
+
 function PathBlock({ f, letter }: { f: Flow; letter: string }) {
   const { tr } = useT();
   return (
     <div>
       <SubHead n={letter} accent={f.color} title={{ it: "Il percorso del contatto", en: "The lead's path" }} />
       <div className="mt-5">
-        <FlowRow nodes={f.path} color={f.color} />
+        <PathList nodes={f.path} color={f.color} />
       </div>
       <ul className="mt-5 flex flex-col gap-3">
         {f.pathNotes.map((n) => (
@@ -386,7 +414,6 @@ function LandingBlock({ f, letter }: { f: Flow; letter: string }) {
 function ResearchBlock({ f, letter }: { f: Flow; letter: string }) {
   const { tr, locale } = useT();
   const it = locale === "it";
-  const [rTab, setRTab] = useState(0);
   return (
     <div>
       <SubHead n={letter} accent={f.color} title={{ it: "La ricerca dietro la pagina", en: "The research behind the page" }} />
@@ -396,22 +423,9 @@ function ResearchBlock({ f, letter }: { f: Flow; letter: string }) {
           : "Before writing a line I wrote a strategy brief: what people looking for this treatment feel, what they fear and where competitors leave room. The page follows from it, in six blocks."}
       </p>
 
-      <div className="mt-6 md:hidden">
-        <Chips accent={f.color} items={research.map((r, i) => ({ id: i, label: tr(r.title) }))} value={rTab} onChange={setRTab} label={{ it: "Scegli cosa leggere", en: "Choose what to read" }} />
-        <ul className="mt-4 flex flex-col gap-3 rounded-2xl border border-line bg-bg-soft p-5">
-          {research[rTab].items.map((x) => (
-            <li key={x.it} className="flex items-start gap-3 font-sans text-sm leading-relaxed text-fg/85">
-              <span className="mt-0.5 font-mono text-sm" style={{ color: f.color }}>
-                ○
-              </span>
-              {tr(x)}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="mt-6 hidden gap-3 md:grid md:grid-cols-3">
+      <div className="mt-6 grid gap-3 md:grid-cols-3">
         {research.map((r) => (
-          <div key={r.title.it} className="rounded-2xl border border-line bg-bg-soft p-6">
+          <div key={r.title.it} className="rounded-2xl border border-line bg-bg-soft p-5 md:p-6">
             <BlockTitle color={f.color}>{tr(r.title)}</BlockTitle>
             <ul className="mt-4 flex flex-col gap-3">
               {r.items.map((x) => (
@@ -439,24 +453,12 @@ export function FlowsSection() {
   const { tr, locale } = useT();
   const it = locale === "it";
   const [id, setId] = useState<FlowId>("fotona");
-  const [block, setBlock] = useState<string>("strategy");
   const f = flows.find((x) => x.id === id)!;
   const hasVideos = f.id === "fotona";
   const hasResearch = f.id === "fotona";
   // le lettere dei blocchi seguono quelli presenti
   let k = 0;
   const next = () => "ABCDEF"[k++];
-  // su mobile si vede un blocco per volta; da md in su tutti, in colonna
-  const blocks = [
-    { id: "strategy", label: it ? "Strategia" : "Strategy" },
-    { id: "ads", label: it ? "Annunci" : "Ads" },
-    ...(hasVideos ? [{ id: "videos", label: "Video" }] : []),
-    { id: "path", label: it ? "Percorso" : "Path" },
-    { id: "landing", label: "Landing" },
-    ...(hasResearch ? [{ id: "research", label: it ? "Ricerca" : "Research" }] : []),
-  ];
-  const show = (b: string) => (block === b ? "" : "hidden md:block");
-
   return (
     <DevSection
       id="campagne"
@@ -487,7 +489,16 @@ export function FlowsSection() {
               data-cursor
               onClick={() => {
                 setId(x.id);
-                setBlock("strategy");
+                // su mobile le schede stanno sopra il flusso: si porta in vista il flusso scelto
+                if (window.matchMedia("(max-width: 767px)").matches) {
+                  window.setTimeout(() => {
+                    const el = document.getElementById("flusso");
+                    if (!el) return;
+                    const lenis = (window as unknown as { __lenis?: { scrollTo: (t: HTMLElement, o: object) => void } }).__lenis;
+                    if (lenis) lenis.scrollTo(el, { offset: -80, duration: 1 });
+                    else el.scrollIntoView({ behavior: "smooth" });
+                  }, 60);
+                }
               }}
               className={`flex flex-col gap-3 rounded-2xl border-2 p-5 text-left transition-all duration-200 active:scale-[0.99] ${on ? "" : "bg-bg hover:-translate-y-0.5 hover:border-fg"}`}
               style={on ? { borderColor: x.color, background: `${x.color}1a` } : { borderColor: "color-mix(in srgb, var(--fg) 30%, transparent)" }}
@@ -521,7 +532,8 @@ export function FlowsSection() {
 
       <div
         key={f.id}
-        className="mt-8 rounded-3xl border-2 p-5 md:p-10"
+        id="flusso"
+        className="mt-8 rounded-3xl border-2 p-4 md:p-10"
         style={{ borderColor: `${f.color}66`, background: `linear-gradient(180deg, ${f.color}12, transparent 22%)` }}
       >
         <div className="flex flex-wrap items-center gap-3">
@@ -550,36 +562,26 @@ export function FlowsSection() {
           </span>
         </p>
 
-        <div className="mt-8 md:hidden">
-          <Chips
-            accent={f.color}
-            items={blocks.map((b) => ({ id: b.id, label: b.label }))}
-            value={block}
-            onChange={setBlock}
-            label={{ it: "Scegli cosa vedere di questo flusso", en: "Choose what to see of this flow" }}
-          />
-        </div>
-
-        <div className="mt-8 flex flex-col gap-12 md:mt-10 md:gap-16">
-          <div className={show("strategy")}>
+        <div className="mt-8 flex flex-col gap-10 md:mt-10 md:gap-16">
+          <div>
             <StrategyBlock f={f} letter={next()} />
           </div>
-          <div className={show("ads")}>
+          <div>
             <AdsBlock f={f} letter={next()} />
           </div>
           {hasVideos && (
-            <div className={show("videos")}>
+            <div>
               <VideosBlock f={f} letter={next()} />
             </div>
           )}
-          <div className={show("path")}>
+          <div>
             <PathBlock f={f} letter={next()} />
           </div>
-          <div className={show("landing")}>
+          <div>
             <LandingBlock f={f} letter={next()} />
           </div>
           {hasResearch && (
-            <div className={show("research")}>
+            <div>
               <ResearchBlock f={f} letter={next()} />
             </div>
           )}
@@ -594,7 +596,6 @@ export function FlowsSection() {
 export function TrackingSection() {
   const { tr, locale } = useT();
   const it = locale === "it";
-  const [tab, setTab] = useState<"no" | "open">("no");
   return (
     <DevSection
       id="tracciamento"
@@ -636,7 +637,7 @@ export function TrackingSection() {
       <div className="mt-14">
         <BlockTitle color={color}>{it ? "Il percorso, dopo" : "The path, after"}</BlockTitle>
         <div className="mt-5">
-          <FlowRow nodes={trackingFlow} color={color} />
+          <PathList nodes={trackingFlow} color={color} />
         </div>
       </div>
 
@@ -644,19 +645,8 @@ export function TrackingSection() {
         <CodeBlock s={trackingSnippet} color={color} />
       </div>
 
-      <div className="mt-10 lg:hidden">
-        <Chips
-          items={[
-            { id: "no" as const, label: it ? "Cosa non ho fatto" : "What I didn't do" },
-            { id: "open" as const, label: it ? "Ancora aperto" : "Still open" },
-          ]}
-          value={tab}
-          onChange={setTab}
-          label={{ it: "Scegli cosa leggere", en: "Choose what to read" }}
-        />
-      </div>
-      <div className="mt-4 grid gap-3 lg:mt-10 lg:grid-cols-2">
-        <div className={`rounded-2xl border border-line bg-bg p-5 md:p-7 ${tab === "no" ? "" : "hidden lg:block"}`}>
+      <div className="mt-10 grid gap-3 lg:grid-cols-2">
+        <div className={`rounded-2xl border border-line bg-bg p-5 md:p-7 `}>
           <BlockTitle color={color}>{it ? "Cosa ho scelto di non fare" : "What I chose not to do"}</BlockTitle>
           <ul className="mt-4 flex flex-col gap-3">
             {(it ? notDone.it : notDone.en).map((x) => (
@@ -669,7 +659,7 @@ export function TrackingSection() {
             ))}
           </ul>
         </div>
-        <div className={`rounded-2xl border border-dashed border-fg/25 p-5 md:p-7 ${tab === "open" ? "" : "hidden lg:block"}`}>
+        <div className={`rounded-2xl border border-dashed border-fg/25 p-5 md:p-7 `}>
           <BlockTitle color={color}>{it ? "Cosa è ancora aperto" : "What is still open"}</BlockTitle>
           <ul className="mt-4 flex flex-col gap-3">
             {(it ? stillOpen.it : stillOpen.en).map((x) => (
