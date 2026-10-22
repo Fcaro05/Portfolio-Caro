@@ -53,7 +53,7 @@ export const projects: Project[] = [
       en: "A services company building software for the health sector and using the margin to fund Smart Med Box, a therapy-adherence device. Today: the PVLM pharmacovigilance platform, an adherence platform and the Med Box prototype.",
     },
     tags: ["Flutter", "Firebase", "Cloud Functions", "AI", "IoT", "Product", "Business"],
-    href: "https://salus-ai-claude-website.vercel.app/",
+    href: "https://salus-ai.com",
     accent: "acid",
     overview: {
       it: "Salus AI è una startup healthtech italiana, nata dall'idea di un contenitore smart per i farmaci con app e AI. Oggi vende sviluppo software su misura ad aziende del settore salute e con quel margine finanzia il Med Box, senza cedere quote a investitori. Questa pagina racconta l'azienda in ordine cronologico, in tutti i suoi ambiti, con i documenti allegati.",
@@ -449,9 +449,27 @@ export const projects: Project[] = [
 
 export const getProject = (slug: string) => projects.find((p) => p.id === slug);
 export const projectSlugs = projects.map((p) => p.id);
-export const adjacentProject = (slug: string) => {
-  const i = projects.findIndex((p) => p.id === slug);
-  return projects[(i + 1) % projects.length];
+/**
+ * «Prossimo» in fondo alle pagine: segue il giro delle aree (Salus AI → Dev → AI Lab → Growth → Salus AI).
+ * Dentro Dev i tre progetti si susseguono, poi si passa ad AI Lab.
+ * Le chiavi sono gli slug usati dalle pagine; «centro-medico» è il progetto della pagina Growth.
+ */
+const nextOf: Record<string, string> = {
+  "salus-ai": "dev",
+  dev: "ai-lab",
+  "sito-salus": "gestionale-salus",
+  "gestionale-salus": "app-salus",
+  "app-salus": "ai-lab",
+  "ai-lab": "growth",
+  "centro-medico": "salus-ai",
+};
+
+export const nextStep = (slug: string): { href: string; name: string; accent: Project["accent"] } => {
+  const target = nextOf[slug] ?? "salus-ai";
+  const project = projects.find((p) => p.id === target);
+  if (project) return { href: `/work/${project.id}`, name: project.name, accent: project.accent };
+  const cat = workCategories.find((c) => c.id === target) ?? workCategories[0];
+  return { href: cat.href, name: cat.name, accent: cat.accent };
 };
 
 export const accentHex: Record<Project["accent"], string> = {
@@ -743,7 +761,7 @@ export const stats: Stat[] = [
 export const contact = {
   email: "fcaro.personale@gmail.com",
   socials: [
-    { label: "LinkedIn", href: "#", handle: "/in/francescocaro" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/francescocaro", handle: "/in/francescocaro" },
     { label: "GitHub", href: "https://github.com/Fcaro05", handle: "@Fcaro05" },
   ],
 };

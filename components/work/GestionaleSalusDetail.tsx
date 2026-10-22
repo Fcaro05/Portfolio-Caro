@@ -45,7 +45,7 @@ export default function GestionaleSalusDetail() {
   const it = locale === "it";
 
   return (
-    <DevDetailShell slug="gestionale-salus" badge="07" title={<>Gestionale<br />interno Salus</>}>
+    <DevDetailShell slug="gestionale-salus" badge="05" title={<>Gestionale<br />interno Salus</>}>
       {/* NUMERI */}
       <section className="border-t border-line px-5 py-12 md:px-10 md:py-16">
         <div className="mx-auto grid max-w-[1400px] grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line md:grid-cols-3 xl:grid-cols-6">

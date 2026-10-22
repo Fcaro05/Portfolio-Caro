@@ -316,7 +316,7 @@ export const flowVideos: { id: string; src: string; poster: string; title: LStr;
     id: "atrofia",
     src: "/growth/video/atrofia.mp4",
     poster: "/growth/video/atrofia.webp",
-    title: { it: "Video · il dolore nei rapporti", en: "Video · pain in intimacy" },
+    title: { it: "Video · secchezza e dolore", en: "Video · dryness and pain" },
     note: { it: "La specialista parla in prima persona: parte dal sintomo, dice che non è un destino, indica il primo passo.", en: "The specialist speaks in the first person: starts from the symptom, says it isn't a fate, points to the first step." },
   },
   {

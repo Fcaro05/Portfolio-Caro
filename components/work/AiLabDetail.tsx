@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { accentHex } from "@/lib/content";
 import DevDetailShell from "./dev/DevDetailShell";
+import { seeAlso as links } from "@/lib/seealso";
 import { LeadCase, LinkedinCase, PvlmCase, TaskCase } from "./ailab/Cases";
 import { cases, lessons } from "./ailab/data";
 import { PinnedRail } from "./ailab/ui";
@@ -15,7 +16,7 @@ export default function AiLabDetail() {
   const it = locale === "it";
 
   return (
-    <DevDetailShell slug="ai-lab" badge="02" backToDev={false} showStory={false} compactMobile title={<>AI<br />Lab</>}>
+    <DevDetailShell slug="ai-lab" badge="02" backToDev={false} showStory={false} compactMobile seeAlso={[links.salusDocs, links.growthTracking]} title={<>AI<br />Lab</>}>
       {/* INDICE: i quattro sistemi, con stato e cosa fanno */}
       <section className="border-t border-line px-5 py-8 md:px-10 md:py-16">
         <div className="-mx-5 mx-auto flex max-w-[1400px] snap-x snap-mandatory scroll-pl-5 gap-3 overflow-x-auto px-5 pb-1 [scrollbar-width:none] md:mx-auto md:grid md:grid-cols-2 md:overflow-visible md:px-0 xl:grid-cols-4 [&::-webkit-scrollbar]:hidden">

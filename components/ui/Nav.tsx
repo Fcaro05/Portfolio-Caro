@@ -40,6 +40,13 @@ export default function Nav() {
     setTimeout(() => scrollToTarget(id), open ? 350 : 0);
   };
 
+  /** Clic normale: scroll o navigazione animata. Clic con modificatori o tasto centrale: lascia fare al browser. */
+  const onLink = (e: React.MouseEvent, id: string) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+    e.preventDefault();
+    go(id);
+  };
+
   return (
     <>
       <header
@@ -51,8 +58,14 @@ export default function Nav() {
       >
         <div className="mx-auto flex h-16 max-w-[1600px] items-center justify-between px-5 md:h-20 md:px-10">
           {/* Wordmark */}
-          <button
-            onClick={() => (pathname === "/" ? scrollToTarget(0) : router.push("/"))}
+          <a
+            href="/"
+            onClick={(e) => {
+              if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+              e.preventDefault();
+              if (pathname === "/") scrollToTarget(0);
+              else router.push("/");
+            }}
             className="group flex items-center gap-2"
             aria-label="Francesco Caro — home"
           >
@@ -60,18 +73,19 @@ export default function Nav() {
               FC
             </span>
             <span className="hidden h-2 w-2 rounded-full bg-acid md:block" />
-          </button>
+          </a>
 
           {/* Desktop links */}
           <nav className="hidden items-center gap-8 md:flex">
             {links.map((l) => (
-              <button
+              <a
                 key={l.id}
-                onClick={() => go(l.id)}
+                href={`/${l.id}`}
+                onClick={(e) => onLink(e, l.id)}
                 className="hover-line font-mono text-xs uppercase tracking-[0.18em] text-muted transition-colors hover:text-fg"
               >
                 {l.label}
-              </button>
+              </a>
             ))}
           </nav>
 
@@ -127,16 +141,17 @@ export default function Nav() {
           >
             <nav className="flex flex-col gap-2">
               {links.map((l, i) => (
-                <motion.button
+                <motion.a
                   key={l.id}
-                  onClick={() => go(l.id)}
+                  href={`/${l.id}`}
+                  onClick={(e) => onLink(e, l.id)}
                   initial={{ y: 40, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.18 + i * 0.07 }}
                   className="text-left font-display text-6xl uppercase leading-[0.95] text-fg"
                 >
                   {l.label}
-                </motion.button>
+                </motion.a>
               ))}
             </nav>
             <div className="mt-12 font-mono text-xs uppercase tracking-[0.16em] text-muted">

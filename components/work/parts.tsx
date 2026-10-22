@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useI18n } from "@/lib/i18n";
-import { adjacentProject, accentHex, L, LA, type Project } from "@/lib/content";
+import { nextStep, accentHex, L, LA, type Project } from "@/lib/content";
 import Reveal from "@/components/ui/Reveal";
 
 export const fillBg: Record<Project["accent"], string> = {
@@ -199,10 +199,10 @@ export function StackList({ project }: { project: Project }) {
 
 export function NextProject({ slug }: { slug: string }) {
   const { t, locale } = useI18n();
-  const next = adjacentProject(slug);
+  const next = nextStep(slug);
   return (
     <Link
-      href={`/work/${next.id}`}
+      href={next.href}
       data-cursor
       className="group relative block overflow-hidden border-t border-line px-5 py-16 md:px-10 md:py-24"
     >
@@ -272,3 +272,41 @@ export function HeroIn({
 }
 
 export { accentHex, L, LA };
+
+export type SeeAlsoItem = {
+  href: string;
+  name: string;
+  hint: { it: string; en: string };
+};
+
+/** «Vedi anche»: due o tre rimandi ad altre pagine del portfolio, con una riga che dice cosa si trova. */
+export function SeeAlso({ items }: { items: SeeAlsoItem[] }) {
+  const { locale } = useI18n();
+  const it = locale === "it";
+  return (
+    <section className="border-t border-line px-5 py-10 md:px-10 md:py-14">
+      <div className="mx-auto max-w-[1400px]">
+        <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-muted">{it ? "Vedi anche" : "See also"}</h2>
+        <ul className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+          {items.map((x) => (
+            <li key={x.href}>
+              <Link
+                href={x.href}
+                data-cursor
+                className="group flex h-full items-start justify-between gap-4 rounded-2xl border border-line p-5 transition-colors hover:border-fg/50"
+              >
+                <span>
+                  <span className="block font-display text-2xl uppercase leading-none tracking-tight">{x.name}</span>
+                  <span className="mt-2 block font-sans text-sm leading-relaxed text-muted">{it ? x.hint.it : x.hint.en}</span>
+                </span>
+                <span aria-hidden className="font-display text-2xl leading-none transition-transform duration-300 group-hover:translate-x-1">
+                  →
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}

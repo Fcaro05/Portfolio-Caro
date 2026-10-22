@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { ComponentType } from "react";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { getProject, workHubs, L } from "@/lib/content";
 import Footer from "@/components/sections/Footer";
 import SalusAIDetail from "@/components/work/SalusAIDetail";
@@ -54,8 +54,6 @@ export default async function ProjectPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  // il progetto Centro Medico vive nella pagina Growth
-  if (slug === "centro-medico") redirect("/work/growth");
   const Detail = registry[slug];
   if (!Detail) notFound();
   return (

@@ -79,7 +79,13 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       else window.scrollTo(0, 0);
     };
     const raf = requestAnimationFrame(go);
-    return () => cancelAnimationFrame(raf);
+    // con un #ancora le immagini e i font cambiano l'altezza della pagina dopo il primo scroll:
+    // si ripete il salto finché il layout non si assesta
+    const timers = window.location.hash.length > 1 ? [300, 900].map((ms) => window.setTimeout(go, ms)) : [];
+    return () => {
+      cancelAnimationFrame(raf);
+      timers.forEach((t) => window.clearTimeout(t));
+    };
   }, [pathname]);
 
   return <>{children}</>;

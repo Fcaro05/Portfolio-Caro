@@ -14,7 +14,9 @@ import {
   StackList,
   VisitCard,
   NextProject,
+  SeeAlso,
 } from "./parts";
+import { seeAlso as links } from "@/lib/seealso";
 import MedBoxReveal from "./MedBoxReveal";
 import ModelFlow from "./salus/ModelFlow";
 import Chronicle from "./salus/Chronicle";
@@ -130,6 +132,7 @@ export default function SalusAIDetail() {
         </aside>
       </section>
 
+      <SeeAlso items={[links.dev, links.aiLabPvlm]} />
       <NextProject slug="salus-ai" />
     </article>
   );
