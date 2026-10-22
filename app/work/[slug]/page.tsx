@@ -1,29 +1,24 @@
 import type { Metadata } from "next";
 import type { ComponentType } from "react";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { getProject, workHubs, L } from "@/lib/content";
 import Footer from "@/components/sections/Footer";
 import SalusAIDetail from "@/components/work/SalusAIDetail";
 import AiLabDetail from "@/components/work/AiLabDetail";
-import CentroMedicoDetail from "@/components/work/CentroMedicoDetail";
-import SuperMario24Detail from "@/components/work/SuperMario24Detail";
-import AziendaMultiserviceDetail from "@/components/work/AziendaMultiserviceDetail";
 import SitoSalusDetail from "@/components/work/SitoSalusDetail";
 import GestionaleSalusDetail from "@/components/work/GestionaleSalusDetail";
 import AppSalusDetail from "@/components/work/AppSalusDetail";
-import { DevHub, GrowthHub } from "@/components/work/WorkHub";
+import DevHub from "@/components/work/dev/DevHubView";
+import GrowthDetail from "@/components/work/GrowthDetail";
 
 const registry: Record<string, ComponentType> = {
   "salus-ai": SalusAIDetail,
   "ai-lab": AiLabDetail,
-  "centro-medico": CentroMedicoDetail,
-  supermario24: SuperMario24Detail,
-  "azienda-multiservice": AziendaMultiserviceDetail,
   "sito-salus": SitoSalusDetail,
   "gestionale-salus": GestionaleSalusDetail,
   "app-salus": AppSalusDetail,
   dev: DevHub,
-  growth: GrowthHub,
+  growth: GrowthDetail,
 };
 
 export function generateStaticParams() {
@@ -59,6 +54,8 @@ export default async function ProjectPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  // il progetto Centro Medico vive nella pagina Growth
+  if (slug === "centro-medico") redirect("/work/growth");
   const Detail = registry[slug];
   if (!Detail) notFound();
   return (

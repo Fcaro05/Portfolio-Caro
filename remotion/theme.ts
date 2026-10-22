@@ -48,22 +48,6 @@ export const REEL_PROJECTS: ReelProject[] = [
     accent: "magenta",
     tags: ["Meta Ads", "Google Ads", "SEO", "Funnel"],
   },
-  {
-    index: "03",
-    name: "SuperMario24",
-    kind: "Emergency Services Portal",
-    role: "Web / CMS & Local SEO",
-    accent: "cyan",
-    tags: ["WordPress", "Local SEO", "Content Ops"],
-  },
-  {
-    index: "04",
-    name: "AziendaMultiservice",
-    kind: "Multi-service Hub",
-    role: "Web / CMS & Local SEO",
-    accent: "violet",
-    tags: ["WordPress", "Reviews", "Conversion"],
-  },
 ];
 
 export const REEL = {
