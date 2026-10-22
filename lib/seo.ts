@@ -54,12 +54,12 @@ export const workSeo: Record<string, PageSeo> = {
     card: "AI Lab",
     accent: VIOLET,
   },
-  growth: {
-    title: "Growth: tre campagne Meta per un centro medico",
+  marketing: {
+    title: "Marketing: tre campagne Meta per un centro medico",
     description:
       "Strategie, annunci, landing e un tracciamento che regge al blocco di Meta, per il Centro Medico Ambrosiano di Milano.",
-    eyebrow: "Growth marketing",
-    card: "Growth",
+    eyebrow: "Campagne, landing e tracciamento",
+    card: "Marketing",
     accent: MAGENTA,
   },
   "sito-salus": {

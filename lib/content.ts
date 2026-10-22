@@ -178,7 +178,7 @@ export const projects: Project[] = [
     index: "03",
     name: "Centro Medico Ambrosiano",
     year: "2026",
-    kind: { it: "Growth per un centro medico", en: "Growth for a medical centre" },
+    kind: { it: "Marketing per un centro medico", en: "Marketing for a medical centre" },
     role: {
       it: "Campagne Meta, landing page e tracciamento",
       en: "Meta campaigns, landing pages and tracking",
@@ -452,9 +452,9 @@ export const projects: Project[] = [
 export const getProject = (slug: string) => projects.find((p) => p.id === slug);
 export const projectSlugs = projects.map((p) => p.id);
 /**
- * «Prossimo» in fondo alle pagine: segue il giro delle aree (Salus AI → Dev → AI Lab → Growth → Salus AI).
+ * «Prossimo» in fondo alle pagine: segue il giro delle aree (Salus AI → Dev → AI Lab → Marketing → Salus AI).
  * Dentro Dev i tre progetti si susseguono, poi si passa ad AI Lab.
- * Le chiavi sono gli slug usati dalle pagine; «centro-medico» è il progetto della pagina Growth.
+ * Le chiavi sono gli slug usati dalle pagine; «centro-medico» è il progetto della pagina Marketing.
  */
 const nextOf: Record<string, string> = {
   "salus-ai": "dev",
@@ -462,7 +462,7 @@ const nextOf: Record<string, string> = {
   "sito-salus": "gestionale-salus",
   "gestionale-salus": "app-salus",
   "app-salus": "ai-lab",
-  "ai-lab": "growth",
+  "ai-lab": "marketing",
   "centro-medico": "salus-ai",
 };
 
@@ -560,10 +560,10 @@ export const workCategories: WorkCategory[] = [
     cta: { it: "Esplora i progetti", en: "Explore the projects" },
   },
   {
-    id: "growth",
+    id: "marketing",
     num: "04",
-    name: "Growth",
-    kind: { it: "Acquisizione & performance", en: "Acquisition & performance" },
+    name: "Marketing",
+    kind: { it: "Campagne, landing e tracciamento", en: "Campaigns, landing pages and tracking" },
     meta: { it: "1 progetto", en: "1 project" },
     summary: {
       it: "Tre campagne, tre strategie, e un tracciamento che regge al blocco di Meta.",
@@ -575,7 +575,7 @@ export const workCategories: WorkCategory[] = [
     },
     tags: ["Meta Ads", "Conversions API", "Landing page", "Apps Script", "Copywriting", "CRO"],
     accent: "magenta",
-    href: "/work/growth",
+    href: "/work/marketing",
     cta: { it: "Esplora il progetto", en: "Explore the project" },
   },
 ];
@@ -639,7 +639,7 @@ export const pillars: Pillar[] = [
   {
     id: "growth",
     num: "03",
-    title: { it: "Growth", en: "Growth" },
+    title: { it: "Marketing", en: "Marketing" },
     blurb: {
       it: "Traffico, lead e conversioni. Performance marketing end-to-end.",
       en: "Traffic, leads and conversions. End-to-end performance marketing.",
@@ -704,7 +704,7 @@ export type Stat = { value: string; label: LStr };
 
 export const stats: Stat[] = [
   { value: "06", label: { it: "Progetti in vetrina", en: "Featured projects" } },
-  { value: "03", label: { it: "Ambiti: AI · Sviluppo · Growth", en: "Domains: AI · Development · Growth" } },
+  { value: "03", label: { it: "Ambiti: AI · Sviluppo · Marketing", en: "Domains: AI · Development · Marketing" } },
   { value: "02", label: { it: "Lingue", en: "Languages" } },
   { value: "1", label: { it: "Startup costruita da zero", en: "Startup built from scratch" } },
 ];

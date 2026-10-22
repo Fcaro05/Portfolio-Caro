@@ -152,7 +152,7 @@ export default function Capabilities() {
             "LLM",
             "RAG",
             "Code",
-            "Growth",
+            "Campagne",
             "Marketing",
             "Design",
             "Product",

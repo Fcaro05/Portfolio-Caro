@@ -18,7 +18,7 @@ const registry: Record<string, ComponentType> = {
   "gestionale-salus": GestionaleSalusDetail,
   "app-salus": AppSalusDetail,
   dev: DevHub,
-  growth: GrowthDetail,
+  marketing: GrowthDetail,
 };
 
 export function generateStaticParams() {
