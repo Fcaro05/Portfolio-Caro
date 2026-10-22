@@ -579,53 +579,6 @@ export const workCategories: WorkCategory[] = [
 ];
 
 /* ------------------------------------------------------------------ *
- * WORK HUBS — intermediate pages listing sub-projects per category.
- * ------------------------------------------------------------------ */
-
-export type HubEntry = {
-  name: string;
-  blurb: LStr;
-  href: string;
-  tags: string[];
-};
-
-export type WorkHub = {
-  id: string;
-  label: LStr;
-  title: LStr;
-  intro: LStr;
-  accent: Project["accent"];
-  entries: HubEntry[];
-};
-
-export const workHubs: Record<string, WorkHub> = {
-  dev: {
-    id: "dev",
-    label: { it: "Dev", en: "Dev" },
-    title: { it: "So programmare", en: "I can build" },
-    intro: {
-      it: "Tre progetti in cui conta come sono fatti: il sito di Salus, il gestionale interno e l'app per i pazienti.",
-      en: "Three projects where how they are built is what counts: the Salus website, the internal management system and the patient app.",
-    },
-    accent: "cyan",
-    // la pagina Dev legge i suoi contenuti da components/work/dev/data.ts
-    entries: [],
-  },
-  growth: {
-    id: "growth",
-    label: { it: "Growth", en: "Growth" },
-    title: { it: "So far crescere", en: "I can grow it" },
-    intro: {
-      it: "Tre campagne Meta, tre strategie e un tracciamento che regge al blocco di Meta, per un centro medico di Milano.",
-      en: "Three Meta campaigns, three strategies and tracking that holds up against Meta's block, for a medical centre in Milan.",
-    },
-    accent: "magenta",
-    // la pagina Growth legge i suoi contenuti da components/work/growth/data.ts
-    entries: [],
-  },
-};
-
-/* ------------------------------------------------------------------ *
  * CAPABILITIES — three pillars.
  * ------------------------------------------------------------------ */
 

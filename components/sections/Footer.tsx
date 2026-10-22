@@ -34,7 +34,6 @@ export default function Footer() {
             © {year} Francesco Caro — {t.footer.rights}
           </span>
           <span>Milano · IT</span>
-          <span>Made with Next.js · R3F · GSAP</span>
         </div>
       </div>
 
