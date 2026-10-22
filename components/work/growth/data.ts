@@ -1,5 +1,5 @@
 /**
- * Contenuti della pagina Growth: il lavoro per il Centro Medico Ambrosiano (CMA), Milano.
+ * Contenuti della pagina Marketing: il lavoro per il Centro Medico Ambrosiano (CMA), Milano.
  *
  * Fonti: la cartella di lavoro CMA (annunci, landing, caroselli), il documento di passaggio sul
  * tracciamento (8–12 ottobre 2026), lo script Google Apps Script e il brief di strategia della landing.

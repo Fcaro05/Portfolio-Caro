@@ -225,7 +225,7 @@ export default function Hero() {
             "LLM Agents",
             "RAG",
             "Healthtech",
-            "Growth Marketing",
+            "Performance Marketing",
             "Local SEO",
             "Flutter",
             "Next.js",
