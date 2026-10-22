@@ -222,8 +222,8 @@ export const principles: { title: LStr; body: LStr }[] = [
   },
 ];
 
-/** Esito della correzione, solo con ciò che è stato verificato: nessun numero di contatti dopo, perché non c'è ancora. */
-export const beforeAfter: { before: LArr; after: LArr; note: LStr } = {
+/** Esito della correzione: solo fatti verificati; i 90 contatti sono il dato che mi ha dato Francesco. */
+export const beforeAfter: { before: LArr; after: LArr } = {
   before: {
     it: [
       "Il pixel registra circa 33.000 visite e solo 2 contatti in 30 giorni.",
@@ -238,20 +238,18 @@ export const beforeAfter: { before: LArr; after: LArr; note: LStr } = {
   },
   after: {
     it: [
+      "90 contatti ricevuti dopo la correzione.",
       "Ogni contatto del modulo arriva a Meta dal server, con l'origine vera.",
       "Prova con dati di prova: Meta risponde 200 e conferma 1 evento ricevuto.",
       "Un contatto reale inviato a Meta compare in Events Manager come «Acquisizione contatti».",
       "Lo stesso percorso è stato riusato per la criolipolisi e provato dal sito pubblico.",
     ],
     en: [
+      "90 leads received after the fix.",
       "Every lead from the form reaches Meta from the server, with its true origin.",
       "Tested with test data: Meta replies 200 and confirms 1 event received.",
       "A real lead sent to Meta shows up in Events Manager as “Lead acquisition”.",
       "The same path was reused for cryolipolysis and tested from the public site.",
     ],
-  },
-  note: {
-    it: "Non pubblico un numero di contatti dopo la correzione: non è ancora un dato, perché gli annunci puntano ancora alla landing precedente e il cambio è rimandato.",
-    en: "I'm not publishing a lead count after the fix: it isn't data yet, because the ads still point to the previous landing and the switch is postponed.",
   },
 };

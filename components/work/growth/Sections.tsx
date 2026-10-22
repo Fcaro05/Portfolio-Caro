@@ -674,7 +674,6 @@ export function TrackingSection() {
             </div>
           ))}
         </div>
-        <p className="mt-4 max-w-3xl font-sans text-sm leading-relaxed text-muted">{tr(beforeAfter.note)}</p>
       </div>
 
       <div className="mt-14">
@@ -718,8 +717,8 @@ export function TrackingSection() {
       </div>
       <p className="mt-6 font-sans text-xs text-muted">
         {it
-          ? "Il codice è un estratto del file vero. Token, identificativi degli account e dati dei pazienti non sono pubblicati; i numeri sono quelli del tracciamento, senza spesa né risultati commerciali."
-          : "The code is an excerpt of the real file. Tokens, account IDs and patient data aren't published; the figures are tracking figures, with no spend or commercial results."}
+          ? "Il codice è un estratto del file vero. Token, identificativi degli account e dati dei pazienti non sono pubblicati; i numeri sono quelli del tracciamento e dei contatti ricevuti, senza dati di spesa."
+          : "The code is an excerpt of the real file. Tokens, account IDs and patient data aren't published; the figures are tracking figures and leads received, with no spend data."}
       </p>
     </DevSection>
   );
