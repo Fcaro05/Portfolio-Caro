@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { accentHex } from "@/lib/content";
 import { useT } from "../salus/ui";
 import { DevSection, FlowRow } from "../dev/ui";
 import { BlockTitle, CodeBlock } from "../ailab/ui";
-import { carousels, growthNumbers, landingBlocks, notDone, research, stillOpen, trackingFlow, trackingSnippet, trackingSteps, type LStr } from "./data";
+import { beforeAfter, carousels, growthNumbers, landingBlocks, notDone, research, stillOpen, trackingFlow, trackingSnippet, trackingSteps, type LStr } from "./data";
 import { flowCompare, flows, flowVideos, formatInfo, type AdFormat, type Flow, type FlowId } from "./flows";
 
 const color = accentHex.magenta;
@@ -140,20 +141,23 @@ function Chips<T extends string | number>({
 
 export function HeroVisual() {
   const imgs = [
-    { src: "/growth/ads/a1-feed.webp", cls: "left-0 top-[10%] w-[34%]" },
-    { src: "/growth/ads/crio.webp", cls: "left-[33%] top-0 z-10 w-[34%]" },
-    { src: "/growth/ads/nightlase.webp", cls: "left-[66%] top-[10%] w-[34%]" },
+    { src: "/growth/ads/a1-feed.webp", w: 1080, h: 1350, cls: "left-0 top-[10%] w-[34%]" },
+    { src: "/growth/ads/crio.webp", w: 1080, h: 1080, cls: "left-[33%] top-0 z-10 w-[34%]" },
+    { src: "/growth/ads/nightlase.webp", w: 1080, h: 1080, cls: "left-[66%] top-[10%] w-[34%]" },
   ];
   return (
     <div className="relative mx-auto h-[250px] w-full max-w-[520px] sm:h-[340px] lg:h-[400px]" aria-hidden>
       {imgs.map((im) => (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
+        <Image
           key={im.src}
           src={im.src}
           alt=""
-          decoding="async"
-          className={`absolute rounded-xl border border-line ${im.cls}`}
+          width={im.w}
+          height={im.h}
+          sizes="(min-width: 640px) 180px, 120px"
+          quality={85}
+          priority
+          className={`absolute h-auto rounded-xl border border-line ${im.cls}`}
         />
       ))}
     </div>
@@ -250,16 +254,17 @@ function AdsBlock({ f, letter }: { f: Flow; letter: string }) {
           )}
           <div className="flex min-h-[260px] items-center justify-center rounded-xl bg-bg/60 p-3 md:p-5">
             <div
-              className="overflow-hidden rounded-xl border border-line bg-bg"
+              className="relative overflow-hidden rounded-xl border border-line bg-bg"
               style={{ aspectRatio: String(info.r), width: `min(100%, calc(min(66svh, 560px) * ${info.r}))` }}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 key={`${ad.id}-${cur}`}
-                src={ad.images[cur]}
+                src={ad.images[cur]!}
                 alt={tr(ad.headline)}
-                decoding="async"
-                className="block h-full w-full object-cover"
+                fill
+                sizes="(min-width: 1024px) 480px, 90vw"
+                quality={85}
+                className="object-cover"
               />
             </div>
           </div>
@@ -386,8 +391,15 @@ function LandingBlock({ f, letter }: { f: Flow; letter: string }) {
               </span>
             </div>
             <div data-lenis-prevent className="h-[440px] overflow-y-auto overscroll-contain md:h-[600px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={f.landing.image} alt={tr(f.landing.caption)} loading="lazy" decoding="async" className="block h-auto w-full" />
+              <Image
+                src={f.landing.image}
+                alt={tr(f.landing.caption)}
+                width={f.landing.size[0]}
+                height={f.landing.size[1]}
+                sizes="(min-width: 1024px) 780px, 100vw"
+                quality={85}
+                className="block h-auto w-full"
+              />
             </div>
           </figure>
           <dl className="flex min-w-0 flex-col gap-5">
@@ -635,6 +647,36 @@ export function TrackingSection() {
       </div>
 
       <div className="mt-14">
+        <BlockTitle color={color}>{it ? "Cosa è cambiato" : "What changed"}</BlockTitle>
+        <div className="mt-5 grid gap-3 md:grid-cols-2">
+          {([
+            { key: "before", title: it ? "Prima" : "Before", items: it ? beforeAfter.before.it : beforeAfter.before.en, mark: "✕", dashed: true },
+            { key: "after", title: it ? "Dopo" : "After", items: it ? beforeAfter.after.it : beforeAfter.after.en, mark: "✓", dashed: false },
+          ] as const).map((c) => (
+            <div
+              key={c.key}
+              className={`rounded-2xl border p-5 md:p-7 ${c.dashed ? "border-dashed border-fg/25" : "border-line bg-bg"}`}
+              style={c.dashed ? undefined : { borderColor: `${color}66` }}
+            >
+              <p className="font-display text-3xl uppercase leading-none tracking-tight" style={c.dashed ? undefined : { color }}>
+                {c.title}
+              </p>
+              <ul className="mt-4 flex flex-col gap-3">
+                {c.items.map((x) => (
+                  <li key={x} className="flex items-start gap-3 font-sans text-sm leading-relaxed text-fg/85">
+                    <span className="mt-0.5 font-mono text-sm" style={{ color }}>
+                      {c.mark}
+                    </span>
+                    {x}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-14">
         <BlockTitle color={color}>{it ? "Il percorso, dopo" : "The path, after"}</BlockTitle>
         <div className="mt-5">
           <PathList nodes={trackingFlow} color={color} />
@@ -675,8 +717,8 @@ export function TrackingSection() {
       </div>
       <p className="mt-6 font-sans text-xs text-muted">
         {it
-          ? "Il codice è un estratto del file vero. Token, identificativi degli account e dati dei pazienti non sono pubblicati; i numeri sono quelli del tracciamento, senza spesa né risultati commerciali."
-          : "The code is an excerpt of the real file. Tokens, account IDs and patient data aren't published; the figures are tracking figures, with no spend or commercial results."}
+          ? "Il codice è un estratto del file vero. Token, identificativi degli account e dati dei pazienti non sono pubblicati; i numeri sono quelli del tracciamento e dei contatti ricevuti, senza dati di spesa."
+          : "The code is an excerpt of the real file. Tokens, account IDs and patient data aren't published; the figures are tracking figures and leads received, with no spend data."}
       </p>
     </DevSection>
   );
@@ -717,14 +759,14 @@ export function SocialSection() {
       <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,380px)_minmax(0,1fr)] lg:gap-14">
         <div className="min-w-0">
           <div className="relative overflow-hidden rounded-2xl border border-line bg-bg">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               key={`${c}-${i}`}
               src={`${car.prefix}${i + 1}.webp`}
               alt={tr(car.slides[i])}
-              decoding="async"
-              width={560}
-              height={700}
+              width={1122}
+              height={1402}
+              sizes="(min-width: 1024px) 380px, 90vw"
+              quality={85}
               className="block h-auto w-full"
             />
           </div>

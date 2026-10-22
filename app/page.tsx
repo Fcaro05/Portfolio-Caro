@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <>
       <Loader />
-      <main className="relative">
+      <main id="contenuto" className="relative">
         <Hero />
         <SectionCurtain num="01" color="magenta">
           <Manifesto />

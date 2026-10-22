@@ -43,7 +43,7 @@ export default function DevHubView() {
             </div>
             <div className="grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:items-end lg:gap-14">
               <h1 className="font-display text-[14vw] uppercase leading-[0.85] tracking-tight sm:text-[11vw] lg:text-[7.5vw]">
-                {it ? "So programmare" : "I can build"}
+                {it ? "Sviluppo web e app" : "Web and app development"}
               </h1>
               <p className="max-w-xl font-sans text-lg leading-relaxed text-fg/80">
                 {it

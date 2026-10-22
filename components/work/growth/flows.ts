@@ -45,6 +45,8 @@ export type Flow = {
   pathNotes: LStr[];
   landing?: {
     image: string;
+    /** larghezza e altezza del file, per riservare lo spazio prima del caricamento */
+    size: [number, number];
     caption: LStr;
     chosen: StrategyRow[];
   };
@@ -150,6 +152,7 @@ export const flows: Flow[] = [
     ],
     landing: {
       image: "/growth/landing/fotona.webp",
+      size: [1280, 6034],
       caption: { it: "Landing Fotona, pagina intera", en: "Fotona landing, full page" },
       chosen: [
         { label: { it: "Prima cosa che si vede", en: "First thing you see" }, text: { it: "Il titolo sul problema («Soffri di problemi di incontinenza o di secchezza vaginale?») e il video della specialista, senza scorrere.", en: "The headline on the problem (“Do you suffer from incontinence or vaginal dryness?”) and the specialist's video, without scrolling." } },
@@ -217,6 +220,7 @@ export const flows: Flow[] = [
     ],
     landing: {
       image: "/growth/landing/criolipolisi.webp",
+      size: [1280, 5600],
       caption: { it: "Landing criolipolisi, pagina intera", en: "Cryolipolysis landing, full page" },
       chosen: [
         { label: { it: "La promessa della pagina", en: "The page's promise" }, text: { it: "Il titolo non vende il trattamento ma la valutazione: «Prima valutazione di criolipolisi gratuita», con tre parole sotto: gratuita, senza impegno, su misura.", en: "The headline doesn't sell the treatment but the assessment: “Free first cryolipolysis assessment”, with three words underneath: free, no commitment, tailored." } },

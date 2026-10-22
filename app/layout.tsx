@@ -8,6 +8,7 @@ import Nav from "@/components/ui/Nav";
 import ScrollProgress from "@/components/ui/ScrollProgress";
 import Hud from "@/components/ui/Hud";
 import { SITE_URL } from "@/lib/site";
+import { homeSeo } from "@/lib/seo";
 
 const anton = Anton({
   weight: "400",
@@ -30,34 +31,69 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   // «./» = l'indirizzo della pagina stessa, risolto sul dominio sopra
   alternates: { canonical: "./" },
-  title: "Francesco Caro — Developer · Marketer · Builder",
-  description:
-    "Portfolio di Francesco Caro. Prodotto, growth marketing e sistemi web scalabili. Healthtech, AI e crescita digitale — dove tecnologia, marketing e business si incontrano.",
+  title: homeSeo.title,
+  description: homeSeo.description,
   keywords: [
     "Francesco Caro",
-    "web developer",
-    "digital marketing",
+    "AI specialist",
+    "sviluppatore",
+    "growth marketing",
     "healthtech",
     "Salus AI",
     "portfolio",
     "Next.js",
-    "growth",
+    "Flutter",
   ],
   authors: [{ name: "Francesco Caro" }],
   openGraph: {
-    title: "Francesco Caro — Developer · Marketer · Builder",
-    description:
-      "Prodotto, growth marketing e sistemi web scalabili. Dove tecnologia, marketing e business si incontrano.",
+    title: homeSeo.title,
+    description: homeSeo.description,
     type: "website",
     siteName: "Francesco Caro",
     locale: "it_IT",
+    url: "/",
   },
+  twitter: { card: "summary_large_image", title: homeSeo.title, description: homeSeo.description },
 };
 
 export const viewport: Viewport = {
   themeColor: "#08080a",
   width: "device-width",
   initialScale: 1,
+};
+
+/** Dati strutturati: chi sono, per chi lavoro e dove trovarmi. Servono ai motori di ricerca per collegare persona, azienda e profili. */
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": `${SITE_URL}/#persona`,
+      name: "Francesco Caro",
+      url: SITE_URL,
+      jobTitle: "AI specialist, sviluppatore e growth marketer",
+      description: homeSeo.description,
+      address: { "@type": "PostalAddress", addressLocality: "Milano", addressCountry: "IT" },
+      worksFor: { "@id": `${SITE_URL}/#salus-ai` },
+      knowsAbout: ["Intelligenza artificiale", "Sviluppo software", "Performance marketing", "Healthtech"],
+      sameAs: ["https://github.com/Fcaro05", "https://www.linkedin.com/in/francescocaro"],
+    },
+    {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#salus-ai`,
+      name: "Salus AI",
+      url: "https://salus-ai.com",
+      founder: { "@id": `${SITE_URL}/#persona` },
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#sito`,
+      url: SITE_URL,
+      name: "Francesco Caro",
+      inLanguage: ["it", "en"],
+      author: { "@id": `${SITE_URL}/#persona` },
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -69,6 +105,13 @@ export default function RootLayout({
       className={`${anton.variable} ${space.variable} ${jbmono.variable}`}
     >
       <body className="bg-bg text-fg">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        <a
+          href="#contenuto"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[300] focus:rounded-full focus:bg-acid focus:px-5 focus:py-2.5 focus:font-mono focus:text-xs focus:uppercase focus:tracking-[0.12em] focus:text-black"
+        >
+          Vai al contenuto
+        </a>
         <I18nProvider>
           <SmoothScroll>
             <Cursor />

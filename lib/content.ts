@@ -178,7 +178,7 @@ export const projects: Project[] = [
     index: "03",
     name: "Centro Medico Ambrosiano",
     year: "2026",
-    kind: { it: "Growth per un centro medico", en: "Growth for a medical centre" },
+    kind: { it: "Marketing per un centro medico", en: "Marketing for a medical centre" },
     role: {
       it: "Campagne Meta, landing page e tracciamento",
       en: "Meta campaigns, landing pages and tracking",
@@ -225,11 +225,13 @@ export const projects: Project[] = [
     results: {
       it: [
         "Una diagnosi: 33.000 visite e 2 contatti registrati in 30 giorni, causa trovata nel blocco di Meta sul dominio",
+        "90 contatti ricevuti dopo la correzione",
         "Un percorso dal modulo a Meta, provato con dati di prova e con un evento reale",
         "Due landing con lo stesso tracciamento e senza pixel, e il contatto di ogni campagna in un tab suo",
       ],
       en: [
         "A diagnosis: 33,000 page views and 2 recorded leads in 30 days, cause found in Meta's block on the domain",
+        "90 leads received after the fix",
         "A path from form to Meta, proven with test data and with a real event",
         "Two landings with the same tracking and no pixel, and each campaign's leads in its own tab",
       ],
@@ -450,9 +452,9 @@ export const projects: Project[] = [
 export const getProject = (slug: string) => projects.find((p) => p.id === slug);
 export const projectSlugs = projects.map((p) => p.id);
 /**
- * «Prossimo» in fondo alle pagine: segue il giro delle aree (Salus AI → Dev → AI Lab → Growth → Salus AI).
+ * «Prossimo» in fondo alle pagine: segue il giro delle aree (Salus AI → Dev → AI Lab → Marketing → Salus AI).
  * Dentro Dev i tre progetti si susseguono, poi si passa ad AI Lab.
- * Le chiavi sono gli slug usati dalle pagine; «centro-medico» è il progetto della pagina Growth.
+ * Le chiavi sono gli slug usati dalle pagine; «centro-medico» è il progetto della pagina Marketing.
  */
 const nextOf: Record<string, string> = {
   "salus-ai": "dev",
@@ -460,7 +462,7 @@ const nextOf: Record<string, string> = {
   "sito-salus": "gestionale-salus",
   "gestionale-salus": "app-salus",
   "app-salus": "ai-lab",
-  "ai-lab": "growth",
+  "ai-lab": "marketing",
   "centro-medico": "salus-ai",
 };
 
@@ -558,10 +560,10 @@ export const workCategories: WorkCategory[] = [
     cta: { it: "Esplora i progetti", en: "Explore the projects" },
   },
   {
-    id: "growth",
+    id: "marketing",
     num: "04",
-    name: "Growth",
-    kind: { it: "Acquisizione & performance", en: "Acquisition & performance" },
+    name: "Marketing",
+    kind: { it: "Campagne, landing e tracciamento", en: "Campaigns, landing pages and tracking" },
     meta: { it: "1 progetto", en: "1 project" },
     summary: {
       it: "Tre campagne, tre strategie, e un tracciamento che regge al blocco di Meta.",
@@ -573,57 +575,10 @@ export const workCategories: WorkCategory[] = [
     },
     tags: ["Meta Ads", "Conversions API", "Landing page", "Apps Script", "Copywriting", "CRO"],
     accent: "magenta",
-    href: "/work/growth",
+    href: "/work/marketing",
     cta: { it: "Esplora il progetto", en: "Explore the project" },
   },
 ];
-
-/* ------------------------------------------------------------------ *
- * WORK HUBS — intermediate pages listing sub-projects per category.
- * ------------------------------------------------------------------ */
-
-export type HubEntry = {
-  name: string;
-  blurb: LStr;
-  href: string;
-  tags: string[];
-};
-
-export type WorkHub = {
-  id: string;
-  label: LStr;
-  title: LStr;
-  intro: LStr;
-  accent: Project["accent"];
-  entries: HubEntry[];
-};
-
-export const workHubs: Record<string, WorkHub> = {
-  dev: {
-    id: "dev",
-    label: { it: "Dev", en: "Dev" },
-    title: { it: "So programmare", en: "I can build" },
-    intro: {
-      it: "Tre progetti in cui conta come sono fatti: il sito di Salus, il gestionale interno e l'app per i pazienti.",
-      en: "Three projects where how they are built is what counts: the Salus website, the internal management system and the patient app.",
-    },
-    accent: "cyan",
-    // la pagina Dev legge i suoi contenuti da components/work/dev/data.ts
-    entries: [],
-  },
-  growth: {
-    id: "growth",
-    label: { it: "Growth", en: "Growth" },
-    title: { it: "So far crescere", en: "I can grow it" },
-    intro: {
-      it: "Tre campagne Meta, tre strategie e un tracciamento che regge al blocco di Meta, per un centro medico di Milano.",
-      en: "Three Meta campaigns, three strategies and tracking that holds up against Meta's block, for a medical centre in Milan.",
-    },
-    accent: "magenta",
-    // la pagina Growth legge i suoi contenuti da components/work/growth/data.ts
-    entries: [],
-  },
-};
 
 /* ------------------------------------------------------------------ *
  * CAPABILITIES — three pillars.
@@ -684,7 +639,7 @@ export const pillars: Pillar[] = [
   {
     id: "growth",
     num: "03",
-    title: { it: "Growth", en: "Growth" },
+    title: { it: "Marketing", en: "Marketing" },
     blurb: {
       it: "Traffico, lead e conversioni. Performance marketing end-to-end.",
       en: "Traffic, leads and conversions. End-to-end performance marketing.",
@@ -749,7 +704,7 @@ export type Stat = { value: string; label: LStr };
 
 export const stats: Stat[] = [
   { value: "06", label: { it: "Progetti in vetrina", en: "Featured projects" } },
-  { value: "03", label: { it: "Ambiti: AI · Sviluppo · Growth", en: "Domains: AI · Development · Growth" } },
+  { value: "03", label: { it: "Ambiti: AI · Sviluppo · Marketing", en: "Domains: AI · Development · Marketing" } },
   { value: "02", label: { it: "Lingue", en: "Languages" } },
   { value: "1", label: { it: "Startup costruita da zero", en: "Startup built from scratch" } },
 ];

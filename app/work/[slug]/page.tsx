@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import type { ComponentType } from "react";
 import { notFound } from "next/navigation";
-import { getProject, workHubs, L } from "@/lib/content";
+import { workSeo } from "@/lib/seo";
 import Footer from "@/components/sections/Footer";
 import SalusAIDetail from "@/components/work/SalusAIDetail";
 import AiLabDetail from "@/components/work/AiLabDetail";
@@ -18,7 +18,7 @@ const registry: Record<string, ComponentType> = {
   "gestionale-salus": GestionaleSalusDetail,
   "app-salus": AppSalusDetail,
   dev: DevHub,
-  growth: GrowthDetail,
+  marketing: GrowthDetail,
 };
 
 export function generateStaticParams() {
@@ -31,21 +31,23 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const p = getProject(slug);
-  if (p) {
-    return {
-      title: `${p.name} — Francesco Caro`,
-      description: L(p.summary, "en"),
-    };
-  }
-  const hub = workHubs[slug];
-  if (hub) {
-    return {
-      title: `${L(hub.label, "en")} — Francesco Caro`,
-      description: L(hub.intro, "en"),
-    };
-  }
-  return { title: "Progetto — Francesco Caro" };
+  const seo = workSeo[slug];
+  if (!seo) return { title: "Progetto — Francesco Caro" };
+  const title = `${seo.title} · Francesco Caro`;
+  return {
+    title,
+    description: seo.description,
+    // l'immagine di anteprima è generata da opengraph-image.tsx di questa stessa cartella
+    openGraph: {
+      title,
+      description: seo.description,
+      type: "article",
+      siteName: "Francesco Caro",
+      locale: "it_IT",
+      url: `/work/${slug}`,
+    },
+    twitter: { card: "summary_large_image", title, description: seo.description },
+  };
 }
 
 export default async function ProjectPage({
@@ -58,7 +60,9 @@ export default async function ProjectPage({
   if (!Detail) notFound();
   return (
     <>
-      <Detail />
+      <main id="contenuto">
+        <Detail />
+      </main>
       <Footer />
     </>
   );

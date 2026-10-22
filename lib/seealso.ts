@@ -32,9 +32,9 @@ export const seeAlso = {
     name: "AI Lab",
     hint: { it: "Un agente che si occupa dei contatti in arrivo.", en: "An agent that handles incoming leads." },
   },
-  growthTracking: {
-    href: "/work/growth#tracciamento",
-    name: "Growth",
+  marketingTracking: {
+    href: "/work/marketing#tracciamento",
+    name: "Marketing",
     hint: { it: "Il caso del tracciamento: contatti inviati a Meta dal server.", en: "The tracking case: leads sent to Meta from the server." },
   },
   sitoSalus: {

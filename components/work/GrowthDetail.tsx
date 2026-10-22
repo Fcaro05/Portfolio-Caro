@@ -8,7 +8,7 @@ export default function GrowthDetail() {
   return (
     <DevDetailShell
       slug="centro-medico"
-      badge="Growth"
+      badge="Marketing"
       backToDev={false}
       showStory={false}
       compactMobile

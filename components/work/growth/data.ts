@@ -221,3 +221,35 @@ export const principles: { title: LStr; body: LStr }[] = [
     body: { it: "Pochi campi e ben visibili, con un menù per la fascia oraria. La pagina ha un solo percorso: prenotare.", en: "Few, visible fields, with a menu for the time slot. The page has one path: book." },
   },
 ];
+
+/** Esito della correzione: solo fatti verificati; i 90 contatti sono il dato che mi ha dato Francesco. */
+export const beforeAfter: { before: LArr; after: LArr } = {
+  before: {
+    it: [
+      "Il pixel registra circa 33.000 visite e solo 2 contatti in 30 giorni.",
+      "Dal browser non parte nessuna richiesta verso Meta, nemmeno forzando un evento a mano.",
+      "La campagna spende senza dati per ottimizzare.",
+    ],
+    en: [
+      "The pixel records about 33,000 page views and only 2 leads in 30 days.",
+      "The browser sends no request to Meta, even when forcing an event by hand.",
+      "The campaign spends with no data to optimise on.",
+    ],
+  },
+  after: {
+    it: [
+      "90 contatti ricevuti dopo la correzione.",
+      "Ogni contatto del modulo arriva a Meta dal server, con l'origine vera.",
+      "Prova con dati di prova: Meta risponde 200 e conferma 1 evento ricevuto.",
+      "Un contatto reale inviato a Meta compare in Events Manager come «Acquisizione contatti».",
+      "Lo stesso percorso è stato riusato per la criolipolisi e provato dal sito pubblico.",
+    ],
+    en: [
+      "90 leads received after the fix.",
+      "Every lead from the form reaches Meta from the server, with its true origin.",
+      "Tested with test data: Meta replies 200 and confirms 1 event received.",
+      "A real lead sent to Meta shows up in Events Manager as “Lead acquisition”.",
+      "The same path was reused for cryolipolysis and tested from the public site.",
+    ],
+  },
+};
