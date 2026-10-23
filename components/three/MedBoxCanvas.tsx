@@ -363,12 +363,48 @@ function MedBoxModel({ progress }: { progress: MutableProgress }) {
   return <primitive object={cloned} />;
 }
 
+const noop = () => {};
+
+/**
+ * Prepara il primo disegno mentre la sezione è ancora fuori schermo: compila i programmi grafici, carica
+ * geometrie e texture sulla GPU e disegna un fotogramma. Senza questo passaggio tutto il lavoro avviene
+ * quando si arriva alla sezione, e su telefono dura parecchi secondi con il riquadro vuoto.
+ */
+function Warmup({ onReady }: { onReady: () => void }) {
+  const { gl, scene, camera, invalidate } = useThree();
+  // l'ultima funzione ricevuta, senza far ripartire la preparazione a ogni render del genitore
+  const ready = useRef(onReady);
+  ready.current = onReady;
+  useEffect(() => {
+    let cancelled = false;
+    const done = () => {
+      if (cancelled) return;
+      invalidate();
+      // due fotogrammi: il primo carica le risorse, il secondo è già visibile
+      requestAnimationFrame(() => requestAnimationFrame(() => !cancelled && ready.current()));
+    };
+    const r = gl as unknown as { compileAsync?: (s: unknown, c: unknown) => Promise<unknown> };
+    if (r.compileAsync) r.compileAsync(scene, camera).then(done, done);
+    else {
+      gl.compile(scene, camera);
+      done();
+    }
+    return () => {
+      cancelled = true;
+    };
+  }, [gl, scene, camera, invalidate]);
+  return null;
+}
+
 export default function MedBoxCanvas({
   progress,
   active,
+  onReady,
 }: {
   progress: MotionValue<number>;
   active: boolean;
+  /** chiamata quando il primo fotogramma del modello è pronto */
+  onReady?: () => void;
 }) {
   const progressRef = useRef<MutableProgress>({ current: 0 });
 
@@ -382,7 +418,8 @@ export default function MedBoxCanvas({
   return (
     <Canvas
       className="!absolute inset-0"
-      frameloop={active ? "always" : "never"}
+      // fuori schermo «on demand»: il fotogramma di preparazione si disegna, poi niente lavoro inutile
+      frameloop={active ? "always" : "demand"}
       dpr={[1, 1.75]}
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
       camera={{ fov: 28, near: 0.01, far: 100, position: [0, 0, 2.5] }}
@@ -392,6 +429,7 @@ export default function MedBoxCanvas({
       <directionalLight position={[-4, 2, -2]} intensity={0.5} color="#c8d8e0" />
       <directionalLight position={[0, 1, -6]} intensity={0.35} color="#6bb6b6" />
       <MedBoxModel progress={progressRef.current} />
+      <Warmup onReady={onReady ?? noop} />
     </Canvas>
   );
 }

@@ -135,6 +135,7 @@ export default function MedBoxReveal({ color }: { color: string }) {
   const [reduced, setReduced] = useState(false);
   const [active, setActive] = useState(true);
   const [focusIdx, setFocusIdx] = useState(-1);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     setReduced(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
@@ -183,7 +184,16 @@ export default function MedBoxReveal({ color }: { color: string }) {
     <section ref={trackRef} className="relative border-b border-line bg-bg" style={{ height: "600vh" }}>
       <div className="sticky top-0 h-[100svh] w-full overflow-hidden">
         <div className="bg-grid absolute inset-0 opacity-20" aria-hidden />
-        <MedBoxCanvas progress={scrollYProgress} active={active} />
+        {/* finché il modello 3D non ha disegnato il primo fotogramma si vede la foto del box, così il riquadro non resta vuoto */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/models/smart-med-box.webp"
+          alt=""
+          aria-hidden
+          decoding="async"
+          className={`pointer-events-none absolute left-1/2 top-1/2 w-[78%] max-w-[560px] -translate-x-1/2 -translate-y-1/2 object-contain transition-opacity duration-300 ${ready ? "opacity-0" : "opacity-100"}`}
+        />
+        <MedBoxCanvas progress={scrollYProgress} active={active} onReady={() => setReady(true)} />
 
         <motion.div
           style={{ opacity: labelOpacity }}
