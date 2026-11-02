@@ -224,12 +224,14 @@ export const projects: Project[] = [
     },
     results: {
       it: [
+        "Tre campagne con una spesa mensile totale di 2.200 € e un costo medio di 12 € per contatto",
         "Una diagnosi: 33.000 visite e 2 contatti registrati in 30 giorni, causa trovata nel blocco di Meta sul dominio",
         "90 contatti ricevuti dopo la correzione",
         "Un percorso dal modulo a Meta, provato con dati di prova e con un evento reale",
         "Due landing con lo stesso tracciamento e senza pixel, e il contatto di ogni campagna in un tab suo",
       ],
       en: [
+        "Three campaigns with a total monthly spend of €2,200 and an average cost of €12 per lead",
         "A diagnosis: 33,000 page views and 2 recorded leads in 30 days, cause found in Meta's block on the domain",
         "90 leads received after the fix",
         "A path from form to Meta, proven with test data and with a real event",
