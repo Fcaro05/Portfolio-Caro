@@ -3,14 +3,16 @@
  *
  * Fonti: la cartella di lavoro CMA (annunci, landing, caroselli), il documento di passaggio sul
  * tracciamento (8–12 ottobre 2026), lo script Google Apps Script e il brief di strategia della landing.
- * Pubblicazione: solo la diagnosi del tracciamento (visite di pagina e lead), niente costi né risultati
- * di spesa; nessun identificativo di Meta, Google o hosting; nessun dato di pazienti.
+ * Pubblicazione: diagnosi del tracciamento, i 90 contatti e, su richiesta di Francesco, la spesa mensile totale
+ * (2.200 €) e il costo medio per contatto (12 €); nessun identificativo di Meta, Google o hosting; nessun dato di pazienti.
  */
 
 export type LStr = { it: string; en: string };
 export type LArr = { it: string[]; en: string[] };
 
 export const growthNumbers: { value: string; label: LStr }[] = [
+  { value: "2.200 €", label: { it: "spesa mensile totale delle 3 campagne", en: "total monthly spend across the 3 campaigns" } },
+  { value: "12 €", label: { it: "costo medio per contatto", en: "average cost per lead" } },
   { value: "3", label: { it: "campagne Meta, ognuna con la sua strategia", en: "Meta campaigns, each with its own strategy" } },
   { value: "17", label: { it: "versioni di annuncio in immagine, tra feed, story, reel e quadrato", en: "image ad versions across feed, story, reel and square" } },
   { value: "2", label: { it: "video con la specialista, uno per sintomo", en: "videos with the specialist, one per symptom" } },

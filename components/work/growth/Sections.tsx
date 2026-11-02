@@ -168,7 +168,7 @@ export function NumbersRow() {
   const { tr } = useT();
   return (
     <section className="border-t border-line px-5 py-8 md:px-10 md:py-14">
-      <div className="mx-auto grid max-w-[1400px] grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line lg:grid-cols-4">
+      <div className="mx-auto grid max-w-[1400px] grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line lg:grid-cols-3">
         {growthNumbers.map((n) => (
           <div key={n.label.it} className="bg-bg p-5 md:p-6">
             <div className="font-display text-4xl leading-none md:text-5xl" style={{ color }}>
@@ -717,8 +717,8 @@ export function TrackingSection() {
       </div>
       <p className="mt-6 font-sans text-xs text-muted">
         {it
-          ? "Il codice è un estratto del file vero. Token, identificativi degli account e dati dei pazienti non sono pubblicati; i numeri sono quelli del tracciamento e dei contatti ricevuti, senza dati di spesa."
-          : "The code is an excerpt of the real file. Tokens, account IDs and patient data aren't published; the figures are tracking figures and leads received, with no spend data."}
+          ? "Il codice è un estratto del file vero. Token, identificativi degli account e dati dei pazienti non sono pubblicati; i numeri sono quelli del tracciamento, dei contatti ricevuti e della spesa."
+          : "The code is an excerpt of the real file. Tokens, account IDs and patient data aren't published; the figures are tracking figures, leads received and spend."}
       </p>
     </DevSection>
   );
