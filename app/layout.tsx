@@ -46,14 +46,18 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Francesco Caro" }],
   openGraph: {
-    title: homeSeo.title,
-    description: homeSeo.description,
+    title: homeSeo.share?.title ?? homeSeo.title,
+    description: homeSeo.share?.description ?? homeSeo.description,
     type: "website",
     siteName: "Francesco Caro",
     locale: "it_IT",
     url: "/",
   },
-  twitter: { card: "summary_large_image", title: homeSeo.title, description: homeSeo.description },
+  twitter: {
+    card: "summary_large_image",
+    title: homeSeo.share?.title ?? homeSeo.title,
+    description: homeSeo.share?.description ?? homeSeo.description,
+  },
 };
 
 export const viewport: Viewport = {

@@ -13,6 +13,10 @@ export type PageSeo = {
   /** titolo grande nell'immagine, breve */
   card: string;
   accent: string;
+  /** Solo anteprima (LinkedIn, social): titolo e descrizione diversi da quelli del tag <title>, che non cambia */
+  share?: { title: string; description: string };
+  /** righe sotto il titolo grande nell'immagine di anteprima */
+  roles?: string[];
 };
 
 const ACID = "#d4ff36";
@@ -27,6 +31,12 @@ export const homeSeo: PageSeo = {
   eyebrow: "Portfolio",
   card: "Francesco Caro",
   accent: ACID,
+  share: {
+    title: "Francesco Caro — Full Stack Developer, BI Developer e Performance Marketing",
+    description:
+      "Software, dati e campagne per il medicale. Quattro aree di lavoro con schermate, codice e numeri veri.",
+  },
+  roles: ["Full Stack Developer", "BI Developer", "Performance Marketing"],
 };
 
 export const workSeo: Record<string, PageSeo> = {
