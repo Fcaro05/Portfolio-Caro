@@ -36,24 +36,26 @@ export async function renderOg(p: PageSeo, size: { width: number; height: number
         </div>
 
         <div style={{ display: "flex", flexDirection: "column" }}>
+          {!square && (
+            <div
+              style={{
+                display: "flex",
+                fontSize: 30,
+                letterSpacing: 6,
+                textTransform: "uppercase",
+                color: p.accent,
+              }}
+            >
+              {p.eyebrow}
+            </div>
+          )}
           <div
             style={{
               display: "flex",
-              fontSize: 30,
-              letterSpacing: 6,
-              textTransform: "uppercase",
-              color: p.accent,
-            }}
-          >
-            {p.eyebrow}
-          </div>
-          <div
-            style={{
-              display: "flex",
-              marginTop: 18,
+              marginTop: square ? 0 : 18,
               fontFamily: "Anton",
               flexDirection: "column",
-              fontSize: square ? 210 : p.roles ? 108 : p.card.length > 14 ? 128 : p.card.length > 9 ? 150 : 190,
+              fontSize: square ? 150 : p.roles ? 108 : p.card.length > 14 ? 128 : p.card.length > 9 ? 150 : 190,
               lineHeight: 0.95,
               textTransform: "uppercase",
               letterSpacing: -2,
@@ -66,7 +68,7 @@ export async function renderOg(p: PageSeo, size: { width: number; height: number
             ))}
           </div>
           {p.roles && (
-            <div style={{ display: "flex", flexDirection: "column", marginTop: square ? 48 : 30, gap: square ? 16 : 10, fontSize: square ? 52 : 36 }}>
+            <div style={{ display: "flex", flexDirection: "column", marginTop: square ? 36 : 30, gap: square ? 12 : 10, fontSize: square ? 42 : 36 }}>
               {p.roles.map((r) => (
                 <div key={r} style={{ display: "flex", alignItems: "center", gap: 18 }}>
                   <div style={{ display: "flex", width: 14, height: 14, borderRadius: 14, background: p.accent }} />
@@ -78,7 +80,9 @@ export async function renderOg(p: PageSeo, size: { width: number; height: number
         </div>
 
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", fontSize: 28, color: "#8a8a99" }}>
-          <div style={{ display: "flex" }}>{p.roles ? "Milano" : "Francesco Caro · Milano"}</div>
+          <div style={{ display: "flex" }}>
+            {square ? `${p.eyebrow} · Milano` : p.roles ? "Milano" : "Francesco Caro · Milano"}
+          </div>
           <div style={{ display: "flex", width: 220, height: 6, background: p.accent }} />
         </div>
       </div>
