@@ -52,11 +52,14 @@ export const metadata: Metadata = {
     siteName: "Francesco Caro",
     locale: "it_IT",
     url: "/",
+    // immagine quadrata servita da app/og/home-square/route.tsx (percorso proprio: LinkedIn tiene in cache le immagini per percorso)
+    images: [{ url: "/og/home-square", width: 1200, height: 1200, alt: "Francesco Caro — portfolio" }],
   },
   twitter: {
     card: "summary_large_image",
     title: homeSeo.share?.title ?? homeSeo.title,
     description: homeSeo.share?.description ?? homeSeo.description,
+    images: ["/og/home-square"],
   },
 };
 
